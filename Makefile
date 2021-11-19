@@ -64,7 +64,7 @@ else
 OS_LINK_FLAGS = -shared -Wl,-soname,$@ $(STRIPFLAG)
 endif
 
-TESTS_BIN = src/miniargv-test-global$(BINEXT) src/miniargv-test$(BINEXT)
+TESTS_BIN = src/miniargv-example-global$(BINEXT) src/miniargv-example-local$(BINEXT) src/miniargv-test$(BINEXT)
 
 COMMON_PACKAGE_FILES = README.md LICENSE Changelog.txt
 SOURCE_PACKAGE_FILES = $(COMMON_PACKAGE_FILES) Makefile doc/Doxyfile include/*.h lib/*.c src/*.c build/*.workspace build/*.cbp build/*.depend
