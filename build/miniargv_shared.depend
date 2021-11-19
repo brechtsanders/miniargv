@@ -1,10 +1,10 @@
 # depslib dependency file v1.0
-1637340824 source:z:\miniargv\lib\miniargv.c
+1637341771 source:z:\miniargv\lib\miniargv.c
 	"miniargv.h"
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<ctype.h>
 
-1637340102 z:\miniargv\include\miniargv.h
+1637343988 z:\miniargv\include\miniargv.h
 

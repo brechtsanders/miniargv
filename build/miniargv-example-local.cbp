@@ -2,12 +2,12 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="miniargv-test-global" />
+		<Option title="miniargv-example-local" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/miniargv-test-global" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Debug/miniargv-example-local" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -19,7 +19,7 @@
 				</Linker>
 			</Target>
 			<Target title="Release">
-				<Option output="bin/Release/miniargv-test-global" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Release/miniargv-example-local" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -32,7 +32,7 @@
 				</Linker>
 			</Target>
 			<Target title="Debug32">
-				<Option output="bin/Debug32/miniargv-test-global" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Debug32/miniargv-example-local" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug32/" />
 				<Option type="1" />
 				<Option compiler="MINGW32" />
@@ -44,7 +44,7 @@
 				</Linker>
 			</Target>
 			<Target title="Release32">
-				<Option output="bin/Release32/miniargv-test-global" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Release32/miniargv-example-local" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release32/" />
 				<Option type="1" />
 				<Option compiler="MINGW32" />
@@ -57,7 +57,7 @@
 				</Linker>
 			</Target>
 			<Target title="Debug64">
-				<Option output="bin/Debug64/miniargv-test-global" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Debug64/miniargv-example-local" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug64/" />
 				<Option type="1" />
 				<Option compiler="MINGW64" />
@@ -70,7 +70,7 @@
 				</Linker>
 			</Target>
 			<Target title="Release64">
-				<Option output="bin/Release64/miniargv-test-global" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Release64/miniargv-example-local" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release64/" />
 				<Option type="1" />
 				<Option compiler="MINGW64" />
@@ -90,7 +90,7 @@
 		<Linker>
 			<Add library="miniargv" />
 		</Linker>
-		<Unit filename="../src/miniargv-test-global.c">
+		<Unit filename="../src/miniargv-example-local.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>

@@ -1,8 +1,0 @@
-# depslib dependency file v1.0
-1637340718 source:z:\miniargv\src\miniargv-test-global.c
-	<miniargv.h>
-	<stdlib.h>
-	<stdio.h>
-
-1637340102 z:\miniargv\include\miniargv.h
-

@@ -3,10 +3,13 @@
 	<Workspace title="Workspace">
 		<Project filename="miniargv_static.cbp" />
 		<Project filename="miniargv_shared.cbp" />
-		<Project filename="miniargv-test-global.cbp">
+		<Project filename="miniargv-test.cbp">
 			<Depends filename="miniargv_shared.cbp" />
 		</Project>
-		<Project filename="miniargv-test.cbp">
+		<Project filename="miniargv-example-local.cbp">
+			<Depends filename="miniargv_shared.cbp" />
+		</Project>
+		<Project filename="miniargv-example-global.cbp">
 			<Depends filename="miniargv_shared.cbp" />
 		</Project>
 	</Workspace>

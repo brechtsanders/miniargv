@@ -67,7 +67,7 @@ endif
 TESTS_BIN = src/miniargv-test-global$(BINEXT) src/miniargv-test$(BINEXT)
 
 COMMON_PACKAGE_FILES = README.md LICENSE Changelog.txt
-SOURCE_PACKAGE_FILES = $(COMMON_PACKAGE_FILES) Makefile doc/Doxyfile include/*.h src/*.c build/*.workspace build/*.cbp build/*.depend
+SOURCE_PACKAGE_FILES = $(COMMON_PACKAGE_FILES) Makefile doc/Doxyfile include/*.h lib/*.c src/*.c build/*.workspace build/*.cbp build/*.depend
 
 default: all
 
