@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="Workspace">
+		<Project filename="miniargv_static.cbp" />
+		<Project filename="miniargv_shared.cbp" />
+		<Project filename="miniargv-test-global.cbp">
+			<Depends filename="miniargv_shared.cbp" />
+		</Project>
+		<Project filename="miniargv-test.cbp">
+			<Depends filename="miniargv_shared.cbp" />
+		</Project>
+	</Workspace>
+</CodeBlocks_workspace_file>
