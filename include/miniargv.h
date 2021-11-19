@@ -3,7 +3,7 @@
  * @brief miniargv library header file with main functions
  * @author Brecht Sanders
  *
- * This header file defines the functions for processing command line arguments
+ * The miniargv library C library is a lightweight cross-platform C/C++ library for processing command line arguments and displaying command line help.
  */
 
 #ifndef INCLUDED_MINIARGV_H
