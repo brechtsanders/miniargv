@@ -124,24 +124,24 @@ version:
 
 .PHONY: package
 package: version
-	tar cfJ ci-test-$(shell cat version).tar.xz --transform="s?^?ci-test-$(shell cat version)/?" $(SOURCE_PACKAGE_FILES)
+	tar cfJ miniargv-$(shell cat version).tar.xz --transform="s?^?miniargv-$(shell cat version)/?" $(SOURCE_PACKAGE_FILES)
 
 .PHONY: package
 binarypackage: version
 ifneq ($(OS),Windows_NT)
 	$(MAKE) PREFIX=binarypackage_temp_$(OSALIAS) install
-	tar cfJ ci-test-$(shell cat version)-$(OSALIAS).tar.xz --transform="s?^binarypackage_temp_$(OSALIAS)/??" $(COMMON_PACKAGE_FILES) binarypackage_temp_$(OSALIAS)/*
+	tar cfJ miniargv-$(shell cat version)-$(OSALIAS).tar.xz --transform="s?^binarypackage_temp_$(OSALIAS)/??" $(COMMON_PACKAGE_FILES) binarypackage_temp_$(OSALIAS)/*
 else
 	$(MAKE) PREFIX=binarypackage_temp_$(OSALIAS) install DOXYGEN=
 	cp -f $(COMMON_PACKAGE_FILES) binarypackage_temp_$(OSALIAS)
-	rm -f ci-test-$(shell cat version)-$(OSALIAS).zip
-	cd binarypackage_temp_$(OSALIAS) && zip -r9 ../ci-test-$(shell cat version)-$(OSALIAS).zip $(COMMON_PACKAGE_FILES) * && cd ..
+	rm -f miniargv-$(shell cat version)-$(OSALIAS).zip
+	cd binarypackage_temp_$(OSALIAS) && zip -r9 ../miniargv-$(shell cat version)-$(OSALIAS).zip $(COMMON_PACKAGE_FILES) * && cd ..
 endif
 	rm -rf binarypackage_temp_$(OSALIAS)
 
 .PHONY: clean
 clean:
-	$(RM) lib/*.o src/*.o *$(LIBEXT) *$(SOEXT) $(TESTS_BIN) version ci-test-*.tar.xz doc/doxygen_sqlite3.db
+	$(RM) lib/*.o src/*.o *$(LIBEXT) *$(SOEXT) $(TESTS_BIN) version miniargv-*.tar.xz doc/doxygen_sqlite3.db
 ifeq ($(OS),Windows_NT)
 	$(RM) *.def
 endif
