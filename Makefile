@@ -100,7 +100,7 @@ tests: $(TESTS_BIN)
 .PHONY: doc
 doc:
 ifdef DOXYGEN
-	$(DOXYGEN) doc/Doxyfile
+	$(DOXYGEN) -q doc/Doxyfile
 endif
 
 install: all doc

@@ -36,7 +36,7 @@ extern "C" {
 typedef struct miniargv_definition_struct miniargv_definition;
 
 /*! \brief callback function called by miniargv_process for each argument encountered
- * \param  argdef                command line argument definition, or NULL for standalone value argument
+ * \param  argdef                definition of command line argument, or NULL for standalone value argument
  * \param  value                 value if specified, otherwise NULL (always specified for standalone value arguments or if \a argdef->argparam is not NULL)
  * \param  callbackdata          user data as passed to \a miniargv_process()
  * \return 0 to continue processing or non-zero to abort
@@ -47,6 +47,7 @@ typedef struct miniargv_definition_struct miniargv_definition;
 typedef int (*miniargv_handler_fn)(const miniargv_definition* argdef, const char* value, void* callbackdata);
 
 /*! \brief structure for command line argument definition
+ *
  * This structure contains the specification for a specific command line argument.
  *
  * The type \a miniargv_definition refers to this structure.
@@ -57,6 +58,7 @@ typedef int (*miniargv_handler_fn)(const miniargv_definition* argdef, const char
  *
  * An entry with both \a shortarg and \a longarg set to NULL refers to standalone value arguments.
  * Standalone value arguments are arguments not starting with either "-" or "--" (except for "-" all by itself which is als considered a standalone value argument).
+ *
  * \sa     miniargv_definition
  * \sa     miniargv_process()
  * \sa     miniargv_help()
@@ -74,7 +76,7 @@ struct miniargv_definition_struct {
 /*! \brief process command line arguments and call the appropriate callback function for each one (except the first one which is the application name)
  * \param  argc          number of arguments in \a argv
  * \param  argv          array of arguments (first one is the application itself)
- * \param  argdef        definitions
+ * \param  argdef        definitions of possible command line arguments
  * \param  badfn         callback function for bad arguments
  * \param  callbackdata  user data passed to callback functions
  * \return zero on success or index of argument that caused processing to abort
@@ -82,8 +84,24 @@ struct miniargv_definition_struct {
  */
 DLL_EXPORT_MINIARGV int miniargv_process (int argc, char *argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata);
 
+/*! \brief get application name and length
+ *
+ * Gets the name of the current application fro the first argv entry (argv[0]) as passed to main().
+ *
+ * Though the result is a null-terminated string, only the number of characters pointed to by \a length should be used (e.g. to avoid the ".exe" extension on Windows).
+ *
+ * NULL is returned on error or \a argv0 is NULL or points to an empty string.
+ *
+ * \param  argv0                 argv[0] as passed to main()
+ * \param  length                pointer that will receive the length of the application name (can be NULL)
+ * \return application name, or NULL on error
+ */
 DLL_EXPORT_MINIARGV const char* miniargv_getprogramname (const char* argv0, int* length);
 
+/*! \brief lists possible command line arguments on one line
+ * \param  argdef                definitions of possible command line arguments
+ * \param  shortonly             pointer that will receive the length of the application name (can be NULL)
+ */
 DLL_EXPORT_MINIARGV void miniargv_list_args (const miniargv_definition argdef[], int shortonly);
 
 /*! \brief display help text explaining command line arguments
@@ -139,7 +157,7 @@ DLL_EXPORT_MINIARGV const char* miniargv_get_version_string ();
 /*! \brief minor version number \hideinitializer */
 #define MINIARGV_VERSION_MINOR 1
 /*! \brief micro version number \hideinitializer */
-#define MINIARGV_VERSION_MICRO 1
+#define MINIARGV_VERSION_MICRO 2
 /** @} */
 
 /*! \brief packed version number (bits 24-31: major version, bits 16-23: minor version, bits 8-15: micro version)
