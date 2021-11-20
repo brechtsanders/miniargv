@@ -1,3 +1,4 @@
+PROJECT_NAME           = miniargv
 OUTPUT_DIRECTORY       = doc
 INPUT                  =
 EXTRACT_ALL            = NO
