@@ -8,3 +8,4 @@ Callback functions are used by the parser to allow the application to process th
 
 ## GitHub Actions CI
 [![GitHub-CI for miniargv](https://github.com/brechtsanders/miniargv/workflows/GitHub-CI%20for%20miniargv/badge.svg)](https://github.com/brechtsanders/miniargv/actions)
+[![Doxygen Action for miniargv](https://github.com/brechtsanders/miniargv/actions/workflows/miniargv-doxygen.yml/badge.svg)](https://github.com/brechtsanders/miniargv/actions/workflows/miniargv-doxygen.yml)
