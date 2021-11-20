@@ -57,6 +57,7 @@ const miniargv_definition argdef[] = {
   {'b', NULL, "VAL", process_arg_general_with_value, NULL, "general parameter with value (short)"},
   {0,   "general-value", "VAL", process_arg_general_with_value, NULL, "general parameter with value (long)"},
   {'l', "long", NULL, process_arg_verbose, NULL, "This is a very long description line in the command line help, so it should be wrapped across multiple lines. If all goes well this should take up 3 lines in the command line help. ===================================================================================================="},
+  {0, NULL, "param", process_arg, NULL, "standalone parameter"},
   {0, NULL, NULL, NULL, NULL, NULL}
 };
 
@@ -68,11 +69,16 @@ int main (int argc, char *argv[])
     .verbose = 0,
     .number = 0,
   };
-  if (miniargv_process(argc, argv, argdef, process_arg, process_arg_error, &params) != 0)
+  if (miniargv_process(argc, argv, argdef, process_arg_error, &params) != 0)
     return 1;
   printf("verbose = %i\n", params.verbose);
   printf("number = %i\n", params.number);
+  //show help
+  int prognamelen;
+  const char* progname = miniargv_getprogramname(argv[0], &prognamelen);
+  printf("%.*s v%s\nUsage: %.*s ", prognamelen, progname, miniargv_get_version_string(), prognamelen, progname);
+  miniargv_list_args(argdef, 1);
+  printf("\n");
   miniargv_help(argdef, 24, 79);
-  miniargv_help(argdef, 0, 0);
   return 0;
 }

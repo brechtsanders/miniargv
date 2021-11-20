@@ -64,10 +64,10 @@ else
 OS_LINK_FLAGS = -shared -Wl,-soname,$@ $(STRIPFLAG)
 endif
 
-TESTS_BIN = src/miniargv-example-global$(BINEXT) src/miniargv-example-local$(BINEXT) src/miniargv-test$(BINEXT)
+TESTS_BIN = examples/miniargv-example-global$(BINEXT) examples/miniargv-example-local$(BINEXT) examples/miniargv-test$(BINEXT)
 
 COMMON_PACKAGE_FILES = README.md LICENSE Changelog.txt
-SOURCE_PACKAGE_FILES = $(COMMON_PACKAGE_FILES) Makefile doc/Doxyfile include/*.h lib/*.c src/*.c build/*.workspace build/*.cbp build/*.depend
+SOURCE_PACKAGE_FILES = $(COMMON_PACKAGE_FILES) Makefile doc/Doxyfile include/*.h lib/*.c examples/*.c build/*.workspace build/*.cbp build/*.depend
 
 default: all
 
@@ -92,7 +92,7 @@ $(LIBPREFIX)miniargv$(LIBEXT): $(LIBMINIARGV_OBJ:%.o=%.static.o)
 $(SOLIBPREFIX)miniargv$(SOEXT): $(LIBMINIARGV_OBJ:%.o=%.shared.o)
 	$(CC) -o $@ $(OS_LINK_FLAGS) $^ $(LIBMINIARGV_SHARED_LDFLAGS) $(LIBMINIARGV_LDFLAGS) $(LDFLAGS) $(LIBS)
 
-src/%$(BINEXT): src/%.static.o $(LIBPREFIX)miniargv$(LIBEXT)
+examples/%$(BINEXT): examples/%.static.o $(LIBPREFIX)miniargv$(LIBEXT)
 	$(CC) $(STRIPFLAG) -o $@ $^ $(LIBMINIARGV_LDFLAGS) $(LDFLAGS)
 
 tests: $(TESTS_BIN)
@@ -141,7 +141,7 @@ endif
 
 .PHONY: clean
 clean:
-	$(RM) lib/*.o src/*.o *$(LIBEXT) *$(SOEXT) $(TESTS_BIN) version miniargv-*.tar.xz doc/doxygen_sqlite3.db
+	$(RM) lib/*.o examples/*.o *$(LIBEXT) *$(SOEXT) $(TESTS_BIN) version miniargv-*.tar.xz doc/doxygen_sqlite3.db
 ifeq ($(OS),Windows_NT)
 	$(RM) *.def
 endif

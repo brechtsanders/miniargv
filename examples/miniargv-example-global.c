@@ -34,7 +34,7 @@ const miniargv_definition argdef[] = {
 int main (int argc, char *argv[])
 {
   //parse command line arguments
-  if (miniargv_process(argc, argv, argdef, NULL, NULL, NULL) != 0)
+  if (miniargv_process(argc, argv, argdef, NULL, NULL) != 0)
     return 1;
   //show help if requested or if no command line arguments were given
   if (showhelp || argc <= 1) {

@@ -90,7 +90,7 @@
 		<Linker>
 			<Add library="miniargv" />
 		</Linker>
-		<Unit filename="../src/miniargv-example-global.c">
+		<Unit filename="../examples/miniargv-example-global.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>

@@ -7,27 +7,14 @@
 #define strcasecmp _stricmp
 #endif
 
-DLL_EXPORT_MINIARGV void miniargv_get_version (int* pmajor, int* pminor, int* pmicro)
-{
-  if (pmajor)
-    *pmajor = MINIARGV_VERSION_MAJOR;
-  if (pminor)
-    *pminor = MINIARGV_VERSION_MINOR;
-  if (pmicro)
-    *pmicro = MINIARGV_VERSION_MICRO;
-}
-
-DLL_EXPORT_MINIARGV const char* miniargv_get_version_string ()
-{
-  return MINIARGV_VERSION_STRING;
-}
-
-DLL_EXPORT_MINIARGV int miniargv_process (int argc, char *argv[], const miniargv_definition argdef[], miniargv_handler_fn defaultfn, miniargv_handler_fn badfn, void* callbackdata)
+DLL_EXPORT_MINIARGV int miniargv_process (int argc, char *argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
 {
   int i;
   size_t l;
   const miniargv_definition* current_argdef;
   int success;
+  int standalonevaluefnset = 0;
+  miniargv_handler_fn standalonevaluefn = NULL;
   for (i = 1; i < argc; i++) {
     success = 0;
     if (argv[i][0] == '-' && argv[i][1]) {
@@ -80,10 +67,23 @@ DLL_EXPORT_MINIARGV int miniargv_process (int argc, char *argv[], const miniargv
         }
       }
     } else {
-      if (defaultfn && (defaultfn)(NULL, argv[i], callbackdata) == 0)
+      //standalone value argument
+      if (!standalonevaluefnset) {
+        current_argdef = argdef;
+        while (!success && current_argdef->callbackfn) {
+          if (!current_argdef->shortarg && !current_argdef->longarg) {
+            standalonevaluefn = current_argdef->callbackfn;
+            break;
+          }
+          current_argdef++;
+        }
+        standalonevaluefnset = 1;
+      }
+      if (standalonevaluefn && (standalonevaluefn)(NULL, argv[i], callbackdata) == 0)
         success++;
     }
     if (!success && badfn) {
+      //bad argument
       if (badfn && (badfn)(NULL, argv[i], callbackdata) == 0)
         success++;
       else
@@ -126,6 +126,34 @@ DLL_EXPORT_MINIARGV const char* miniargv_getprogramname (const char* argv0, int*
     *length = len;
   }
   return argv0 + pos;
+}
+
+DLL_EXPORT_MINIARGV void miniargv_list_args (const miniargv_definition argdef[], int shortonly)
+{
+  const miniargv_definition* current_argdef = argdef;
+  while (current_argdef->callbackfn) {
+    if (argdef != current_argdef)
+      printf(" ");
+    if (current_argdef->shortarg  || current_argdef->longarg) {
+      printf("[");
+      if (current_argdef->shortarg) {
+        printf("-%c", current_argdef->shortarg);
+        if (current_argdef->argparam)
+          printf(" %s", current_argdef->argparam);
+      }
+      if (current_argdef->longarg && !(shortonly && current_argdef->shortarg)) {
+        if (current_argdef->shortarg)
+          printf("|");
+        printf("--%s", current_argdef->longarg);
+        if (current_argdef->argparam)
+          printf("=%s", current_argdef->argparam);
+      }
+      printf("]");
+    } else {
+      printf("%s", (current_argdef->argparam ? current_argdef->argparam : "param"));
+    }
+    current_argdef++;
+  }
 }
 
 DLL_EXPORT_MINIARGV void miniargv_help (const miniargv_definition argdef[], int descindent, int wrapwidth)
@@ -191,5 +219,22 @@ DLL_EXPORT_MINIARGV void miniargv_help (const miniargv_definition argdef[], int 
     printf("\n");
     current_argdef++;
   }
+}
+
+
+
+DLL_EXPORT_MINIARGV void miniargv_get_version (int* pmajor, int* pminor, int* pmicro)
+{
+  if (pmajor)
+    *pmajor = MINIARGV_VERSION_MAJOR;
+  if (pminor)
+    *pminor = MINIARGV_VERSION_MINOR;
+  if (pmicro)
+    *pmicro = MINIARGV_VERSION_MICRO;
+}
+
+DLL_EXPORT_MINIARGV const char* miniargv_get_version_string ()
+{
+  return MINIARGV_VERSION_STRING;
 }
 

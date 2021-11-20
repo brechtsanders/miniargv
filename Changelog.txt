@@ -4,6 +4,8 @@
 
   * renamed initial example to: miniargv-example-global.c
   * added example without global definitions: miniargv-example-local.c
+  * moved standalone value callback from argument to structure entry
+  * moved version functions and macros to the bottom of miniargv.h
 
 0.1.0
 

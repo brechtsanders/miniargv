@@ -31,22 +31,24 @@ int main (int argc, char *argv[])
 {
   //definition of command line arguments
   const miniargv_definition argdef[] = {
-    {'v', "verbose", NULL, process_arg_increment, (int[1]){INT_PARAM_VERBOSE}, "increase verbose mode\n(may be specified multiple times)"},
-    {'n', "number", "N", process_arg_number, (int[1]){INT_PARAM_NUMBER}, "set number to N"},
-    {'h', "help", NULL, process_arg_increment, (int[1]){INT_PARAM_SHOWHELP}, "show command line help"},
+    {'v', "verbose", NULL, process_arg_increment, (int[]){INT_PARAM_VERBOSE}, "increase verbose mode\n(may be specified multiple times)"},
+    {'n', "number", "N", process_arg_number, (int[]){INT_PARAM_NUMBER}, "set number to N"},
+    {'h', "help", NULL, process_arg_increment, (int[]){INT_PARAM_SHOWHELP}, "show command line help"},
     {0, NULL, NULL, NULL, NULL, NULL}
   };
   //local values to be set according to command line arguments
   int params[INT_PARAMS];
   memset(params, 0, sizeof(params));
   //parse command line arguments
-  if (miniargv_process(argc, argv, argdef, NULL, NULL, &params) != 0)
+  if (miniargv_process(argc, argv, argdef, NULL, &params) != 0)
     return 1;
   //show help if requested or if no command line arguments were given
   if (params[INT_PARAM_SHOWHELP] || argc <= 1) {
     int prognamelen;
     const char* progname = miniargv_getprogramname(argv[0], &prognamelen);
-    printf("%.*s v%s\nUsage:\n", prognamelen, progname, miniargv_get_version_string());
+    printf("%.*s v%s\nUsage: %.*s ", prognamelen, progname, miniargv_get_version_string(), prognamelen, progname);
+    miniargv_list_args(argdef, 1);
+    printf("\n");
     miniargv_help(argdef, 0, 0);
     return 0;
   }
