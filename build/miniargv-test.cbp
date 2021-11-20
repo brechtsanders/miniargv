@@ -61,7 +61,7 @@
 				<Option object_output="obj/Debug64/" />
 				<Option type="1" />
 				<Option compiler="MINGW64" />
-				<Option parameters="-v --verbose test1 test2 - -n1 -n 2 --number=3 --string=" />
+				<Option parameters="-v --verbose test1 test2 -n1 -n 2 --number=3 --string= some data -" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
