@@ -15,3 +15,7 @@ Callback functions are used by the parser to allow the application to process th
 The official repository can be found at: https://github.com/brechtsanders/miniargv
 
 The documentation can be found at: https://brechtsanders.github.io/miniargv/miniargv_8h.html
+
+## License
+
+[MIT](LICENSE)
