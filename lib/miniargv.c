@@ -39,6 +39,7 @@ DLL_EXPORT_MINIARGV int miniargv_process (int argc, char *argv[], const miniargv
                 if ((current_argdef->callbackfn)(current_argdef, argv[++i], callbackdata) == 0)
                   success++;
               }
+              break;
             }
           }
           current_argdef++;
@@ -61,6 +62,7 @@ DLL_EXPORT_MINIARGV int miniargv_process (int argc, char *argv[], const miniargv
                 if ((current_argdef->callbackfn)(current_argdef, argv[i] + 3 + l, callbackdata) == 0)
                   success++;
               }
+              break;
             }
           }
           current_argdef++;
@@ -168,17 +170,21 @@ DLL_EXPORT_MINIARGV void miniargv_help (const miniargv_definition argdef[], int 
   while (current_argdef->callbackfn) {
 
     pos = printf("  ");
-    if (current_argdef->shortarg) {
-      pos += printf("-%c", current_argdef->shortarg);
-      if (current_argdef->argparam)
-        pos += printf(" %s", current_argdef->argparam);
-    }
-    if (current_argdef->longarg) {
-      if (current_argdef->shortarg)
-        pos += printf(", ");
-      pos += printf("--%s", current_argdef->longarg);
-      if (current_argdef->argparam)
-        pos += printf("=%s", current_argdef->argparam);
+    if (!current_argdef->shortarg && !current_argdef->longarg) {
+      pos += printf(" %s", (current_argdef->argparam ? current_argdef->argparam : "param"));
+    } else {
+      if (current_argdef->shortarg) {
+        pos += printf("-%c", current_argdef->shortarg);
+        if (current_argdef->argparam)
+          pos += printf(" %s", current_argdef->argparam);
+      }
+      if (current_argdef->longarg) {
+        if (current_argdef->shortarg)
+          pos += printf(", ");
+        pos += printf("--%s", current_argdef->longarg);
+        if (current_argdef->argparam)
+          pos += printf("=%s", current_argdef->argparam);
+      }
     }
     printf("%*s", (pos < descindent ? descindent - pos : 2), "");
     if (wrapwidth <= 0) {

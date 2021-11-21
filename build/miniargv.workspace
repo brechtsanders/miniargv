@@ -12,5 +12,6 @@
 		<Project filename="miniargv-example-local.cbp">
 			<Depends filename="miniargv_shared.cbp" />
 		</Project>
+		<Project filename="miniargv-example-userdata.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

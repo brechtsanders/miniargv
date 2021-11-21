@@ -43,7 +43,7 @@ int process_arg (const miniargv_definition* argdef, const char* value, void* cal
 
 int process_arg_error (const miniargv_definition* argdef, const char* value, void* callbackdata)
 {
-  printf("Encountered bad argument, value=%s\n", value);
+  printf("Encountered standalone value argument, value=%s\n", value);
   return 1;
 }
 
@@ -57,7 +57,7 @@ const miniargv_definition argdef[] = {
   {'b', NULL, "VAL", process_arg_general_with_value, NULL, "general parameter with value (short)"},
   {0,   "general-value", "VAL", process_arg_general_with_value, NULL, "general parameter with value (long)"},
   {'l', "long", NULL, process_arg_verbose, NULL, "This is a very long description line in the command line help, so it should be wrapped across multiple lines. If all goes well this should take up 3 lines in the command line help. ===================================================================================================="},
-  {0, NULL, "param", process_arg, NULL, "standalone parameter"},
+  {0, NULL, "param", process_arg, NULL, "standalone value argument"},
   {0, NULL, NULL, NULL, NULL, NULL}
 };
 

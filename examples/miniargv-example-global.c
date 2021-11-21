@@ -1,3 +1,12 @@
+/**
+ * @file miniargv-example-global.c
+ * @brief miniargv example using global variables
+ * @author Brecht Sanders
+ *
+ * This an example of how to use miniargv to set variables with global scope.
+ * Note that using global variables is bad practice, so this is not the recommended way.
+ */
+
 #include <miniargv.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -25,9 +34,9 @@ int process_arg_number (const miniargv_definition* argdef, const char* value, vo
 
 //definition of command line arguments
 const miniargv_definition argdef[] = {
+  {'h', "help", NULL, process_arg_increment, &showhelp, "show command line help"},
   {'v', "verbose", NULL, process_arg_increment, &verbose, "increase verbose mode\n(may be specified multiple times)"},
   {'n', "number", "N", process_arg_number, &number, "set number to N"},
-  {'h', "help", NULL, process_arg_increment, &showhelp, "show command line help"},
   {0, NULL, NULL, NULL, NULL, NULL}
 };
 
