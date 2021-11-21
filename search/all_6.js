@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['userdata_0',['userdata',['../structminiargv__definition__struct.html#a3e509203778fc3bde0089978f0dd2907',1,'miniargv_definition_struct']]]
+  ['shortarg_0',['shortarg',['../structminiargv__definition__struct.html#a4ccc501ccb15f837eef00010bcd851ca',1,'miniargv_definition_struct']]]
 ];
