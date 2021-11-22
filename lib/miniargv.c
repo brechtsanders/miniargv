@@ -44,9 +44,10 @@ int miniargv_process_partial (unsigned int flags, int argc, char *argv[], const 
                   success++;
               } else if (i + 1 < argc) {
                 //with value and space
+                i++;
                 if ((flags & MINIARG_PROCESS_FLAG_FLAGS) == 0)
                   success++;
-                else if ((current_argdef->callbackfn)(current_argdef, argv[++i], callbackdata) == 0)
+                else if ((current_argdef->callbackfn)(current_argdef, argv[i], callbackdata) == 0)
                   success++;
               }
               break;
