@@ -7,14 +7,18 @@
 #define strcasecmp _stricmp
 #endif
 
-DLL_EXPORT_MINIARGV int miniargv_process (int argc, char *argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
+#define MINIARG_PROCESS_FLAG_FLAGS  0x01
+#define MINIARG_PROCESS_FLAG_VALUES 0x02
+#define MINIARG_PROCESS_FLAG_BOTH   0x03
+
+int miniargv_process_partial (unsigned int flags, int argc, char *argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
 {
   int i;
   size_t l;
   const miniargv_definition* current_argdef;
   int success;
-  int standalonevaluefnset = 0;
-  miniargv_handler_fn standalonevaluefn = NULL;
+  int standalonevaluedefset = 0;
+  const miniargv_definition* standalonevaluedef = NULL;
   for (i = 1; i < argc; i++) {
     success = 0;
     if (argv[i][0] == '-' && argv[i][1]) {
@@ -27,16 +31,22 @@ DLL_EXPORT_MINIARGV int miniargv_process (int argc, char *argv[], const miniargv
               if (!current_argdef->argparam) {
                 //without value
                 if (argv[i][2] == 0) {
-                  if ((current_argdef->callbackfn)(current_argdef, NULL, callbackdata) == 0)
+                  if ((flags & MINIARG_PROCESS_FLAG_FLAGS) == 0)
+                    success++;
+                  else if ((current_argdef->callbackfn)(current_argdef, NULL, callbackdata) == 0)
                     success++;
                 }
               } else if (argv[i][2] != 0) {
                 //with value and no space
-                if ((current_argdef->callbackfn)(current_argdef, argv[i] + 2, callbackdata) == 0)
+                if ((flags & MINIARG_PROCESS_FLAG_FLAGS) == 0)
+                  success++;
+                else if ((current_argdef->callbackfn)(current_argdef, argv[i] + 2, callbackdata) == 0)
                   success++;
               } else if (i + 1 < argc) {
                 //with value and space
-                if ((current_argdef->callbackfn)(current_argdef, argv[++i], callbackdata) == 0)
+                if ((flags & MINIARG_PROCESS_FLAG_FLAGS) == 0)
+                  success++;
+                else if ((current_argdef->callbackfn)(current_argdef, argv[++i], callbackdata) == 0)
                   success++;
               }
               break;
@@ -54,12 +64,16 @@ DLL_EXPORT_MINIARGV int miniargv_process (int argc, char *argv[], const miniargv
               if (!current_argdef->argparam) {
                 //without value
                 if (argv[i][2 + l] == 0) {
-                  if ((current_argdef->callbackfn)(current_argdef, NULL, callbackdata) == 0)
+                  if ((flags & MINIARG_PROCESS_FLAG_FLAGS) == 0)
+                    success++;
+                  else if ((current_argdef->callbackfn)(current_argdef, NULL, callbackdata) == 0)
                     success++;
                 }
               } else if (argv[i][2 + l] == '=') {
                 //with value
-                if ((current_argdef->callbackfn)(current_argdef, argv[i] + 3 + l, callbackdata) == 0)
+                if ((flags & MINIARG_PROCESS_FLAG_FLAGS) == 0)
+                  success++;
+                else if ((current_argdef->callbackfn)(current_argdef, argv[i] + 3 + l, callbackdata) == 0)
                   success++;
               }
               break;
@@ -70,19 +84,23 @@ DLL_EXPORT_MINIARGV int miniargv_process (int argc, char *argv[], const miniargv
       }
     } else {
       //standalone value argument
-      if (!standalonevaluefnset) {
+      if (!standalonevaluedefset) {
         current_argdef = argdef;
         while (!success && current_argdef->callbackfn) {
           if (!current_argdef->shortarg && !current_argdef->longarg) {
-            standalonevaluefn = current_argdef->callbackfn;
+            standalonevaluedef = current_argdef;
             break;
           }
           current_argdef++;
         }
-        standalonevaluefnset = 1;
+        standalonevaluedefset = 1;
       }
-      if (standalonevaluefn && (standalonevaluefn)(NULL, argv[i], callbackdata) == 0)
-        success++;
+      if (standalonevaluedef && standalonevaluedef->callbackfn) {
+        if ((flags & MINIARG_PROCESS_FLAG_VALUES) == 0)
+          success++;
+        else if ((standalonevaluedef->callbackfn)(standalonevaluedef, argv[i], callbackdata) == 0)
+          success++;
+      }
     }
     if (!success && badfn) {
       //bad argument
@@ -97,6 +115,21 @@ DLL_EXPORT_MINIARGV int miniargv_process (int argc, char *argv[], const miniargv
     }
   }
   return 0;
+}
+
+DLL_EXPORT_MINIARGV int miniargv_process (int argc, char *argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
+{
+  return miniargv_process_partial(MINIARG_PROCESS_FLAG_BOTH, argc, argv, argdef, badfn, callbackdata);
+}
+
+DLL_EXPORT_MINIARGV int miniargv_process_flags_only (int argc, char *argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
+{
+  return miniargv_process_partial(MINIARG_PROCESS_FLAG_FLAGS, argc, argv, argdef, badfn, callbackdata);
+}
+
+DLL_EXPORT_MINIARGV int miniargv_process_skip_flags (int argc, char *argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
+{
+  return miniargv_process_partial(MINIARG_PROCESS_FLAG_VALUES, argc, argv, argdef, badfn, callbackdata);
 }
 
 DLL_EXPORT_MINIARGV const char* miniargv_getprogramname (const char* argv0, int* length)

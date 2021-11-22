@@ -27,6 +27,13 @@ int process_arg_number (const miniargv_definition* argdef, const char* value, vo
   return 0;
 }
 
+//callback function for standalone parameter
+int process_arg_param (const miniargv_definition* argdef, const char* value, void* callbackdata)
+{
+  printf("Parameter: %s\n", value);
+  return 0;
+}
+
 int main (int argc, char *argv[])
 {
   int showhelp = 0;
@@ -37,6 +44,7 @@ int main (int argc, char *argv[])
     {'h', "help", NULL, process_arg_increment, &showhelp, "show command line help"},
     {'v', "verbose", NULL, process_arg_increment, &verbose, "increase verbose mode\n(may be specified multiple times)"},
     {'n', "number", "N", process_arg_number, &number, "set number to N"},
+    {0, NULL, "PARAM", process_arg_param, NULL, "parameter"},
     {0, NULL, NULL, NULL, NULL, NULL}
   };
   //parse command line arguments

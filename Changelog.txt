@@ -1,3 +1,10 @@
+0.1.3
+
+2021-11-22  Brecht Sanders  https://github.com/brechtsanders/
+
+  * fix issue passing argdef to standalone value parameter callback
+  * added miniargv_process_flags_only() and miniargv_process_skip_flags()
+
 0.1.2
 
 2021-11-21  Brecht Sanders  https://github.com/brechtsanders/
