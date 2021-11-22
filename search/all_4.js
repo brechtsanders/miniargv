@@ -13,10 +13,12 @@ var searchData=
   ['miniargv_5flist_5fargs_10',['miniargv_list_args',['../miniargv_8h.html#a7564fbd9ae14d4da4ffd5533910c3538',1,'miniargv.h']]],
   ['miniargv_5fname_11',['MINIARGV_NAME',['../miniargv_8h.html#a182c25b0186bf7db3821fc2635be4552',1,'miniargv.h']]],
   ['miniargv_5fprocess_12',['miniargv_process',['../miniargv_8h.html#a0b278aa656fa7e063112df212361d596',1,'miniargv.h']]],
-  ['miniargv_5fversion_13',['MINIARGV_VERSION',['../miniargv_8h.html#a70217c3f2c2b036daa41942882a12c42',1,'miniargv.h']]],
-  ['miniargv_5fversion_5f_14',['MINIARGV_VERSION_',['../group__MINIARGV__VERSION__.html',1,'']]],
-  ['miniargv_5fversion_5fmajor_15',['MINIARGV_VERSION_MAJOR',['../group__MINIARGV__VERSION__.html#ga5386cffd5ee1d15699492a5d5cdde7c7',1,'miniargv.h']]],
-  ['miniargv_5fversion_5fmicro_16',['MINIARGV_VERSION_MICRO',['../group__MINIARGV__VERSION__.html#gad92a766b8e44d2a15300de29e61f78f2',1,'miniargv.h']]],
-  ['miniargv_5fversion_5fminor_17',['MINIARGV_VERSION_MINOR',['../group__MINIARGV__VERSION__.html#gada8f824ed94b33110bb4f4ddef3ee607',1,'miniargv.h']]],
-  ['miniargv_5fversion_5fstring_18',['MINIARGV_VERSION_STRING',['../miniargv_8h.html#ab2da24aecd1eb5de3d102fd0322112e3',1,'miniargv.h']]]
+  ['miniargv_5fprocess_5fflags_5fonly_13',['miniargv_process_flags_only',['../miniargv_8h.html#a0499007ce0f358d943115f2670862ba1',1,'miniargv.h']]],
+  ['miniargv_5fprocess_5fskip_5fflags_14',['miniargv_process_skip_flags',['../miniargv_8h.html#a71197121795928d55f3855632eecc070',1,'miniargv.h']]],
+  ['miniargv_5fversion_15',['MINIARGV_VERSION',['../miniargv_8h.html#a70217c3f2c2b036daa41942882a12c42',1,'miniargv.h']]],
+  ['miniargv_5fversion_5f_16',['MINIARGV_VERSION_',['../group__MINIARGV__VERSION__.html',1,'']]],
+  ['miniargv_5fversion_5fmajor_17',['MINIARGV_VERSION_MAJOR',['../group__MINIARGV__VERSION__.html#ga5386cffd5ee1d15699492a5d5cdde7c7',1,'miniargv.h']]],
+  ['miniargv_5fversion_5fmicro_18',['MINIARGV_VERSION_MICRO',['../group__MINIARGV__VERSION__.html#gad92a766b8e44d2a15300de29e61f78f2',1,'miniargv.h']]],
+  ['miniargv_5fversion_5fminor_19',['MINIARGV_VERSION_MINOR',['../group__MINIARGV__VERSION__.html#gada8f824ed94b33110bb4f4ddef3ee607',1,'miniargv.h']]],
+  ['miniargv_5fversion_5fstring_20',['MINIARGV_VERSION_STRING',['../miniargv_8h.html#ab2da24aecd1eb5de3d102fd0322112e3',1,'miniargv.h']]]
 ];
