@@ -1,9 +1,3 @@
-0.1.5
-
-2021-11-26  Brecht Sanders  https://github.com/brechtsanders/
-
-  * fix case insensitive match in portcolcon_write_highlight()
-
 0.1.4
 
 2021-11-22  Brecht Sanders  https://github.com/brechtsanders/
