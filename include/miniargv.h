@@ -77,17 +77,6 @@ struct miniargv_definition_struct {
   const char* help;                 /**< description of what this command line argument is for, used by \a miniargv_help() */
 };
 
-/*! \brief process command environment variables and call the appropriate callback function for each match
- * \param  env           list environment variables terminated with NULL (as returned by \a environ)
- * \param  envdef        definitions of possible environment variables (\a shortarg is ignored)
- * \param  callbackdata  user data passed to callback functions
- * \return zero on success or index of argument that caused processing to abort
- * \sa     miniargv_process()
- * \sa     miniargv_process_flags_only()
- * \sa     miniargv_process_skip_flags()
- */
-int miniargv_process_environment (const char* env[], const miniargv_definition envdef[], void* callbackdata);
-
 /*! \brief process command line arguments and call the appropriate callback function for each one (except the first one which is the application name)
  * \param  argc          number of arguments in \a argv
  * \param  argv          array of arguments (first one is the application itself)
@@ -126,6 +115,17 @@ DLL_EXPORT_MINIARGV int miniargv_process_flags_only (int argc, char* argv[], con
  * \sa     miniargv_process_environment()
  */
 DLL_EXPORT_MINIARGV int miniargv_process_skip_flags (int argc, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata);
+
+/*! \brief process command environment variables and call the appropriate callback function for each match
+ * \param  env           list environment variables terminated with NULL
+ * \param  envdef        definitions of possible environment variables (\a shortarg is ignored)
+ * \param  callbackdata  user data passed to callback functions
+ * \return zero on success or index of argument that caused processing to abort
+ * \sa     miniargv_process()
+ * \sa     miniargv_process_flags_only()
+ * \sa     miniargv_process_skip_flags()
+ */
+int miniargv_process_environment (const char* env[], const miniargv_definition envdef[], void* callbackdata);
 
 /*! \brief get application name and length
  *

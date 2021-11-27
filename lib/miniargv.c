@@ -11,31 +11,6 @@
 #define MINIARG_PROCESS_FLAG_VALUES 0x02
 #define MINIARG_PROCESS_FLAG_BOTH   0x03
 
-int miniargv_process_environment (const char* env[], const miniargv_definition envdef[], void* callbackdata)
-{
-  const char* s;
-  const char** current_env;
-  const miniargv_definition* current_envdef = envdef;
-  int success = 0;
-  while (!success && current_envdef->callbackfn) {
-    if (current_envdef->longarg) {
-      current_env = env;
-      while (*current_env) {
-        if ((s = strchr(*current_env, '=')) != NULL) {
-          if (strncmp(*current_env, current_envdef->longarg, s - *current_env) == 0) {
-            if ((current_envdef->callbackfn)(current_envdef, s + 1, callbackdata) == 0)
-              success++;
-          }
-        }
-        current_env++;
-      }
-    }
-    current_envdef++;
-  }
-  return 0;
-}
-
-
 int miniargv_process_partial (unsigned int flags, int argc, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
 {
   int i;
@@ -156,6 +131,30 @@ DLL_EXPORT_MINIARGV int miniargv_process_flags_only (int argc, char* argv[], con
 DLL_EXPORT_MINIARGV int miniargv_process_skip_flags (int argc, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
 {
   return miniargv_process_partial(MINIARG_PROCESS_FLAG_VALUES, argc, argv, argdef, badfn, callbackdata);
+}
+
+int miniargv_process_environment (const char* env[], const miniargv_definition envdef[], void* callbackdata)
+{
+  const char* s;
+  const char** current_env;
+  const miniargv_definition* current_envdef = envdef;
+  int success = 0;
+  while (!success && current_envdef->callbackfn) {
+    if (current_envdef->longarg) {
+      current_env = env;
+      while (*current_env) {
+        if ((s = strchr(*current_env, '=')) != NULL) {
+          if (strncmp(*current_env, current_envdef->longarg, s - *current_env) == 0) {
+            if ((current_envdef->callbackfn)(current_envdef, s + 1, callbackdata) == 0)
+              success++;
+          }
+        }
+        current_env++;
+      }
+    }
+    current_envdef++;
+  }
+  return 0;
 }
 
 DLL_EXPORT_MINIARGV const char* miniargv_getprogramname (const char* argv0, int* length)
