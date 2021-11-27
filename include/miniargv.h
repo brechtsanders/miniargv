@@ -77,6 +77,17 @@ struct miniargv_definition_struct {
   const char* help;                 /**< description of what this command line argument is for, used by \a miniargv_help() */
 };
 
+/*! \brief process command environment variables and call the appropriate callback function for each match
+ * \param  env           list environment variables terminated with NULL (as returned by \a environ)
+ * \param  envdef        definitions of possible environment variables (\a shortarg is ignored)
+ * \param  callbackdata  user data passed to callback functions
+ * \return zero on success or index of argument that caused processing to abort
+ * \sa     miniargv_process()
+ * \sa     miniargv_process_flags_only()
+ * \sa     miniargv_process_skip_flags()
+ */
+int miniargv_process_environment (const char* env[], const miniargv_definition envdef[], void* callbackdata);
+
 /*! \brief process command line arguments and call the appropriate callback function for each one (except the first one which is the application name)
  * \param  argc          number of arguments in \a argv
  * \param  argv          array of arguments (first one is the application itself)
@@ -86,9 +97,9 @@ struct miniargv_definition_struct {
  * \return zero on success or index of argument that caused processing to abort
  * \sa     miniargv_process_flags_only()
  * \sa     miniargv_process_skip_flags()
- * \sa     miniargv_get_version_string()
+ * \sa     miniargv_process_environment()
  */
-DLL_EXPORT_MINIARGV int miniargv_process (int argc, char *argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata);
+DLL_EXPORT_MINIARGV int miniargv_process (int argc, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata);
 
 /*! \brief process only flag command line arguments and call the appropriate callback function for each one (except the first one which is the application name)
  * \param  argc          number of arguments in \a argv
@@ -99,9 +110,9 @@ DLL_EXPORT_MINIARGV int miniargv_process (int argc, char *argv[], const miniargv
  * \return zero on success or index of argument that caused processing to abort
  * \sa     miniargv_process()
  * \sa     miniargv_process_skip_flags()
- * \sa     miniargv_get_version_string()
+ * \sa     miniargv_process_environment()
  */
-DLL_EXPORT_MINIARGV int miniargv_process_flags_only (int argc, char *argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata);
+DLL_EXPORT_MINIARGV int miniargv_process_flags_only (int argc, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata);
 
 /*! \brief process only standalone value command line arguments and call the appropriate callback function for each one (except the first one which is the application name)
  * \param  argc          number of arguments in \a argv
@@ -112,9 +123,9 @@ DLL_EXPORT_MINIARGV int miniargv_process_flags_only (int argc, char *argv[], con
  * \return zero on success or index of argument that caused processing to abort
  * \sa     miniargv_process()
  * \sa     miniargv_process_flags_only()
- * \sa     miniargv_get_version_string()
+ * \sa     miniargv_process_environment()
  */
-DLL_EXPORT_MINIARGV int miniargv_process_skip_flags (int argc, char *argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata);
+DLL_EXPORT_MINIARGV int miniargv_process_skip_flags (int argc, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata);
 
 /*! \brief get application name and length
  *
@@ -140,10 +151,21 @@ DLL_EXPORT_MINIARGV void miniargv_list_args (const miniargv_definition argdef[],
  * \param  argdef                array of command line argument definitions
  * \param  descindent            indent where description starts, defaults to 25 if set to 0
  * \param  wrapwidth             maximum line length, defaults to 79 if set to 0
+ * \sa     miniargv_environment_help()
  * \sa     miniargv_definition
  * \sa     miniargv_definition_struct
  */
 DLL_EXPORT_MINIARGV void miniargv_help (const miniargv_definition argdef[], int descindent, int wrapwidth);
+
+/*! \brief display help text explaining ENVIRONMENT variables
+ * \param  envdef                definitions of possible environment variables (\a shortarg is ignored)
+ * \param  descindent            indent where description starts, defaults to 25 if set to 0
+ * \param  wrapwidth             maximum line length, defaults to 79 if set to 0
+ * \sa     miniargv_help()
+ * \sa     miniargv_definition
+ * \sa     miniargv_definition_struct
+ */
+DLL_EXPORT_MINIARGV void miniargv_environment_help (const miniargv_definition envdef[], int descindent, int wrapwidth);
 
 
 
@@ -189,7 +211,7 @@ DLL_EXPORT_MINIARGV const char* miniargv_get_version_string ();
 /*! \brief minor version number \hideinitializer */
 #define MINIARGV_VERSION_MINOR 1
 /*! \brief micro version number \hideinitializer */
-#define MINIARGV_VERSION_MICRO 4
+#define MINIARGV_VERSION_MICRO 5
 /** @} */
 
 /*! \brief packed version number (bits 24-31: major version, bits 16-23: minor version, bits 8-15: micro version)

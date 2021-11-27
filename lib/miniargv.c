@@ -11,7 +11,32 @@
 #define MINIARG_PROCESS_FLAG_VALUES 0x02
 #define MINIARG_PROCESS_FLAG_BOTH   0x03
 
-int miniargv_process_partial (unsigned int flags, int argc, char *argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
+int miniargv_process_environment (const char* env[], const miniargv_definition envdef[], void* callbackdata)
+{
+  const char* s;
+  const char** current_env;
+  const miniargv_definition* current_envdef = envdef;
+  int success = 0;
+  while (!success && current_envdef->callbackfn) {
+    if (current_envdef->longarg) {
+      current_env = env;
+      while (*current_env) {
+        if ((s = strchr(*current_env, '=')) != NULL) {
+          if (strncmp(*current_env, current_envdef->longarg, s - *current_env) == 0) {
+            if ((current_envdef->callbackfn)(current_envdef, s + 1, callbackdata) == 0)
+              success++;
+          }
+        }
+        current_env++;
+      }
+    }
+    current_envdef++;
+  }
+  return 0;
+}
+
+
+int miniargv_process_partial (unsigned int flags, int argc, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
 {
   int i;
   size_t l;
@@ -118,17 +143,17 @@ int miniargv_process_partial (unsigned int flags, int argc, char *argv[], const 
   return 0;
 }
 
-DLL_EXPORT_MINIARGV int miniargv_process (int argc, char *argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
+DLL_EXPORT_MINIARGV int miniargv_process (int argc, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
 {
   return miniargv_process_partial(MINIARG_PROCESS_FLAG_BOTH, argc, argv, argdef, badfn, callbackdata);
 }
 
-DLL_EXPORT_MINIARGV int miniargv_process_flags_only (int argc, char *argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
+DLL_EXPORT_MINIARGV int miniargv_process_flags_only (int argc, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
 {
   return miniargv_process_partial(MINIARG_PROCESS_FLAG_FLAGS, argc, argv, argdef, badfn, callbackdata);
 }
 
-DLL_EXPORT_MINIARGV int miniargv_process_skip_flags (int argc, char *argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
+DLL_EXPORT_MINIARGV int miniargv_process_skip_flags (int argc, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
 {
   return miniargv_process_partial(MINIARG_PROCESS_FLAG_VALUES, argc, argv, argdef, badfn, callbackdata);
 }
@@ -192,6 +217,42 @@ DLL_EXPORT_MINIARGV void miniargv_list_args (const miniargv_definition argdef[],
   }
 }
 
+void indent_and_wrap_text (const char* text, int currentpos, int descindent, int wrapwidth)
+{
+  const char* p;
+  const char* q;
+  const char* r;
+  p = text;
+  while (p) {
+    q = p;
+    r = p;
+    do {
+      while (*r && !isspace(*r))
+        r++;
+      if (r - p + currentpos > wrapwidth) {
+        if (q == p)
+          q = r;
+        break;
+      }
+      q = r;
+      if (*r == '\n')
+        break;
+      while (*r && isspace(*r))
+        r++;
+    } while (*r);
+    if (!*q) {
+      printf("%s", p);
+      p = NULL;
+    } else {
+      printf("%.*s\n%*s", (int)(q - p), p, descindent, "");
+      currentpos = descindent;
+      p = q;
+      while (isspace(*p))
+        p++;
+    }
+  }
+}
+
 DLL_EXPORT_MINIARGV void miniargv_help (const miniargv_definition argdef[], int descindent, int wrapwidth)
 {
   int pos;
@@ -200,9 +261,7 @@ DLL_EXPORT_MINIARGV void miniargv_help (const miniargv_definition argdef[], int 
     descindent = 25;
   if (!wrapwidth)
     wrapwidth = 79;
-  wrapwidth -= descindent;
   while (current_argdef->callbackfn) {
-
     pos = printf("  ");
     if (!current_argdef->shortarg && !current_argdef->longarg) {
       pos += printf(" %s", (current_argdef->argparam ? current_argdef->argparam : "param"));
@@ -221,47 +280,39 @@ DLL_EXPORT_MINIARGV void miniargv_help (const miniargv_definition argdef[], int 
       }
     }
     printf("%*s", (pos < descindent ? descindent - pos : 2), "");
-    if (wrapwidth <= 0) {
-      printf("%s", current_argdef->help);
-    } else {
-      const char* p;
-      const char* q;
-      const char* r;
-      p = current_argdef->help;
-      while (p) {
-        q = p;
-        r = p;
-        do {
-          while (*r && !isspace(*r))
-            r++;
-          if (r - p > wrapwidth) {
-            if (q == p)
-              q = r;
-            break;
-          }
-          q = r;
-          if (*r == '\n')
-            break;
-          while (*r && isspace(*r))
-            r++;
-        } while (*r);
-        if (!*q) {
-          printf("%s", p);
-          p = NULL;
-        } else {
-          printf("%.*s\n%*s", (int)(q - p), p, descindent, "");
-          p = q;
-          while (isspace(*p))
-            p++;
-        }
-      }
-    }
+    indent_and_wrap_text(current_argdef->help, descindent, descindent, wrapwidth);
     printf("\n");
     current_argdef++;
   }
 }
 
-
+DLL_EXPORT_MINIARGV void miniargv_environment_help (const miniargv_definition envdef[], int descindent, int wrapwidth)
+{
+  int pos;
+  const miniargv_definition* current_envdef = envdef;
+  if (!descindent)
+    descindent = 25;
+  if (!wrapwidth)
+    wrapwidth = 79;
+  while (current_envdef->callbackfn) {
+    pos = printf("  ");
+    if (!current_envdef->shortarg && !current_envdef->longarg) {
+      pos += printf(" %s", (current_envdef->argparam ? current_envdef->argparam : "param"));
+    } else {
+      if (current_envdef->longarg) {
+        if (current_envdef->shortarg)
+          pos += printf(", ");
+        pos += printf("%s", current_envdef->longarg);
+        if (current_envdef->argparam)
+          pos += printf("=%s", current_envdef->argparam);
+      }
+    }
+    printf("%*s", (pos < descindent ? descindent - pos : 2), "");
+    indent_and_wrap_text(current_envdef->help, descindent, descindent, wrapwidth);
+    printf("\n");
+    current_envdef++;
+  }
+}
 
 DLL_EXPORT_MINIARGV void miniargv_get_version (int* pmajor, int* pminor, int* pmicro)
 {

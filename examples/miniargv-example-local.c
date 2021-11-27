@@ -47,6 +47,14 @@ int main (int argc, char *argv[])
     {0, NULL, "PARAM", process_arg_param, NULL, "parameter"},
     {0, NULL, NULL, NULL, NULL, NULL}
   };
+  const miniargv_definition envdef[] = {
+    {0, "NUMBER", "N", process_arg_number, &number, "set number to N"},
+    {0, "N", NULL, process_arg_number, &number, "set number"},
+    {0, NULL, NULL, NULL, NULL, NULL}
+  };
+  //parse environment variables
+  if (miniargv_process_environment((const char**)environ, envdef, NULL) != 0)
+    return 1;
   //parse command line arguments
   if (miniargv_process(argc, argv, argdef, NULL, NULL) != 0)
     return 1;
@@ -58,6 +66,8 @@ int main (int argc, char *argv[])
     miniargv_list_args(argdef, 1);
     printf("\n");
     miniargv_help(argdef, 0, 0);
+    printf("Environment variables:\n");
+    miniargv_environment_help(envdef, 0, 0);
     return 0;
   }
   //show values
