@@ -34,7 +34,8 @@ int process_arg_param (const miniargv_definition* argdef, const char* value, voi
   return 0;
 }
 
-int main (int argc, char *argv[])
+//int main (int argc, char *argv[])
+int main (int argc, char *argv[], char *envp[])
 {
   int showhelp = 0;
   int verbose = 0;
@@ -53,7 +54,8 @@ int main (int argc, char *argv[])
     {0, NULL, NULL, NULL, NULL, NULL}
   };
   //parse environment variables
-  if (miniargv_process_environment((const char**)environ, envdef, NULL) != 0)
+  //if (miniargv_process_environment((const char**)environ, envdef, NULL) != 0)
+  if (miniargv_process_environment((const char**)envp, envdef, NULL) != 0)
     return 1;
   //parse command line arguments
   if (miniargv_process(argc, argv, argdef, NULL, NULL) != 0)
