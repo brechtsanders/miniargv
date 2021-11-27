@@ -125,6 +125,9 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:aefdb626d64c8fe68f85fe14eb3a8b347"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#aefdb626d64c8fe68f85fe14eb3a8b347">miniargv_process_environment</a> (const char *env[], const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> envdef[], void *callbackdata)</td></tr>
+<tr class="memdesc:aefdb626d64c8fe68f85fe14eb3a8b347"><td class="mdescLeft">&#160;</td><td class="mdescRight">process command environment variables and call the appropriate callback function for each match  <a href="miniargv_8h.html#aefdb626d64c8fe68f85fe14eb3a8b347">More...</a><br /></td></tr>
+<tr class="separator:aefdb626d64c8fe68f85fe14eb3a8b347"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b278aa656fa7e063112df212361d596"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a0b278aa656fa7e063112df212361d596">miniargv_process</a> (int argc, char *argv[], const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> argdef[], <a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d">miniargv_handler_fn</a> badfn, void *callbackdata)</td></tr>
 <tr class="memdesc:a0b278aa656fa7e063112df212361d596"><td class="mdescLeft">&#160;</td><td class="mdescRight">process command line arguments and call the appropriate callback function for each one (except the first one which is the application name)  <a href="miniargv_8h.html#a0b278aa656fa7e063112df212361d596">More...</a><br /></td></tr>
 <tr class="separator:a0b278aa656fa7e063112df212361d596"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -143,6 +146,9 @@ Functions</h2></td></tr>
 <tr class="memitem:aeb5991843f4b5270dcc2838683a99c1e"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#aeb5991843f4b5270dcc2838683a99c1e">miniargv_help</a> (const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> argdef[], int descindent, int wrapwidth)</td></tr>
 <tr class="memdesc:aeb5991843f4b5270dcc2838683a99c1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">display help text explaining command line arguments  <a href="miniargv_8h.html#aeb5991843f4b5270dcc2838683a99c1e">More...</a><br /></td></tr>
 <tr class="separator:aeb5991843f4b5270dcc2838683a99c1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74405c5eeb9a0ab91dd14bd1e10eeb65"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a74405c5eeb9a0ab91dd14bd1e10eeb65">miniargv_environment_help</a> (const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> envdef[], int descindent, int wrapwidth)</td></tr>
+<tr class="memdesc:a74405c5eeb9a0ab91dd14bd1e10eeb65"><td class="mdescLeft">&#160;</td><td class="mdescRight">display help text explaining ENVIRONMENT variables  <a href="miniargv_8h.html#a74405c5eeb9a0ab91dd14bd1e10eeb65">More...</a><br /></td></tr>
+<tr class="separator:a74405c5eeb9a0ab91dd14bd1e10eeb65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5101866e681a0bec69a8c2ceb636c7cd"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a5101866e681a0bec69a8c2ceb636c7cd">miniargv_get_version</a> (int *pmajor, int *pminor, int *pmicro)</td></tr>
 <tr class="memdesc:a5101866e681a0bec69a8c2ceb636c7cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">get miniargv library version string  <a href="miniargv_8h.html#a5101866e681a0bec69a8c2ceb636c7cd">More...</a><br /></td></tr>
 <tr class="separator:a5101866e681a0bec69a8c2ceb636c7cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -287,6 +293,56 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="aefdb626d64c8fe68f85fe14eb3a8b347" name="aefdb626d64c8fe68f85fe14eb3a8b347"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefdb626d64c8fe68f85fe14eb3a8b347">&#9670;&nbsp;</a></span>miniargv_process_environment()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int miniargv_process_environment </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>env</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a>&#160;</td>
+          <td class="paramname"><em>envdef</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>callbackdata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>process command environment variables and call the appropriate callback function for each match </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">env</td><td>list environment variables terminated with NULL (as returned by <em>environ</em>) </td></tr>
+    <tr><td class="paramname">envdef</td><td>definitions of possible environment variables (<em>shortarg</em> is ignored) </td></tr>
+    <tr><td class="paramname">callbackdata</td><td>user data passed to callback functions </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>zero on success or index of argument that caused processing to abort </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a0b278aa656fa7e063112df212361d596" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a0499007ce0f358d943115f2670862ba1" title="process only flag command line arguments and call the appropriate callback function for each one (exc...">miniargv_process_flags_only()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a71197121795928d55f3855632eecc070" title="process only standalone value command line arguments and call the appropriate callback function for e...">miniargv_process_skip_flags()</a> </dd></dl>
+
+</div>
+</div>
 <a id="a0b278aa656fa7e063112df212361d596" name="a0b278aa656fa7e063112df212361d596"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0b278aa656fa7e063112df212361d596">&#9670;&nbsp;</a></span>miniargv_process()</h2>
 
@@ -347,7 +403,7 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="miniargv_8h.html#a71197121795928d55f3855632eecc070" title="process only standalone value command line arguments and call the appropriate callback function for e...">miniargv_process_skip_flags()</a> </dd>
 <dd>
-<a class="el" href="miniargv_8h.html#a66d2de4b9157a7b30eab56065bfb4649" title="get miniargv library version string">miniargv_get_version_string()</a> </dd></dl>
+<a class="el" href="miniargv_8h.html#aefdb626d64c8fe68f85fe14eb3a8b347" title="process command environment variables and call the appropriate callback function for each match">miniargv_process_environment()</a> </dd></dl>
 
 </div>
 </div>
@@ -411,7 +467,7 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="miniargv_8h.html#a71197121795928d55f3855632eecc070" title="process only standalone value command line arguments and call the appropriate callback function for e...">miniargv_process_skip_flags()</a> </dd>
 <dd>
-<a class="el" href="miniargv_8h.html#a66d2de4b9157a7b30eab56065bfb4649" title="get miniargv library version string">miniargv_get_version_string()</a> </dd></dl>
+<a class="el" href="miniargv_8h.html#aefdb626d64c8fe68f85fe14eb3a8b347" title="process command environment variables and call the appropriate callback function for each match">miniargv_process_environment()</a> </dd></dl>
 
 </div>
 </div>
@@ -475,7 +531,7 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="miniargv_8h.html#a0499007ce0f358d943115f2670862ba1" title="process only flag command line arguments and call the appropriate callback function for each one (exc...">miniargv_process_flags_only()</a> </dd>
 <dd>
-<a class="el" href="miniargv_8h.html#a66d2de4b9157a7b30eab56065bfb4649" title="get miniargv library version string">miniargv_get_version_string()</a> </dd></dl>
+<a class="el" href="miniargv_8h.html#aefdb626d64c8fe68f85fe14eb3a8b347" title="process command environment variables and call the appropriate callback function for each match">miniargv_process_environment()</a> </dd></dl>
 
 </div>
 </div>
@@ -598,7 +654,58 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a74405c5eeb9a0ab91dd14bd1e10eeb65" title="display help text explaining ENVIRONMENT variables">miniargv_environment_help()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
+<dd>
+<a class="el" href="structminiargv__definition__struct.html" title="structure for command line argument definition">miniargv_definition_struct</a> </dd></dl>
+
+</div>
+</div>
+<a id="a74405c5eeb9a0ab91dd14bd1e10eeb65" name="a74405c5eeb9a0ab91dd14bd1e10eeb65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74405c5eeb9a0ab91dd14bd1e10eeb65">&#9670;&nbsp;</a></span>miniargv_environment_help()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DLL_EXPORT_MINIARGV void miniargv_environment_help </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a>&#160;</td>
+          <td class="paramname"><em>envdef</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>descindent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>wrapwidth</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>display help text explaining ENVIRONMENT variables </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">envdef</td><td>definitions of possible environment variables (<em>shortarg</em> is ignored) </td></tr>
+    <tr><td class="paramname">descindent</td><td>indent where description starts, defaults to 25 if set to 0 </td></tr>
+    <tr><td class="paramname">wrapwidth</td><td>maximum line length, defaults to 79 if set to 0 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#aeb5991843f4b5270dcc2838683a99c1e" title="display help text explaining command line arguments">miniargv_help()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
 <dd>
 <a class="el" href="structminiargv__definition__struct.html" title="structure for command line argument definition">miniargv_definition_struct</a> </dd></dl>
 
