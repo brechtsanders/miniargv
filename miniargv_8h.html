@@ -134,9 +134,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a71197121795928d55f3855632eecc070"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a71197121795928d55f3855632eecc070">miniargv_process_skip_flags</a> (int argc, char *argv[], const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> argdef[], <a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d">miniargv_handler_fn</a> badfn, void *callbackdata)</td></tr>
 <tr class="memdesc:a71197121795928d55f3855632eecc070"><td class="mdescLeft">&#160;</td><td class="mdescRight">process only standalone value command line arguments and call the appropriate callback function for each one (except the first one which is the application name)  <a href="miniargv_8h.html#a71197121795928d55f3855632eecc070">More...</a><br /></td></tr>
 <tr class="separator:a71197121795928d55f3855632eecc070"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aefdb626d64c8fe68f85fe14eb3a8b347"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#aefdb626d64c8fe68f85fe14eb3a8b347">miniargv_process_environment</a> (const char *env[], const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> envdef[], void *callbackdata)</td></tr>
-<tr class="memdesc:aefdb626d64c8fe68f85fe14eb3a8b347"><td class="mdescLeft">&#160;</td><td class="mdescRight">process command environment variables and call the appropriate callback function for each match  <a href="miniargv_8h.html#aefdb626d64c8fe68f85fe14eb3a8b347">More...</a><br /></td></tr>
-<tr class="separator:aefdb626d64c8fe68f85fe14eb3a8b347"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2339a07d55481d0b775c2ee5cd718248"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a2339a07d55481d0b775c2ee5cd718248">miniargv_process_environment</a> (const char *env[], const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> envdef[], void *callbackdata)</td></tr>
+<tr class="memdesc:a2339a07d55481d0b775c2ee5cd718248"><td class="mdescLeft">&#160;</td><td class="mdescRight">process command environment variables and call the appropriate callback function for each match  <a href="miniargv_8h.html#a2339a07d55481d0b775c2ee5cd718248">More...</a><br /></td></tr>
+<tr class="separator:a2339a07d55481d0b775c2ee5cd718248"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1cf21a3e42ac63ab4dfe44d458658b1"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#aa1cf21a3e42ac63ab4dfe44d458658b1">miniargv_getprogramname</a> (const char *argv0, int *length)</td></tr>
 <tr class="memdesc:aa1cf21a3e42ac63ab4dfe44d458658b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">get application name and length  <a href="miniargv_8h.html#aa1cf21a3e42ac63ab4dfe44d458658b1">More...</a><br /></td></tr>
 <tr class="separator:aa1cf21a3e42ac63ab4dfe44d458658b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -353,7 +353,7 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="miniargv_8h.html#a71197121795928d55f3855632eecc070" title="process only standalone value command line arguments and call the appropriate callback function for e...">miniargv_process_skip_flags()</a> </dd>
 <dd>
-<a class="el" href="miniargv_8h.html#aefdb626d64c8fe68f85fe14eb3a8b347" title="process command environment variables and call the appropriate callback function for each match">miniargv_process_environment()</a> </dd></dl>
+<a class="el" href="miniargv_8h.html#a2339a07d55481d0b775c2ee5cd718248" title="process command environment variables and call the appropriate callback function for each match">miniargv_process_environment()</a> </dd></dl>
 
 </div>
 </div>
@@ -417,7 +417,7 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="miniargv_8h.html#a71197121795928d55f3855632eecc070" title="process only standalone value command line arguments and call the appropriate callback function for e...">miniargv_process_skip_flags()</a> </dd>
 <dd>
-<a class="el" href="miniargv_8h.html#aefdb626d64c8fe68f85fe14eb3a8b347" title="process command environment variables and call the appropriate callback function for each match">miniargv_process_environment()</a> </dd></dl>
+<a class="el" href="miniargv_8h.html#a2339a07d55481d0b775c2ee5cd718248" title="process command environment variables and call the appropriate callback function for each match">miniargv_process_environment()</a> </dd></dl>
 
 </div>
 </div>
@@ -481,18 +481,18 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="miniargv_8h.html#a0499007ce0f358d943115f2670862ba1" title="process only flag command line arguments and call the appropriate callback function for each one (exc...">miniargv_process_flags_only()</a> </dd>
 <dd>
-<a class="el" href="miniargv_8h.html#aefdb626d64c8fe68f85fe14eb3a8b347" title="process command environment variables and call the appropriate callback function for each match">miniargv_process_environment()</a> </dd></dl>
+<a class="el" href="miniargv_8h.html#a2339a07d55481d0b775c2ee5cd718248" title="process command environment variables and call the appropriate callback function for each match">miniargv_process_environment()</a> </dd></dl>
 
 </div>
 </div>
-<a id="aefdb626d64c8fe68f85fe14eb3a8b347" name="aefdb626d64c8fe68f85fe14eb3a8b347"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aefdb626d64c8fe68f85fe14eb3a8b347">&#9670;&nbsp;</a></span>miniargv_process_environment()</h2>
+<a id="a2339a07d55481d0b775c2ee5cd718248" name="a2339a07d55481d0b775c2ee5cd718248"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2339a07d55481d0b775c2ee5cd718248">&#9670;&nbsp;</a></span>miniargv_process_environment()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int miniargv_process_environment </td>
+          <td class="memname">DLL_EXPORT_MINIARGV int miniargv_process_environment </td>
           <td>(</td>
           <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>env</em>[], </td>
