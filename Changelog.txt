@@ -1,3 +1,9 @@
+0.1.6
+
+2021-11-27  Brecht Sanders  https://github.com/brechtsanders/
+
+  * fix dllexport/dllimport for miniargv_process_environment()
+
 0.1.5
 
 2021-11-27  Brecht Sanders  https://github.com/brechtsanders/

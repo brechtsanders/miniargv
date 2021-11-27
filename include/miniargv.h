@@ -125,7 +125,7 @@ DLL_EXPORT_MINIARGV int miniargv_process_skip_flags (int argc, char* argv[], con
  * \sa     miniargv_process_flags_only()
  * \sa     miniargv_process_skip_flags()
  */
-int miniargv_process_environment (const char* env[], const miniargv_definition envdef[], void* callbackdata);
+DLL_EXPORT_MINIARGV int miniargv_process_environment (const char* env[], const miniargv_definition envdef[], void* callbackdata);
 
 /*! \brief get application name and length
  *
@@ -211,7 +211,7 @@ DLL_EXPORT_MINIARGV const char* miniargv_get_version_string ();
 /*! \brief minor version number \hideinitializer */
 #define MINIARGV_VERSION_MINOR 1
 /*! \brief micro version number \hideinitializer */
-#define MINIARGV_VERSION_MICRO 5
+#define MINIARGV_VERSION_MICRO 6
 /** @} */
 
 /*! \brief packed version number (bits 24-31: major version, bits 16-23: minor version, bits 8-15: micro version)

@@ -133,7 +133,7 @@ DLL_EXPORT_MINIARGV int miniargv_process_skip_flags (int argc, char* argv[], con
   return miniargv_process_partial(MINIARG_PROCESS_FLAG_VALUES, argc, argv, argdef, badfn, callbackdata);
 }
 
-int miniargv_process_environment (const char* env[], const miniargv_definition envdef[], void* callbackdata)
+DLL_EXPORT_MINIARGV int miniargv_process_environment (const char* env[], const miniargv_definition envdef[], void* callbackdata)
 {
   const char* s;
   const char** current_env;
