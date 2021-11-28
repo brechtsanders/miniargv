@@ -358,10 +358,10 @@ Functions</h2></td></tr>
 <p>first process environment variables and then process command line arguments and call the appropriate callback function for each match </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">argv</td><td>array of arguments (first one is the application itself) terminated with NULL </td></tr>
-    <tr><td class="paramname">env</td><td>list environment variables terminated with NULL </td></tr>
+    <tr><td class="paramname">argv</td><td>NULL-terminated array of arguments (first one is the application itself) </td></tr>
+    <tr><td class="paramname">env</td><td>NULL-terminated array of environment variables </td></tr>
     <tr><td class="paramname">argdef</td><td>definitions of possible command line arguments </td></tr>
-    <tr><td class="paramname">envdef</td><td>definitions of possible environment variables (<em>shortarg</em> is ignored) </td></tr>
+    <tr><td class="paramname">envdef</td><td>definitions of possible environment variables </td></tr>
     <tr><td class="paramname">badfn</td><td>callback function for bad arguments </td></tr>
     <tr><td class="paramname">callbackdata</td><td>user data passed to callback functions </td></tr>
   </table>
@@ -417,7 +417,7 @@ Functions</h2></td></tr>
 <p>process command line arguments and call the appropriate callback function for each one (except the first one which is the application name) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">argv</td><td>array of arguments (first one is the application itself) terminated with NULL </td></tr>
+    <tr><td class="paramname">argv</td><td>NULL-terminated array of arguments (first one is the application itself) </td></tr>
     <tr><td class="paramname">argdef</td><td>definitions of possible command line arguments </td></tr>
     <tr><td class="paramname">badfn</td><td>callback function for bad arguments </td></tr>
     <tr><td class="paramname">callbackdata</td><td>user data passed to callback functions </td></tr>
@@ -474,7 +474,7 @@ Functions</h2></td></tr>
 <p>process only flag command line arguments and call the appropriate callback function for each one (except the first one which is the application name) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">argv</td><td>array of arguments (first one is the application itself) terminated with NULL </td></tr>
+    <tr><td class="paramname">argv</td><td>NULL-terminated array of arguments (first one is the application itself) </td></tr>
     <tr><td class="paramname">argdef</td><td>definitions of possible command line arguments </td></tr>
     <tr><td class="paramname">badfn</td><td>callback function for bad arguments </td></tr>
     <tr><td class="paramname">callbackdata</td><td>user data passed to callback functions </td></tr>
@@ -533,7 +533,7 @@ Functions</h2></td></tr>
 <p>process only standalone value command line arguments and call the appropriate callback function for each one (except the first one which is the application name) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">argv</td><td>array of arguments (first one is the application itself) terminated with NULL </td></tr>
+    <tr><td class="paramname">argv</td><td>NULL-terminated array of arguments (first one is the application itself) </td></tr>
     <tr><td class="paramname">argdef</td><td>definitions of possible command line arguments </td></tr>
     <tr><td class="paramname">badfn</td><td>callback function for bad arguments </td></tr>
     <tr><td class="paramname">callbackdata</td><td>user data passed to callback functions </td></tr>
@@ -586,8 +586,8 @@ Functions</h2></td></tr>
 <p>process environment variables and call the appropriate callback function for each match </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">env</td><td>list environment variables terminated with NULL </td></tr>
-    <tr><td class="paramname">envdef</td><td>definitions of possible environment variables (<em>shortarg</em> is ignored) </td></tr>
+    <tr><td class="paramname">env</td><td>NULL-terminated array of environment variables </td></tr>
+    <tr><td class="paramname">envdef</td><td>definitions of possible environment variables </td></tr>
     <tr><td class="paramname">callbackdata</td><td>user data passed to callback functions </td></tr>
   </table>
   </dd>
@@ -632,7 +632,7 @@ Functions</h2></td></tr>
 <p>get application name and length </p>
 <p >Gets the name of the current application from the first argv entry (argv[0]) as passed to main().</p>
 <p >Though the result is a null-terminated string, only the number of characters pointed to by <em>length</em> should be used (e.g. to avoid the ".exe" extension on Windows).</p>
-<p >NULL is returned on error or <em>argv0</em> is NULL or points to an empty string.</p>
+<p >NULL is returned on error or if <em>argv0</em> is NULL or points to an empty string.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">argv0</td><td>argv[0] as passed to main() </td></tr>
