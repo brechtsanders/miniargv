@@ -78,10 +78,10 @@ struct miniargv_definition_struct {
 };
 
 /*! \brief first process environment variables and then process command line arguments and call the appropriate callback function for each match
- * \param  argv          array of arguments (first one is the application itself) terminated with NULL
- * \param  env           list environment variables terminated with NULL
+ * \param  argv          NULL-terminated array of arguments (first one is the application itself)
+ * \param  env           NULL-terminated array of environment variables
  * \param  argdef        definitions of possible command line arguments
- * \param  envdef        definitions of possible environment variables (\a shortarg is ignored)
+ * \param  envdef        definitions of possible environment variables
  * \param  badfn         callback function for bad arguments
  * \param  callbackdata  user data passed to callback functions
  * \return zero on success or index of argument that caused processing to abort
@@ -92,7 +92,7 @@ struct miniargv_definition_struct {
 DLL_EXPORT_MINIARGV int miniargv_process (char* argv[], char* env[], const miniargv_definition argdef[], const miniargv_definition envdef[], miniargv_handler_fn badfn, void* callbackdata);
 
 /*! \brief process command line arguments and call the appropriate callback function for each one (except the first one which is the application name)
- * \param  argv          array of arguments (first one is the application itself) terminated with NULL
+ * \param  argv          NULL-terminated array of arguments (first one is the application itself)
  * \param  argdef        definitions of possible command line arguments
  * \param  badfn         callback function for bad arguments
  * \param  callbackdata  user data passed to callback functions
@@ -104,7 +104,7 @@ DLL_EXPORT_MINIARGV int miniargv_process (char* argv[], char* env[], const minia
 DLL_EXPORT_MINIARGV int miniargv_process_arg (char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata);
 
 /*! \brief process only flag command line arguments and call the appropriate callback function for each one (except the first one which is the application name)
- * \param  argv          array of arguments (first one is the application itself) terminated with NULL
+ * \param  argv          NULL-terminated array of arguments (first one is the application itself)
  * \param  argdef        definitions of possible command line arguments
  * \param  badfn         callback function for bad arguments
  * \param  callbackdata  user data passed to callback functions
@@ -117,7 +117,7 @@ DLL_EXPORT_MINIARGV int miniargv_process_arg (char* argv[], const miniargv_defin
 DLL_EXPORT_MINIARGV int miniargv_process_arg_flags (char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata);
 
 /*! \brief process only standalone value command line arguments and call the appropriate callback function for each one (except the first one which is the application name)
- * \param  argv          array of arguments (first one is the application itself) terminated with NULL
+ * \param  argv          NULL-terminated array of arguments (first one is the application itself)
  * \param  argdef        definitions of possible command line arguments
  * \param  badfn         callback function for bad arguments
  * \param  callbackdata  user data passed to callback functions
@@ -130,8 +130,8 @@ DLL_EXPORT_MINIARGV int miniargv_process_arg_flags (char* argv[], const miniargv
 DLL_EXPORT_MINIARGV int miniargv_process_arg_params (char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata);
 
 /*! \brief process environment variables and call the appropriate callback function for each match
- * \param  env           list environment variables terminated with NULL
- * \param  envdef        definitions of possible environment variables (\a shortarg is ignored)
+ * \param  env           NULL-terminated array of environment variables
+ * \param  envdef        definitions of possible environment variables
  * \param  callbackdata  user data passed to callback functions
  * \return zero on success or index of argument that caused processing to abort
  * \sa     miniargv_process()
@@ -147,7 +147,7 @@ DLL_EXPORT_MINIARGV int miniargv_process_env (char* env[], const miniargv_defini
  *
  * Though the result is a null-terminated string, only the number of characters pointed to by \a length should be used (e.g. to avoid the ".exe" extension on Windows).
  *
- * NULL is returned on error or \a argv0 is NULL or points to an empty string.
+ * NULL is returned on error or if \a argv0 is NULL or points to an empty string.
  *
  * \param  argv0                 argv[0] as passed to main()
  * \param  length                pointer that will receive the length of the application name (can be NULL)
@@ -261,7 +261,7 @@ DLL_EXPORT_MINIARGV const char* miniargv_get_version_string ();
 /*! \brief minor version number \hideinitializer */
 #define MINIARGV_VERSION_MINOR 2
 /*! \brief micro version number \hideinitializer */
-#define MINIARGV_VERSION_MICRO 0
+#define MINIARGV_VERSION_MICRO 1
 /** @} */
 
 /*! \brief packed version number (bits 24-31: major version, bits 16-23: minor version, bits 8-15: micro version)
