@@ -148,15 +148,15 @@ DLL_EXPORT_MINIARGV int miniargv_process_env (char* env[], const miniargv_defini
   char* s;
   char** current_env;
   const miniargv_definition* current_envdef = envdef;
-  int success = 0;
-  while (!success && current_envdef->callbackfn) {
+  int result;
+  while (current_envdef->callbackfn) {
     if (current_envdef->longarg) {
       current_env = env;
       while (*current_env) {
         if ((s = strchr(*current_env, '=')) != NULL) {
           if (strncmp(*current_env, current_envdef->longarg, s - *current_env) == 0) {
-            if ((current_envdef->callbackfn)(current_envdef, s + 1, callbackdata) == 0)
-              success++;
+            if ((result = (current_envdef->callbackfn)(current_envdef, s + 1, callbackdata)) != 0)
+              return result;
           }
         }
         current_env++;

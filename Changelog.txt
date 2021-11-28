@@ -1,3 +1,9 @@
+0.2.1
+
+2021-11-28  Brecht Sanders  https://github.com/brechtsanders/
+
+  * fix issue aborting after first variable found in miniargv_process_env()
+
 0.2.0
 
 2021-11-28  Brecht Sanders  https://github.com/brechtsanders/

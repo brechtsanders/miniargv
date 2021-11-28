@@ -34,6 +34,12 @@ int process_arg_param (const miniargv_definition* argdef, const char* value, voi
   return 0;
 }
 
+int process_arg_print_str (const miniargv_definition* argdef, const char* value, void* callbackdata)
+{
+  printf("%s=%s\n", argdef->longarg, value);
+  return 0;
+}
+
 //int main (int argc, char *argv[])
 int main (int argc, char *argv[], char *envp[])
 {
