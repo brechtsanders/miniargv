@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <limits.h>
 #if defined(_MSC_VER) || (defined(__MINGW32__) && !defined(__MINGW64__))
 #define strcasecmp _stricmp
 #endif
