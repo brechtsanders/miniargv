@@ -11,7 +11,7 @@
 #define MINIARG_PROCESS_FLAG_VALUES 0x02
 #define MINIARG_PROCESS_FLAG_BOTH   0x03
 
-int miniargv_process_partial (unsigned int flags, int argc, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
+int miniargv_process_partial (unsigned int flags, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
 {
   int i;
   size_t l;
@@ -19,7 +19,7 @@ int miniargv_process_partial (unsigned int flags, int argc, char* argv[], const 
   int success;
   int standalonevaluedefset = 0;
   const miniargv_definition* standalonevaluedef = NULL;
-  for (i = 1; i < argc; i++) {
+  for (i = 1; argv[i]; i++) {
     success = 0;
     if (argv[i][0] == '-' && argv[i][1]) {
       if (argv[i][1] != '-') {
@@ -42,7 +42,7 @@ int miniargv_process_partial (unsigned int flags, int argc, char* argv[], const 
                   success++;
                 else if ((current_argdef->callbackfn)(current_argdef, argv[i] + 2, callbackdata) == 0)
                   success++;
-              } else if (i + 1 < argc) {
+              } else if (argv[i + 1]) {
                 //with value and space
                 i++;
                 if ((flags & MINIARG_PROCESS_FLAG_FLAGS) == 0)
@@ -118,25 +118,35 @@ int miniargv_process_partial (unsigned int flags, int argc, char* argv[], const 
   return 0;
 }
 
-DLL_EXPORT_MINIARGV int miniargv_process (int argc, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
+DLL_EXPORT_MINIARGV int miniargv_process (char* argv[], char* env[], const miniargv_definition argdef[], const miniargv_definition envdef[], miniargv_handler_fn badfn, void* callbackdata)
 {
-  return miniargv_process_partial(MINIARG_PROCESS_FLAG_BOTH, argc, argv, argdef, badfn, callbackdata);
+  int result = 0;
+  if (env)
+    result = miniargv_process_env(env, envdef, callbackdata);
+  if (result == 0 && argv)
+    result = miniargv_process_arg(argv, argdef, badfn, callbackdata);
+  return result;
 }
 
-DLL_EXPORT_MINIARGV int miniargv_process_flags_only (int argc, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
+DLL_EXPORT_MINIARGV int miniargv_process_arg (char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
 {
-  return miniargv_process_partial(MINIARG_PROCESS_FLAG_FLAGS, argc, argv, argdef, badfn, callbackdata);
+  return miniargv_process_partial(MINIARG_PROCESS_FLAG_BOTH, argv, argdef, badfn, callbackdata);
 }
 
-DLL_EXPORT_MINIARGV int miniargv_process_skip_flags (int argc, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
+DLL_EXPORT_MINIARGV int miniargv_process_arg_flags (char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
 {
-  return miniargv_process_partial(MINIARG_PROCESS_FLAG_VALUES, argc, argv, argdef, badfn, callbackdata);
+  return miniargv_process_partial(MINIARG_PROCESS_FLAG_FLAGS, argv, argdef, badfn, callbackdata);
 }
 
-DLL_EXPORT_MINIARGV int miniargv_process_environment (const char* env[], const miniargv_definition envdef[], void* callbackdata)
+DLL_EXPORT_MINIARGV int miniargv_process_arg_params (char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
 {
-  const char* s;
-  const char** current_env;
+  return miniargv_process_partial(MINIARG_PROCESS_FLAG_VALUES, argv, argdef, badfn, callbackdata);
+}
+
+DLL_EXPORT_MINIARGV int miniargv_process_env (char* env[], const miniargv_definition envdef[], void* callbackdata)
+{
+  char* s;
+  char** current_env;
   const miniargv_definition* current_envdef = envdef;
   int success = 0;
   while (!success && current_envdef->callbackfn) {
@@ -188,11 +198,11 @@ DLL_EXPORT_MINIARGV const char* miniargv_getprogramname (const char* argv0, int*
   return argv0 + pos;
 }
 
-DLL_EXPORT_MINIARGV void miniargv_list_args (const miniargv_definition argdef[], int shortonly)
+DLL_EXPORT_MINIARGV void miniargv_arg_list (const miniargv_definition argdef[], int shortonly)
 {
   const miniargv_definition* current_argdef = argdef;
   while (current_argdef->callbackfn) {
-    if (argdef != current_argdef)
+    if (current_argdef != argdef)
       printf(" ");
     if (current_argdef->shortarg  || current_argdef->longarg) {
       printf("[");
@@ -216,54 +226,31 @@ DLL_EXPORT_MINIARGV void miniargv_list_args (const miniargv_definition argdef[],
   }
 }
 
-void indent_and_wrap_text (const char* text, int currentpos, int descindent, int wrapwidth)
+DLL_EXPORT_MINIARGV void miniargv_env_list (const miniargv_definition envdef[], int noparam)
 {
-  const char* p;
-  const char* q;
-  const char* r;
-  p = text;
-  while (p) {
-    q = p;
-    r = p;
-    do {
-      while (*r && !isspace(*r))
-        r++;
-      if (r - p + currentpos > wrapwidth) {
-        if (q == p)
-          q = r;
-        break;
-      }
-      q = r;
-      if (*r == '\n')
-        break;
-      while (*r && isspace(*r))
-        r++;
-    } while (*r);
-    if (!*q) {
-      printf("%s", p);
-      p = NULL;
-    } else {
-      printf("%.*s\n%*s", (int)(q - p), p, descindent, "");
-      currentpos = descindent;
-      p = q;
-      while (isspace(*p))
-        p++;
+  const miniargv_definition* current_envdef = envdef;
+  while (current_envdef->callbackfn) {
+    if (current_envdef != envdef)
+      printf(" ");
+    if (current_envdef->longarg) {
+      printf("%s", current_envdef->longarg);
+      if (!noparam && current_envdef->argparam)
+        printf("=%s", current_envdef->argparam);
     }
+    current_envdef++;
   }
 }
 
-DLL_EXPORT_MINIARGV void miniargv_help (const miniargv_definition argdef[], int descindent, int wrapwidth)
+DLL_EXPORT_MINIARGV void miniargv_arg_help (const miniargv_definition argdef[], int descindent, int wrapwidth)
 {
   int pos;
   const miniargv_definition* current_argdef = argdef;
   if (!descindent)
     descindent = 25;
-  if (!wrapwidth)
-    wrapwidth = 79;
   while (current_argdef->callbackfn) {
     pos = printf("  ");
     if (!current_argdef->shortarg && !current_argdef->longarg) {
-      pos += printf(" %s", (current_argdef->argparam ? current_argdef->argparam : "param"));
+      pos += printf("%s", (current_argdef->argparam ? current_argdef->argparam : "param"));
     } else {
       if (current_argdef->shortarg) {
         pos += printf("-%c", current_argdef->shortarg);
@@ -279,20 +266,18 @@ DLL_EXPORT_MINIARGV void miniargv_help (const miniargv_definition argdef[], int 
       }
     }
     printf("%*s", (pos < descindent ? descindent - pos : 2), "");
-    indent_and_wrap_text(current_argdef->help, descindent, descindent, wrapwidth);
+    miniargv_wrap_and_indent_text(current_argdef->help, descindent, descindent, wrapwidth);
     printf("\n");
     current_argdef++;
   }
 }
 
-DLL_EXPORT_MINIARGV void miniargv_environment_help (const miniargv_definition envdef[], int descindent, int wrapwidth)
+DLL_EXPORT_MINIARGV void miniargv_env_help (const miniargv_definition envdef[], int descindent, int wrapwidth)
 {
   int pos;
   const miniargv_definition* current_envdef = envdef;
   if (!descindent)
     descindent = 25;
-  if (!wrapwidth)
-    wrapwidth = 79;
   while (current_envdef->callbackfn) {
     pos = printf("  ");
     if (!current_envdef->shortarg && !current_envdef->longarg) {
@@ -307,9 +292,71 @@ DLL_EXPORT_MINIARGV void miniargv_environment_help (const miniargv_definition en
       }
     }
     printf("%*s", (pos < descindent ? descindent - pos : 2), "");
-    indent_and_wrap_text(current_envdef->help, descindent, descindent, wrapwidth);
+    miniargv_wrap_and_indent_text(current_envdef->help, descindent, descindent, wrapwidth);
     printf("\n");
     current_envdef++;
+  }
+}
+
+DLL_EXPORT_MINIARGV void miniargv_help (const miniargv_definition argdef[], const miniargv_definition envdef[], int descindent, int wrapwidth)
+{
+  if (argdef) {
+    printf("Command line arguments:\n");
+    miniargv_arg_help(argdef, descindent, wrapwidth);
+  }
+  if (envdef) {
+    printf("Environment variables:\n");
+    miniargv_env_help(envdef, descindent, wrapwidth);
+  }
+}
+
+DLL_EXPORT_MINIARGV void miniargv_wrap_and_indent_text (const char* text, int currentpos, int indentpos, int wrapwidth)
+{
+  const char* p;
+  const char* q;
+  const char* r;
+  //set default wrap with if not specified
+  if (!wrapwidth)
+    wrapwidth = 79;
+  p = text;
+  //process text
+  while (p) {
+    q = p;
+    r = p;
+    //find wrap position
+    do {
+      //find first blank space
+      while (*r && !isspace(*r))
+        r++;
+      //check if wrap position was exceeded
+      if (currentpos + (r - p) > wrapwidth) {
+        //if single word exceeds maximum width show it as a whole anyway
+        if (q == p)
+          q = r;
+        break;
+      }
+      q = r;
+      //wrap if line break was found
+      if (*r == '\n')
+        break;
+      //skip blank space
+      while (*r && isspace(*r))
+        r++;
+    } while (*r);
+    //print line
+    if (!*q) {
+      //print as a whole if last section of text
+      printf("%s", p);
+      p = NULL;
+    } else {
+      //print partial text, go to new line and indent
+      printf("%.*s\n%*s", (int)(q - p), p, indentpos, "");
+      currentpos = indentpos;
+      //skip blank space
+      p = q;
+      while (isspace(*p))
+        p++;
+    }
   }
 }
 

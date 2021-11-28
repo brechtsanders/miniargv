@@ -43,14 +43,14 @@ const miniargv_definition argdef[] = {
 int main (int argc, char *argv[])
 {
   //parse command line arguments
-  if (miniargv_process(argc, argv, argdef, NULL, NULL) != 0)
+  if (miniargv_process_arg(argv, argdef, NULL, NULL) != 0)
     return 1;
   //show help if requested or if no command line arguments were given
   if (showhelp || argc <= 1) {
     int prognamelen;
     const char* progname = miniargv_getprogramname(argv[0], &prognamelen);
     printf("%.*s v%s\nUsage:\n", prognamelen, progname, miniargv_get_version_string());
-    miniargv_help(argdef, 0, 0);
+    miniargv_arg_help(argdef, 0, 0);
     return 0;
   }
   //show values

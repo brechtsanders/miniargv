@@ -53,23 +53,19 @@ int main (int argc, char *argv[], char *envp[])
     {0, "N", NULL, process_arg_number, &number, "set number"},
     {0, NULL, NULL, NULL, NULL, NULL}
   };
-  //parse environment variables
-  //if (miniargv_process_environment((const char**)environ, envdef, NULL) != 0)
-  if (miniargv_process_environment((const char**)envp, envdef, NULL) != 0)
-    return 1;
-  //parse command line arguments
-  if (miniargv_process(argc, argv, argdef, NULL, NULL) != 0)
+  //parse program arguments
+  //if (miniargv_process(environ, envp, argdef, envdef, NULL, NULL) != 0)
+  if (miniargv_process(argv, envp, argdef, envdef, NULL, NULL) != 0)
     return 1;
   //show help if requested or if no command line arguments were given
   if (showhelp || argc <= 1) {
     int prognamelen;
     const char* progname = miniargv_getprogramname(argv[0], &prognamelen);
     printf("%.*s v%s\nUsage: %.*s ", prognamelen, progname, miniargv_get_version_string(), prognamelen, progname);
-    miniargv_list_args(argdef, 1);
+    miniargv_arg_list(argdef, 1);
     printf("\n");
-    miniargv_help(argdef, 0, 0);
-    printf("Environment variables:\n");
-    miniargv_environment_help(envdef, 0, 0);
+    printf("Program to demonstrate miniargv library with local variables\n");
+    miniargv_help(argdef, envdef, 0, 0);
     return 0;
   }
   //show values

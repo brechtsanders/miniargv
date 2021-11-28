@@ -1,8 +1,22 @@
-0.1.6
+0.2.0
 
-2021-11-27  Brecht Sanders  https://github.com/brechtsanders/
+2021-11-28  Brecht Sanders  https://github.com/brechtsanders/
 
   * fix dllexport/dllimport for miniargv_process_environment()
+  * added miniargv_wrap_and_indent_text()
+  * added miniargv_env_list()
+  * renamed miniargv_process() to miniargv_process_arg()
+  * renamed miniargv_process_flags_only() to miniargv_process_arg_flags()
+  * renamed miniargv_process_skip_flags() to miniargv_process_arg_params()
+  * renamed miniargv_process_environment() to miniargv_process_env()
+  * renamed miniargv_list_args() to miniargv_arg_list()
+  * renamed miniargv_help() to miniargv_arg_help()
+  * renamed miniargv_environment_help() to miniargv_env_help()
+  * removed const from first argument to miniargv_process_env()
+  * fixed display start position of standalone argument in miniargv_arg_help()
+  * removed argc parameter from miniargv_process_*() as argv ends with NULL
+  * added miniargv_help() for explaining both arguments and environment
+  * added miniargv_process() for processing both environment and arguments
 
 0.1.5
 

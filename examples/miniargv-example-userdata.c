@@ -48,16 +48,16 @@ int main (int argc, char *argv[])
   int params[INT_PARAMS];
   memset(params, 0, sizeof(params));
   //parse command line arguments
-  if (miniargv_process(argc, argv, argdef, NULL, &params) != 0)
+  if (miniargv_process_arg(argv, argdef, NULL, &params) != 0)
     return 1;
   //show help if requested or if no command line arguments were given
   if (params[INT_PARAM_SHOWHELP] || argc <= 1) {
     int prognamelen;
     const char* progname = miniargv_getprogramname(argv[0], &prognamelen);
     printf("%.*s v%s\nUsage: %.*s ", prognamelen, progname, miniargv_get_version_string(), prognamelen, progname);
-    miniargv_list_args(argdef, 1);
+    miniargv_arg_list(argdef, 1);
     printf("\n");
-    miniargv_help(argdef, 0, 0);
+    miniargv_arg_help(argdef, 0, 0);
     return 0;
   }
   //show values

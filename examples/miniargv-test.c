@@ -69,7 +69,7 @@ int main (int argc, char *argv[])
     .verbose = 0,
     .number = 0,
   };
-  if (miniargv_process(argc, argv, argdef, process_arg_error, &params) != 0)
+  if (miniargv_process_arg(argv, argdef, process_arg_error, &params) != 0)
     return 1;
   printf("verbose = %i\n", params.verbose);
   printf("number = %i\n", params.number);
@@ -77,8 +77,8 @@ int main (int argc, char *argv[])
   int prognamelen;
   const char* progname = miniargv_getprogramname(argv[0], &prognamelen);
   printf("%.*s v%s\nUsage: %.*s ", prognamelen, progname, miniargv_get_version_string(), prognamelen, progname);
-  miniargv_list_args(argdef, 1);
+  miniargv_arg_list(argdef, 1);
   printf("\n");
-  miniargv_help(argdef, 24, 79);
+  miniargv_arg_help(argdef, 24, 79);
   return 0;
 }
