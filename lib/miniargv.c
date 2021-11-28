@@ -360,6 +360,62 @@ DLL_EXPORT_MINIARGV void miniargv_wrap_and_indent_text (const char* text, int cu
   }
 }
 
+
+
+DLL_EXPORT_MINIARGV int miniargv_cb_set_const_str (const miniargv_definition* argdef, const char* value, void* callbackdata)
+{
+  *(const char**)argdef->userdata = value;
+  return 0;
+}
+
+DLL_EXPORT_MINIARGV int miniargv_cb_set_int (const miniargv_definition* argdef, const char* value, void* callbackdata)
+{
+  long intval;
+  char* end = NULL;
+  if (!value || !*value)
+    return 1;
+  intval = strtol(value, &end, 10);
+  if (!end || *end)
+    return 2;
+  if (intval == LONG_MIN)
+    return 3;
+  if (intval == LONG_MAX)
+    return 4;
+  *(int*)argdef->userdata = (int)intval;
+  return 0;
+}
+
+DLL_EXPORT_MINIARGV int miniargv_cb_set_long (const miniargv_definition* argdef, const char* value, void* callbackdata)
+{
+  long intval;
+  char* end = NULL;
+  if (!value || !*value)
+    return 1;
+  intval = strtol(value, &end, 10);
+  if (!end || *end)
+    return 2;
+  if (intval == LONG_MIN)
+    return 3;
+  if (intval == LONG_MAX)
+    return 4;
+  *(long*)argdef->userdata = intval;
+  return 0;
+}
+
+DLL_EXPORT_MINIARGV int miniargv_cb_increment_int (const miniargv_definition* argdef, const char* value, void* callbackdata)
+{
+  (*((int*)argdef->userdata))++;
+  return 0;
+}
+
+DLL_EXPORT_MINIARGV int miniargv_cb_increment_long (const miniargv_definition* argdef, const char* value, void* callbackdata)
+{
+  (*((long*)argdef->userdata))++;
+  return 0;
+}
+
+
+
 DLL_EXPORT_MINIARGV void miniargv_get_version (int* pmajor, int* pminor, int* pmicro)
 {
   if (pmajor)

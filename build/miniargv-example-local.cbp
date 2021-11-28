@@ -74,6 +74,7 @@
 				<Option object_output="obj/Release64/" />
 				<Option type="1" />
 				<Option compiler="MINGW64" />
+				<Option parameters="--help" />
 				<Compiler>
 					<Add option="-O2" />
 				</Compiler>

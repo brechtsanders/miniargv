@@ -16,27 +16,11 @@ static int showhelp = 0;
 static int verbose = 0;
 static int number = 0;
 
-//callback function to increment an integer
-int process_arg_increment (const miniargv_definition* argdef, const char* value, void* callbackdata)
-{
-  int* pvar = (int*)argdef->userdata;
-  (*pvar)++;
-  return 0;
-}
-
-//callback function to increment set an integer value
-int process_arg_number (const miniargv_definition* argdef, const char* value, void* callbackdata)
-{
-  int* pvar = (int*)argdef->userdata;
-  (*pvar) = atoi(value);
-  return 0;
-}
-
 //definition of command line arguments
 const miniargv_definition argdef[] = {
-  {'h', "help", NULL, process_arg_increment, &showhelp, "show command line help"},
-  {'v', "verbose", NULL, process_arg_increment, &verbose, "increase verbose mode\n(may be specified multiple times)"},
-  {'n', "number", "N", process_arg_number, &number, "set number to N"},
+  {'h', "help", NULL, miniargv_cb_increment_int, &showhelp, "show command line help"},
+  {'v', "verbose", NULL, miniargv_cb_increment_int, &verbose, "increase verbose mode\n(may be specified multiple times)"},
+  {'n', "number", "N", miniargv_cb_set_int, &number, "set number to N"},
   {0, NULL, NULL, NULL, NULL, NULL}
 };
 

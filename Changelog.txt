@@ -1,3 +1,11 @@
+0.2.2
+
+2021-11-28  Brecht Sanders  https://github.com/brechtsanders/
+
+  * added miniargv_cb_set_const_str()
+  * added miniargv_cb_set_int() and miniargv_cb_set_long()
+  * added miniargv_cb_increment_int() and miniargv_cb_increment_long()
+
 0.2.1
 
 2021-11-28  Brecht Sanders  https://github.com/brechtsanders/
