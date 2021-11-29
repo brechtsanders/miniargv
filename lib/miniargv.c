@@ -266,7 +266,10 @@ DLL_EXPORT_MINIARGV void miniargv_arg_help (const miniargv_definition argdef[], 
           pos += printf("=%s", current_argdef->argparam);
       }
     }
-    printf("%*s", (pos < descindent ? descindent - pos : 2), "");
+    if (pos > descindent - 2)
+      printf("\n%*s", descindent, "");
+    else
+      printf("%*s", (pos < descindent ? descindent - pos : 2), "");
     miniargv_wrap_and_indent_text(current_argdef->help, descindent, descindent, wrapwidth);
     printf("\n");
     current_argdef++;
@@ -292,7 +295,10 @@ DLL_EXPORT_MINIARGV void miniargv_env_help (const miniargv_definition envdef[], 
           pos += printf("=%s", current_envdef->argparam);
       }
     }
-    printf("%*s", (pos < descindent ? descindent - pos : 2), "");
+    if (pos > descindent - 2)
+      printf("\n%*s", descindent, "");
+    else
+      printf("%*s", (pos < descindent ? descindent - pos : 2), "");
     miniargv_wrap_and_indent_text(current_envdef->help, descindent, descindent, wrapwidth);
     printf("\n");
     current_envdef++;
