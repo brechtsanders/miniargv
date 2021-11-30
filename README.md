@@ -2,7 +2,7 @@
 
 Lightweight cross-platform C/C++ library for processing command line arguments and displaying command line help. Support to load settings from environment variables is also included.
 
-Features:
+## Features
  * cross-platform (tested on Windows, Linux and macOS)
  * low footprint (small code footprint and very low memory requirements)
  * no external dependencies (requires no other libraries)
@@ -16,7 +16,7 @@ Features:
  * basic error checking to report unknown arguments
  * does not include constraints checking (e.g. mandatory arguments or arguments that may not occur multiple times)
 
-Example:
+## Example
 ```C
 #include <stdlib.h>
 #include <stdio.h>
