@@ -11,7 +11,7 @@ Features:
    * `argv` as passed to `int main (int argc, char *argv[])`
    * `envp` as passed to `int main (int argc, char *argv[], char *envp[])`
  * values passed to callback functions live as long as `main()`, so no copying (e.g. `strdup()`) is needed
- * as no data is allocated no
+ * as no data is allocated no cleanup functions are needed before exiting the program
 
 ## GitHub Actions CI
 [![GitHub-CI for miniargv](https://github.com/brechtsanders/miniargv/workflows/GitHub-CI%20for%20miniargv/badge.svg)](https://github.com/brechtsanders/miniargv/actions)
