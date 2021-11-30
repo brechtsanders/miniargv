@@ -1,11 +1,17 @@
 # miniargv
 
-Lightweight cross-platform C/C++ library for processing command line arguments and displaying command line help.
+Lightweight cross-platform C/C++ library for processing command line arguments and displaying command line help. Support to load settings from environment variables is also included.
 
-This library is designed to be low footprint, has no external dependencies and uses a zero copy approach.
-No memory is allocated or copied.
-The parsed data points directly to the to the `argv` variables as passed to `int main (int argc, char *argv[])`.
-Callback functions are used by the parser to allow the application to process the command line arguments.
+Features:
+ * cross platform (tested on Windows, Linux and macOS)
+ * low footprint
+ * no external dependencies (requires no other libraries)
+ * zero copy approach (no memory is allocated or copied)
+ * data passed to `main()` is processed using callback functions
+   * `argv` as passed to `int main (int argc, char *argv[])`
+   * `envp` as passed to `int main (int argc, char *argv[], char *envp[])`
+ * values passed to callback functions live as long as `main()`, so no copying (e.g. `strdup()`) is needed
+ * as no data is allocated no
 
 ## GitHub Actions CI
 [![GitHub-CI for miniargv](https://github.com/brechtsanders/miniargv/workflows/GitHub-CI%20for%20miniargv/badge.svg)](https://github.com/brechtsanders/miniargv/actions)
