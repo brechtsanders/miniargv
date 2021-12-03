@@ -2,7 +2,7 @@
 
 2021-12-03  Brecht Sanders  https://github.com/brechtsanders/
 
-  * fixed bug in miniargv_process(): value arguments to be processed twice
+  * fixed bug in miniargv_process(): value arguments processed twice
 
 0.2.4
 
