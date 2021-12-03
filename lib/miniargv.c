@@ -503,8 +503,8 @@ DLL_EXPORT_MINIARGV int miniargv_cb_noop (const miniargv_definition* argdef, con
 
 DLL_EXPORT_MINIARGV int miniargv_cb_error (const miniargv_definition* argdef, const char* value, void* callbackdata)
 {
-  if (callbackdata)
-    fprintf(stderr, "%s\n", (const char*)callbackdata);
+  if (argdef->userdata)
+    fprintf(stderr, "%s\n", (const char*)argdef->userdata);
   return -1;
 }
 

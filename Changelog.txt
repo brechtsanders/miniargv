@@ -1,3 +1,9 @@
+0.2.8
+
+2021-12-03  Brecht Sanders  https://github.com/brechtsanders/
+
+  * fix issue with error message in miniargv_cb_error()
+
 0.2.7
 
 2021-12-03  Brecht Sanders  https://github.com/brechtsanders/
