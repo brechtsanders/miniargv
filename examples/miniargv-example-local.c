@@ -7,10 +7,10 @@
  * It also shows how to set values via environment variables.
  */
 
-#include <miniargv.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <miniargv.h>
 
 //callback function for standalone parameter
 int process_arg_param (const miniargv_definition* argdef, const char* value, void* callbackdata)
@@ -33,6 +33,7 @@ int main (int argc, char *argv[], char *envp[])
     {0, NULL, "PARAM", process_arg_param, NULL, "parameter"},
     {0, NULL, NULL, NULL, NULL, NULL}
   };
+  //definition of environment variables
   const miniargv_definition envdef[] = {
     {0, "NUMBER", "N", miniargv_cb_set_int, &number, "set number to N"},
     {0, "N", NULL, miniargv_cb_set_int, &number, "set number"},

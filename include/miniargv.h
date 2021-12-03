@@ -77,7 +77,7 @@ struct miniargv_definition_struct {
   const char* help;                 /**< description of what this command line argument is for, used by \a miniargv_arg_help() */
 };
 
-/*! \brief first process environment variables and then process command line arguments and call the appropriate callback function for each match
+/*! \brief first process environment variables, then process command line argument flags and finally process command line arguments values, and call the appropriate callback function for each match
  * \param  argv          NULL-terminated array of arguments (first one is the application itself)
  * \param  env           NULL-terminated array of environment variables
  * \param  argdef        definitions of possible command line arguments
@@ -86,11 +86,30 @@ struct miniargv_definition_struct {
  * \param  callbackdata  user data passed to callback functions
  * \return zero on success or index of argument that caused processing to abort
  * \sa     miniargv_handler_fn
+ * \sa     miniargv_process_ltr()
  * \sa     miniargv_process_arg()
  * \sa     miniargv_process_arg_flags()
  * \sa     miniargv_process_arg_params()
+ * \sa     miniargv_process_env()
  */
 DLL_EXPORT_MINIARGV int miniargv_process (char* argv[], char* env[], const miniargv_definition argdef[], const miniargv_definition envdef[], miniargv_handler_fn badfn, void* callbackdata);
+
+/*! \brief first process environment variables and then process command line arguments (flags and values, from left to right), and call the appropriate callback function for each match
+ * \param  argv          NULL-terminated array of arguments (first one is the application itself)
+ * \param  env           NULL-terminated array of environment variables
+ * \param  argdef        definitions of possible command line arguments
+ * \param  envdef        definitions of possible environment variables
+ * \param  badfn         callback function for bad arguments
+ * \param  callbackdata  user data passed to callback functions
+ * \return zero on success or index of argument that caused processing to abort
+ * \sa     miniargv_handler_fn
+ * \sa     miniargv_process()
+ * \sa     miniargv_process_arg()
+ * \sa     miniargv_process_arg_flags()
+ * \sa     miniargv_process_arg_params()
+ * \sa     miniargv_process_env()
+ */
+DLL_EXPORT_MINIARGV int miniargv_process_ltr (char* argv[], char* env[], const miniargv_definition argdef[], const miniargv_definition envdef[], miniargv_handler_fn badfn, void* callbackdata);
 
 /*! \brief process command line arguments and call the appropriate callback function for each one (except the first one which is the application name)
  * \param  argv          NULL-terminated array of arguments (first one is the application itself)
@@ -100,6 +119,8 @@ DLL_EXPORT_MINIARGV int miniargv_process (char* argv[], char* env[], const minia
  * \return zero on success or index of argument that caused processing to abort
  * \sa     miniargv_definition
  * \sa     miniargv_handler_fn
+ * \sa     miniargv_process()
+ * \sa     miniargv_process_ltr()
  * \sa     miniargv_process_arg_flags()
  * \sa     miniargv_process_arg_params()
  * \sa     miniargv_process_env()
@@ -115,6 +136,7 @@ DLL_EXPORT_MINIARGV int miniargv_process_arg (char* argv[], const miniargv_defin
  * \sa     miniargv_definition
  * \sa     miniargv_handler_fn
  * \sa     miniargv_process()
+ * \sa     miniargv_process_ltr()
  * \sa     miniargv_process_arg()
  * \sa     miniargv_process_arg_params()
  * \sa     miniargv_process_env()
@@ -130,6 +152,7 @@ DLL_EXPORT_MINIARGV int miniargv_process_arg_flags (char* argv[], const miniargv
  * \sa     miniargv_definition
  * \sa     miniargv_handler_fn
  * \sa     miniargv_process()
+ * \sa     miniargv_process_ltr()
  * \sa     miniargv_process_arg()
  * \sa     miniargv_process_arg_flags()
  * \sa     miniargv_process_env()
@@ -144,6 +167,7 @@ DLL_EXPORT_MINIARGV int miniargv_process_arg_params (char* argv[], const miniarg
  * \sa     miniargv_definition
  * \sa     miniargv_handler_fn
  * \sa     miniargv_process()
+ * \sa     miniargv_process_ltr()
  * \sa     miniargv_process_arg()
  * \sa     miniargv_process_arg_flags()
  * \sa     miniargv_process_arg_params()
@@ -167,12 +191,18 @@ DLL_EXPORT_MINIARGV const char* miniargv_getprogramname (const char* argv0, int*
 /*! \brief lists possible command line arguments on one line
  * \param  argdef                definitions of possible command line arguments
  * \param  shortonly             set to non-zero to only show short arguments
+ * \sa     miniargv_env_list()
+ * \sa     miniargv_help()
+ * \sa     miniargv_env_help()
  */
 DLL_EXPORT_MINIARGV void miniargv_arg_list (const miniargv_definition argdef[], int shortonly);
 
 /*! \brief lists possible environment variables  on one line
  * \param  argdef                definitions of possible command line arguments
  * \param  noparam               set to non-zero to only show the variable names without value parameter
+ * \sa     miniargv_arg_list()
+ * \sa     miniargv_help()
+ * \sa     miniargv_env_help()
  */
 DLL_EXPORT_MINIARGV void miniargv_env_list (const miniargv_definition envdef[], int noparam);
 
@@ -194,6 +224,8 @@ DLL_EXPORT_MINIARGV void miniargv_arg_help (const miniargv_definition argdef[], 
  * \param  wrapwidth             maximum line length, defaults to 79 if set to 0
  * \sa     miniargv_help()
  * \sa     miniargv_arg_help()
+ * \sa     miniargv_arg_list()
+ * \sa     miniargv_env_list()
  * \sa     miniargv_wrap_and_indent_text()
  * \sa     miniargv_definition
  * \sa     miniargv_definition_struct
@@ -207,6 +239,8 @@ DLL_EXPORT_MINIARGV void miniargv_env_help (const miniargv_definition envdef[], 
  * \param  wrapwidth             maximum line length, defaults to 79 if set to 0
  * \sa     miniargv_arg_help()
  * \sa     miniargv_env_help()
+ * \sa     miniargv_arg_list()
+ * \sa     miniargv_env_list()
  * \sa     miniargv_wrap_and_indent_text()
  * \sa     miniargv_definition
  * \sa     miniargv_definition_struct
@@ -221,6 +255,8 @@ DLL_EXPORT_MINIARGV void miniargv_help (const miniargv_definition argdef[], cons
  * \sa     miniargv_help()
  * \sa     miniargv_arg_help()
  * \sa     miniargv_env_help()
+ * \sa     miniargv_arg_list()
+ * \sa     miniargv_env_list()
  * \sa     miniargv_definition
  * \sa     miniargv_definition_struct
  */
@@ -231,7 +267,7 @@ DLL_EXPORT_MINIARGV void miniargv_wrap_and_indent_text (const char* text, int cu
 /*! \brief predefined callback function to set constant string \b userdata to \b value
  * \param  argdef                definition of command line argument, or NULL for standalone value argument
  * \param  value                 value if specified, otherwise NULL (always specified for standalone value arguments or if \a argdef->argparam is not NULL)
- * \param  callbackdata          user data as passed to \a miniargv_process_arg()
+ * \param  callbackdata          (unused)
  * \return 0 to continue processing or non-zero to abort
  * \sa     miniargv_handler_fn
  * \sa     miniargv_definition
@@ -245,8 +281,8 @@ DLL_EXPORT_MINIARGV int miniargv_cb_set_const_str (const miniargv_definition* ar
 
 /*! \brief predefined callback function to set the integer pointed to by \b userdata to the numeric value of \b value
  * \param  argdef                definition of command line argument, or NULL for standalone value argument
- * \param  value                 value if specified, otherwise NULL (always specified for standalone value arguments or if \a argdef->argparam is not NULL)
- * \param  callbackdata          user data as passed to \a miniargv_process_arg()
+ * \param  value                 value, must be specified and must be a number
+ * \param  callbackdata          (unused)
  * \return 0 to continue processing or non-zero to abort
  * \sa     miniargv_handler_fn
  * \sa     miniargv_definition
@@ -259,10 +295,101 @@ DLL_EXPORT_MINIARGV int miniargv_cb_set_const_str (const miniargv_definition* ar
  */
 DLL_EXPORT_MINIARGV int miniargv_cb_set_int (const miniargv_definition* argdef, const char* value, void* callbackdata);
 
+/*! \brief predefined callback function to set the integer pointed to by \b userdata to 0
+ * \param  argdef                definition of command line argument, or NULL for standalone value argument
+ * \param  value                 (unused)
+ * \param  callbackdata          (unused)
+ * \return 0 to continue processing or non-zero to abort
+ * \sa     miniargv_handler_fn
+ * \sa     miniargv_definition
+ * \sa     miniargv_cb_set_int()
+ * \sa     miniargv_cb_set_int_to_one()
+ * \sa     miniargv_cb_set_int_to_minus_one()
+ * \sa     miniargv_process()
+ * \sa     miniargv_process_arg()
+ * \sa     miniargv_process_arg_flags()
+ * \sa     miniargv_process_arg_params()
+ * \sa     miniargv_process_env()
+ */
+DLL_EXPORT_MINIARGV int miniargv_cb_set_int_to_zero (const miniargv_definition* argdef, const char* value, void* callbackdata);
+
+/*! \brief predefined callback function to set the integer pointed to by \b userdata to 1
+ * \param  argdef                definition of command line argument, or NULL for standalone value argument
+ * \param  value                 (unused)
+ * \param  callbackdata          (unused)
+ * \return 0 to continue processing or non-zero to abort
+ * \sa     miniargv_handler_fn
+ * \sa     miniargv_definition
+ * \sa     miniargv_cb_set_int()
+ * \sa     miniargv_cb_set_int_to_zero()
+ * \sa     miniargv_cb_set_int_to_minus_one()
+ * \sa     miniargv_process()
+ * \sa     miniargv_process()
+ * \sa     miniargv_process_arg()
+ * \sa     miniargv_process_arg_flags()
+ * \sa     miniargv_process_arg_params()
+ * \sa     miniargv_process_env()
+ */
+DLL_EXPORT_MINIARGV int miniargv_cb_set_int_to_one (const miniargv_definition* argdef, const char* value, void* callbackdata);
+
+/*! \brief predefined callback function to set the integer pointed to by \b userdata to -1
+ * \param  argdef                definition of command line argument, or NULL for standalone value argument
+ * \param  value                 (unused)
+ * \param  callbackdata          (unused)
+ * \return 0 to continue processing or non-zero to abort
+ * \sa     miniargv_handler_fn
+ * \sa     miniargv_definition
+ * \sa     miniargv_cb_set_int()
+ * \sa     miniargv_cb_set_int_to_zero()
+ * \sa     miniargv_cb_set_int_to_one()
+ * \sa     miniargv_process()
+ * \sa     miniargv_process_arg()
+ * \sa     miniargv_process_arg_flags()
+ * \sa     miniargv_process_arg_params()
+ * \sa     miniargv_process_env()
+ */
+DLL_EXPORT_MINIARGV int miniargv_cb_set_int_to_minus_one (const miniargv_definition* argdef, const char* value, void* callbackdata);
+
+/*! \brief predefined callback function to increment the integer pointed to by \b userdata
+ * \param  argdef                definition of command line argument, or NULL for standalone value argument
+ * \param  value                 (unused)
+ * \param  callbackdata          (unused)
+ * \return 0 to continue processing or non-zero to abort
+ * \sa     miniargv_handler_fn
+ * \sa     miniargv_definition
+ * \sa     miniargv_cb_decrement_int()
+ * \sa     miniargv_cb_increment_long()
+ * \sa     miniargv_cb_decrement_long()
+ * \sa     miniargv_process()
+ * \sa     miniargv_process_arg()
+ * \sa     miniargv_process_arg_flags()
+ * \sa     miniargv_process_arg_params()
+ * \sa     miniargv_process_env()
+ */
+DLL_EXPORT_MINIARGV int miniargv_cb_increment_int (const miniargv_definition* argdef, const char* value, void* callbackdata);
+
+/*! \brief predefined callback function to decrement the integer pointed to by \b userdata
+ * \param  argdef                definition of command line argument, or NULL for standalone value argument
+ * \param  value                 (unused)
+ * \param  callbackdata          (unused)
+ * \return 0 to continue processing or non-zero to abort
+ * \sa     miniargv_handler_fn
+ * \sa     miniargv_definition
+ * \sa     miniargv_cb_increment_int()
+ * \sa     miniargv_cb_increment_long()
+ * \sa     miniargv_cb_decrement_long()
+ * \sa     miniargv_process()
+ * \sa     miniargv_process_arg()
+ * \sa     miniargv_process_arg_flags()
+ * \sa     miniargv_process_arg_params()
+ * \sa     miniargv_process_env()
+ */
+DLL_EXPORT_MINIARGV int miniargv_cb_decrement_int (const miniargv_definition* argdef, const char* value, void* callbackdata);
+
 /*! \brief predefined callback function to set the long integer pointed to by \b userdata to the numeric value of \b value
  * \param  argdef                definition of command line argument, or NULL for standalone value argument
- * \param  value                 value if specified, otherwise NULL (always specified for standalone value arguments or if \a argdef->argparam is not NULL)
- * \param  callbackdata          user data as passed to \a miniargv_process_arg()
+ * \param  value                 value, must be specified and must be a number
+ * \param  callbackdata          (unused)
  * \return 0 to continue processing or non-zero to abort
  * \sa     miniargv_handler_fn
  * \sa     miniargv_definition
@@ -275,30 +402,71 @@ DLL_EXPORT_MINIARGV int miniargv_cb_set_int (const miniargv_definition* argdef, 
  */
 DLL_EXPORT_MINIARGV int miniargv_cb_set_long (const miniargv_definition* argdef, const char* value, void* callbackdata);
 
-/*! \brief predefined callback function to increment the integer pointed to by \b userdata
+/*! \brief predefined callback function to set the long integer pointed to by \b userdata to 0
  * \param  argdef                definition of command line argument, or NULL for standalone value argument
- * \param  value                 value if specified, otherwise NULL (always specified for standalone value arguments or if \a argdef->argparam is not NULL)
- * \param  callbackdata          user data as passed to \a miniargv_process_arg()
+ * \param  value                 (unused)
+ * \param  callbackdata          (unused)
  * \return 0 to continue processing or non-zero to abort
  * \sa     miniargv_handler_fn
  * \sa     miniargv_definition
- * \sa     miniargv_cb_increment_long()
+ * \sa     miniargv_cb_set_long()
+ * \sa     miniargv_cb_set_long_to_one()
+ * \sa     miniargv_cb_set_long_to_minus_one()
  * \sa     miniargv_process()
  * \sa     miniargv_process_arg()
  * \sa     miniargv_process_arg_flags()
  * \sa     miniargv_process_arg_params()
  * \sa     miniargv_process_env()
  */
-DLL_EXPORT_MINIARGV int miniargv_cb_increment_int (const miniargv_definition* argdef, const char* value, void* callbackdata);
+DLL_EXPORT_MINIARGV int miniargv_cb_set_long_to_zero (const miniargv_definition* argdef, const char* value, void* callbackdata);
+
+/*! \brief predefined callback function to set the long integer pointed to by \b userdata to 1
+ * \param  argdef                definition of command line argument, or NULL for standalone value argument
+ * \param  value                 (unused)
+ * \param  callbackdata          (unused)
+ * \return 0 to continue processing or non-zero to abort
+ * \sa     miniargv_handler_fn
+ * \sa     miniargv_definition
+ * \sa     miniargv_cb_set_long()
+ * \sa     miniargv_cb_set_long_to_zero()
+ * \sa     miniargv_cb_set_long_to_minus_one()
+ * \sa     miniargv_process()
+ * \sa     miniargv_process()
+ * \sa     miniargv_process_arg()
+ * \sa     miniargv_process_arg_flags()
+ * \sa     miniargv_process_arg_params()
+ * \sa     miniargv_process_env()
+ */
+DLL_EXPORT_MINIARGV int miniargv_cb_set_long_to_one (const miniargv_definition* argdef, const char* value, void* callbackdata);
+
+/*! \brief predefined callback function to set the long integer pointed to by \b userdata to -1
+ * \param  argdef                definition of command line argument, or NULL for standalone value argument
+ * \param  value                 (unused)
+ * \param  callbackdata          (unused)
+ * \return 0 to continue processing or non-zero to abort
+ * \sa     miniargv_handler_fn
+ * \sa     miniargv_definition
+ * \sa     miniargv_cb_set_long()
+ * \sa     miniargv_cb_set_long_to_zero()
+ * \sa     miniargv_cb_set_long_to_one()
+ * \sa     miniargv_process()
+ * \sa     miniargv_process_arg()
+ * \sa     miniargv_process_arg_flags()
+ * \sa     miniargv_process_arg_params()
+ * \sa     miniargv_process_env()
+ */
+DLL_EXPORT_MINIARGV int miniargv_cb_set_long_to_minus_one (const miniargv_definition* argdef, const char* value, void* callbackdata);
 
 /*! \brief predefined callback function to increment the long integer pointed to by \b userdata
  * \param  argdef                definition of command line argument, or NULL for standalone value argument
- * \param  value                 value if specified, otherwise NULL (always specified for standalone value arguments or if \a argdef->argparam is not NULL)
- * \param  callbackdata          user data as passed to \a miniargv_process_arg()
+ * \param  value                 (unused)
+ * \param  callbackdata          (unused)
  * \return 0 to continue processing or non-zero to abort
  * \sa     miniargv_handler_fn
  * \sa     miniargv_definition
  * \sa     miniargv_cb_increment_int()
+ * \sa     miniargv_cb_decrement_int()
+ * \sa     miniargv_cb_decrement_long()
  * \sa     miniargv_process()
  * \sa     miniargv_process_arg()
  * \sa     miniargv_process_arg_flags()
@@ -306,6 +474,24 @@ DLL_EXPORT_MINIARGV int miniargv_cb_increment_int (const miniargv_definition* ar
  * \sa     miniargv_process_env()
  */
 DLL_EXPORT_MINIARGV int miniargv_cb_increment_long (const miniargv_definition* argdef, const char* value, void* callbackdata);
+
+/*! \brief predefined callback function to decrement the long integer pointed to by \b userdata
+ * \param  argdef                definition of command line argument, or NULL for standalone value argument
+ * \param  value                 (unused)
+ * \param  callbackdata          (unused)
+ * \return 0 to continue processing or non-zero to abort
+ * \sa     miniargv_handler_fn
+ * \sa     miniargv_definition
+ * \sa     miniargv_cb_increment_int()
+ * \sa     miniargv_cb_decrement_int()
+ * \sa     miniargv_cb_increment_long()
+ * \sa     miniargv_process()
+ * \sa     miniargv_process_arg()
+ * \sa     miniargv_process_arg_flags()
+ * \sa     miniargv_process_arg_params()
+ * \sa     miniargv_process_env()
+ */
+DLL_EXPORT_MINIARGV int miniargv_cb_decrement_long (const miniargv_definition* argdef, const char* value, void* callbackdata);
 
 
 
@@ -351,7 +537,7 @@ DLL_EXPORT_MINIARGV const char* miniargv_get_version_string ();
 /*! \brief minor version number \hideinitializer */
 #define MINIARGV_VERSION_MINOR 2
 /*! \brief micro version number \hideinitializer */
-#define MINIARGV_VERSION_MICRO 3
+#define MINIARGV_VERSION_MICRO 4
 /** @} */
 
 /*! \brief packed version number (bits 24-31: major version, bits 16-23: minor version, bits 8-15: micro version)

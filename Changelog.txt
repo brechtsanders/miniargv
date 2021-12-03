@@ -1,3 +1,18 @@
+0.2.4
+
+2021-12-03  Brecht Sanders  https://github.com/brechtsanders/
+
+  * changed miniargv_process() to process value arguments last
+  * added miniargv_process_ltr() to process flags and arguments left to right
+  * added miniargv_cb_decrement_int()
+  * added miniargv_cb_decrement_long()
+  * added miniargv_cb_set_int_to_zero()
+  * added miniargv_cb_set_int_to_one()
+  * added miniargv_cb_set_int_to_minus_one()
+  * added miniargv_cb_set_long_to_zero()
+  * added miniargv_cb_set_long_to_one()
+  * added miniargv_cb_set_long_to_minus_one()
+
 0.2.3
 
 2021-11-29  Brecht Sanders  https://github.com/brechtsanders/

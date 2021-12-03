@@ -124,6 +124,20 @@ DLL_EXPORT_MINIARGV int miniargv_process (char* argv[], char* env[], const minia
   int result = 0;
   if (env)
     result = miniargv_process_env(env, envdef, callbackdata);
+  if (argv) {
+    if (result == 0)
+      result = miniargv_process_partial(MINIARG_PROCESS_FLAG_BOTH, argv, argdef, badfn, callbackdata);
+    if (result == 0)
+      result = miniargv_process_partial(MINIARG_PROCESS_FLAG_VALUES, argv, argdef, badfn, callbackdata);
+  }
+  return result;
+}
+
+DLL_EXPORT_MINIARGV int miniargv_process_ltr (char* argv[], char* env[], const miniargv_definition argdef[], const miniargv_definition envdef[], miniargv_handler_fn badfn, void* callbackdata)
+{
+  int result = 0;
+  if (env)
+    result = miniargv_process_env(env, envdef, callbackdata);
   if (result == 0 && argv)
     result = miniargv_process_arg(argv, argdef, badfn, callbackdata);
   return result;
@@ -392,6 +406,36 @@ DLL_EXPORT_MINIARGV int miniargv_cb_set_int (const miniargv_definition* argdef, 
   return 0;
 }
 
+DLL_EXPORT_MINIARGV int miniargv_cb_set_int_to_zero (const miniargv_definition* argdef, const char* value, void* callbackdata)
+{
+  *(int*)argdef->userdata = 0;
+  return 0;
+}
+
+DLL_EXPORT_MINIARGV int miniargv_cb_set_int_to_one (const miniargv_definition* argdef, const char* value, void* callbackdata)
+{
+  *(int*)argdef->userdata = 1;
+  return 0;
+}
+
+DLL_EXPORT_MINIARGV int miniargv_cb_set_int_to_minus_one (const miniargv_definition* argdef, const char* value, void* callbackdata)
+{
+  *(int*)argdef->userdata = -1;
+  return 0;
+}
+
+DLL_EXPORT_MINIARGV int miniargv_cb_increment_int (const miniargv_definition* argdef, const char* value, void* callbackdata)
+{
+  (*((int*)argdef->userdata))++;
+  return 0;
+}
+
+DLL_EXPORT_MINIARGV int miniargv_cb_decrement_int (const miniargv_definition* argdef, const char* value, void* callbackdata)
+{
+  (*((int*)argdef->userdata))--;
+  return 0;
+}
+
 DLL_EXPORT_MINIARGV int miniargv_cb_set_long (const miniargv_definition* argdef, const char* value, void* callbackdata)
 {
   long intval;
@@ -409,13 +453,31 @@ DLL_EXPORT_MINIARGV int miniargv_cb_set_long (const miniargv_definition* argdef,
   return 0;
 }
 
-DLL_EXPORT_MINIARGV int miniargv_cb_increment_int (const miniargv_definition* argdef, const char* value, void* callbackdata)
+DLL_EXPORT_MINIARGV int miniargv_cb_set_long_to_zero (const miniargv_definition* argdef, const char* value, void* callbackdata)
 {
-  (*((int*)argdef->userdata))++;
+  *(long*)argdef->userdata = 0;
+  return 0;
+}
+
+DLL_EXPORT_MINIARGV int miniargv_cb_set_long_to_one (const miniargv_definition* argdef, const char* value, void* callbackdata)
+{
+  *(long*)argdef->userdata = 1;
+  return 0;
+}
+
+DLL_EXPORT_MINIARGV int miniargv_cb_set_long_to_minus_one (const miniargv_definition* argdef, const char* value, void* callbackdata)
+{
+  *(long*)argdef->userdata = -1;
   return 0;
 }
 
 DLL_EXPORT_MINIARGV int miniargv_cb_increment_long (const miniargv_definition* argdef, const char* value, void* callbackdata)
+{
+  (*((long*)argdef->userdata))--;
+  return 0;
+}
+
+DLL_EXPORT_MINIARGV int miniargv_cb_decrement_long (const miniargv_definition* argdef, const char* value, void* callbackdata)
 {
   (*((long*)argdef->userdata))++;
   return 0;
