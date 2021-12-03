@@ -8,9 +8,11 @@
 #define strcasecmp _stricmp
 #endif
 
-#define MINIARG_PROCESS_FLAG_FLAGS  0x01
-#define MINIARG_PROCESS_FLAG_VALUES 0x02
-#define MINIARG_PROCESS_FLAG_BOTH   0x03
+#define MINIARG_PROCESS_FLAG_FLAGS      0x01
+#define MINIARG_PROCESS_FLAG_VALUES     0x02
+#define MINIARG_PROCESS_FLAG_BOTH       (MINIARG_PROCESS_FLAG_FLAGS | MINIARG_PROCESS_FLAG_VALUES)
+#define MINIARG_PROCESS_FLAG_FIND_ONLY  0x08
+#define MINIARG_PROCESS_FLAG_FIND_VALUE (MINIARG_PROCESS_FLAG_FIND_ONLY | MINIARG_PROCESS_FLAG_VALUES)
 
 int miniargv_process_partial (unsigned int flags, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
 {
@@ -20,7 +22,7 @@ int miniargv_process_partial (unsigned int flags, char* argv[], const miniargv_d
   int success;
   int standalonevaluedefset = 0;
   const miniargv_definition* standalonevaluedef = NULL;
-  for (i = 1; argv[i]; i++) {
+  for (i = ((flags & MINIARG_PROCESS_FLAG_FIND_ONLY) == 0 ? 1 : *(int*)callbackdata + 1); argv[i]; i++) {
     success = 0;
     if (argv[i][0] == '-' && argv[i][1]) {
       if (argv[i][1] != '-') {
@@ -100,6 +102,8 @@ int miniargv_process_partial (unsigned int flags, char* argv[], const miniargv_d
       if (standalonevaluedef && standalonevaluedef->callbackfn) {
         if ((flags & MINIARG_PROCESS_FLAG_VALUES) == 0)
           success++;
+        else if ((flags & MINIARG_PROCESS_FLAG_FIND_ONLY) != 0)
+          return i;
         else if ((standalonevaluedef->callbackfn)(standalonevaluedef, argv[i], callbackdata) == 0)
           success++;
       }
@@ -108,10 +112,14 @@ int miniargv_process_partial (unsigned int flags, char* argv[], const miniargv_d
       //bad argument
       if (badfn && (badfn)(NULL, argv[i], callbackdata) == 0)
         success++;
+      else if ((flags & MINIARG_PROCESS_FLAG_FIND_ONLY) != 0)
+        return -1;
       else
         return i;
     }
     if (!success) {
+      if ((flags & MINIARG_PROCESS_FLAG_FIND_ONLY) != 0)
+        return -1;
       fprintf(stderr, "Invalid command line argument: %s\n", argv[i]);
       return i;
     }
@@ -180,6 +188,11 @@ DLL_EXPORT_MINIARGV int miniargv_process_env (char* env[], const miniargv_defini
     current_envdef++;
   }
   return 0;
+}
+
+DLL_EXPORT_MINIARGV int miniargv_get_next_arg_param (int argindex, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn)
+{
+  return miniargv_process_partial(MINIARG_PROCESS_FLAG_FIND_VALUE, argv, argdef, badfn, &argindex);
 }
 
 DLL_EXPORT_MINIARGV const char* miniargv_getprogramname (const char* argv0, int* length)

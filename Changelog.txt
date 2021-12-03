@@ -1,3 +1,9 @@
+0.2.6
+
+2021-12-03  Brecht Sanders  https://github.com/brechtsanders/
+
+  * added miniargv_get_next_arg_param()
+
 0.2.5
 
 2021-12-03  Brecht Sanders  https://github.com/brechtsanders/

@@ -57,5 +57,10 @@ int main (int argc, char *argv[], char *envp[])
   //show values
   printf("verbose = %i\n", verbose);
   printf("number = %i\n", number);
+  //step through all command line values
+  int i = 0;
+  while ((i = miniargv_get_next_arg_param(i, argv, argdef, NULL)) > 0) {
+    printf("arg[%i]: %s\n", i, argv[i]);
+  }
   return 0;
 }

@@ -91,6 +91,7 @@ struct miniargv_definition_struct {
  * \sa     miniargv_process_arg_flags()
  * \sa     miniargv_process_arg_params()
  * \sa     miniargv_process_env()
+ * \sa     miniargv_get_next_arg_param()
  */
 DLL_EXPORT_MINIARGV int miniargv_process (char* argv[], char* env[], const miniargv_definition argdef[], const miniargv_definition envdef[], miniargv_handler_fn badfn, void* callbackdata);
 
@@ -108,6 +109,7 @@ DLL_EXPORT_MINIARGV int miniargv_process (char* argv[], char* env[], const minia
  * \sa     miniargv_process_arg_flags()
  * \sa     miniargv_process_arg_params()
  * \sa     miniargv_process_env()
+ * \sa     miniargv_get_next_arg_param()
  */
 DLL_EXPORT_MINIARGV int miniargv_process_ltr (char* argv[], char* env[], const miniargv_definition argdef[], const miniargv_definition envdef[], miniargv_handler_fn badfn, void* callbackdata);
 
@@ -124,6 +126,7 @@ DLL_EXPORT_MINIARGV int miniargv_process_ltr (char* argv[], char* env[], const m
  * \sa     miniargv_process_arg_flags()
  * \sa     miniargv_process_arg_params()
  * \sa     miniargv_process_env()
+ * \sa     miniargv_get_next_arg_param()
  */
 DLL_EXPORT_MINIARGV int miniargv_process_arg (char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata);
 
@@ -156,6 +159,7 @@ DLL_EXPORT_MINIARGV int miniargv_process_arg_flags (char* argv[], const miniargv
  * \sa     miniargv_process_arg()
  * \sa     miniargv_process_arg_flags()
  * \sa     miniargv_process_env()
+ * \sa     miniargv_get_next_arg_param()
  */
 DLL_EXPORT_MINIARGV int miniargv_process_arg_params (char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata);
 
@@ -173,6 +177,20 @@ DLL_EXPORT_MINIARGV int miniargv_process_arg_params (char* argv[], const miniarg
  * \sa     miniargv_process_arg_params()
  */
 DLL_EXPORT_MINIARGV int miniargv_process_env (char* env[], const miniargv_definition envdef[], void* callbackdata);
+
+/*! \brief get next value command line argument
+ * \param  argindex      index of current argument or 0 for the first call
+ * \param  argv          NULL-terminated array of arguments (first one is the application itself)
+ * \param  argdef        definitions of possible command line arguments
+ * \param  badfn         callback function for bad arguments
+ * \return index of next value command line argument, zero when done or negative on error
+ * \sa     miniargv_definition
+ * \sa     miniargv_handler_fn
+ * \sa     miniargv_process()
+ * \sa     miniargv_process_ltr()
+ * \sa     miniargv_process_arg()
+ */
+DLL_EXPORT_MINIARGV int miniargv_get_next_arg_param (int argindex, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn);
 
 /*! \brief get application name and length
  *
@@ -537,7 +555,7 @@ DLL_EXPORT_MINIARGV const char* miniargv_get_version_string ();
 /*! \brief minor version number \hideinitializer */
 #define MINIARGV_VERSION_MINOR 2
 /*! \brief micro version number \hideinitializer */
-#define MINIARGV_VERSION_MICRO 5
+#define MINIARGV_VERSION_MICRO 6
 /** @} */
 
 /*! \brief packed version number (bits 24-31: major version, bits 16-23: minor version, bits 8-15: micro version)
