@@ -126,7 +126,7 @@ DLL_EXPORT_MINIARGV int miniargv_process (char* argv[], char* env[], const minia
     result = miniargv_process_env(env, envdef, callbackdata);
   if (argv) {
     if (result == 0)
-      result = miniargv_process_partial(MINIARG_PROCESS_FLAG_BOTH, argv, argdef, badfn, callbackdata);
+      result = miniargv_process_partial(MINIARG_PROCESS_FLAG_FLAGS, argv, argdef, badfn, callbackdata);
     if (result == 0)
       result = miniargv_process_partial(MINIARG_PROCESS_FLAG_VALUES, argv, argdef, badfn, callbackdata);
   }
