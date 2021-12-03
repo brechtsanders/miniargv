@@ -496,6 +496,18 @@ DLL_EXPORT_MINIARGV int miniargv_cb_decrement_long (const miniargv_definition* a
   return 0;
 }
 
+DLL_EXPORT_MINIARGV int miniargv_cb_noop (const miniargv_definition* argdef, const char* value, void* callbackdata)
+{
+  return 0;
+}
+
+DLL_EXPORT_MINIARGV int miniargv_cb_error (const miniargv_definition* argdef, const char* value, void* callbackdata)
+{
+  if (callbackdata)
+    fprintf(stderr, "%s\n", (const char*)callbackdata);
+  return -1;
+}
+
 
 
 DLL_EXPORT_MINIARGV void miniargv_get_version (int* pmajor, int* pminor, int* pmicro)

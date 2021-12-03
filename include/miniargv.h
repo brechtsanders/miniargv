@@ -511,6 +511,36 @@ DLL_EXPORT_MINIARGV int miniargv_cb_increment_long (const miniargv_definition* a
  */
 DLL_EXPORT_MINIARGV int miniargv_cb_decrement_long (const miniargv_definition* argdef, const char* value, void* callbackdata);
 
+/*! \brief predefined callback function that does nothing
+ * \param  argdef                definition of command line argument, or NULL for standalone value argument
+ * \param  value                 (unused)
+ * \param  callbackdata          (unused)
+ * \return 0
+ * \sa     miniargv_handler_fn
+ * \sa     miniargv_definition
+ * \sa     miniargv_process()
+ * \sa     miniargv_process_arg()
+ * \sa     miniargv_process_arg_flags()
+ * \sa     miniargv_process_arg_params()
+ * \sa     miniargv_process_env()
+ */
+DLL_EXPORT_MINIARGV int miniargv_cb_noop (const miniargv_definition* argdef, const char* value, void* callbackdata);
+
+/*! \brief predefined callback function that returns an error and displays the error pointed to by \b userdata (if not NULL)
+ * \param  argdef                definition of command line argument, or NULL for standalone value argument
+ * \param  value                 (unused)
+ * \param  callbackdata          (unused)
+ * \return -1
+ * \sa     miniargv_handler_fn
+ * \sa     miniargv_definition
+ * \sa     miniargv_process()
+ * \sa     miniargv_process_arg()
+ * \sa     miniargv_process_arg_flags()
+ * \sa     miniargv_process_arg_params()
+ * \sa     miniargv_process_env()
+ */
+DLL_EXPORT_MINIARGV int miniargv_cb_error (const miniargv_definition* argdef, const char* value, void* callbackdata);
+
 
 
 /*! \brief get miniargv library version string
@@ -555,7 +585,7 @@ DLL_EXPORT_MINIARGV const char* miniargv_get_version_string ();
 /*! \brief minor version number \hideinitializer */
 #define MINIARGV_VERSION_MINOR 2
 /*! \brief micro version number \hideinitializer */
-#define MINIARGV_VERSION_MICRO 6
+#define MINIARGV_VERSION_MICRO 7
 /** @} */
 
 /*! \brief packed version number (bits 24-31: major version, bits 16-23: minor version, bits 8-15: micro version)

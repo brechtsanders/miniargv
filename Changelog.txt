@@ -1,3 +1,10 @@
+0.2.7
+
+2021-12-03  Brecht Sanders  https://github.com/brechtsanders/
+
+  * added miniargv_cb_noop()
+  * added miniargv_cb_error()
+
 0.2.6
 
 2021-12-03  Brecht Sanders  https://github.com/brechtsanders/
