@@ -143,6 +143,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a55bcaa2e259524598275426976285d7b"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a55bcaa2e259524598275426976285d7b">miniargv_process_env</a> (char *env[], const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> envdef[], void *callbackdata)</td></tr>
 <tr class="memdesc:a55bcaa2e259524598275426976285d7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">process environment variables and call the appropriate callback function for each match  <a href="miniargv_8h.html#a55bcaa2e259524598275426976285d7b">More...</a><br /></td></tr>
 <tr class="separator:a55bcaa2e259524598275426976285d7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4368e8e038e6ce7bf7a8133107ccc2f9"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a4368e8e038e6ce7bf7a8133107ccc2f9">miniargv_get_next_arg_param</a> (int argindex, char *argv[], const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> argdef[], <a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d">miniargv_handler_fn</a> badfn)</td></tr>
+<tr class="memdesc:a4368e8e038e6ce7bf7a8133107ccc2f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">get next value command line argument  <a href="miniargv_8h.html#a4368e8e038e6ce7bf7a8133107ccc2f9">More...</a><br /></td></tr>
+<tr class="separator:a4368e8e038e6ce7bf7a8133107ccc2f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1cf21a3e42ac63ab4dfe44d458658b1"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#aa1cf21a3e42ac63ab4dfe44d458658b1">miniargv_getprogramname</a> (const char *argv0, int *length)</td></tr>
 <tr class="memdesc:aa1cf21a3e42ac63ab4dfe44d458658b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">get application name and length  <a href="miniargv_8h.html#aa1cf21a3e42ac63ab4dfe44d458658b1">More...</a><br /></td></tr>
 <tr class="separator:aa1cf21a3e42ac63ab4dfe44d458658b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -420,7 +423,9 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="miniargv_8h.html#a98a3d4f90c5edc3fb2581928b3807312" title="process only standalone value command line arguments and call the appropriate callback function for e...">miniargv_process_arg_params()</a> </dd>
 <dd>
-<a class="el" href="miniargv_8h.html#a55bcaa2e259524598275426976285d7b" title="process environment variables and call the appropriate callback function for each match">miniargv_process_env()</a> </dd></dl>
+<a class="el" href="miniargv_8h.html#a55bcaa2e259524598275426976285d7b" title="process environment variables and call the appropriate callback function for each match">miniargv_process_env()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a4368e8e038e6ce7bf7a8133107ccc2f9" title="get next value command line argument">miniargv_get_next_arg_param()</a> </dd></dl>
 
 </div>
 </div>
@@ -497,7 +502,9 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="miniargv_8h.html#a98a3d4f90c5edc3fb2581928b3807312" title="process only standalone value command line arguments and call the appropriate callback function for e...">miniargv_process_arg_params()</a> </dd>
 <dd>
-<a class="el" href="miniargv_8h.html#a55bcaa2e259524598275426976285d7b" title="process environment variables and call the appropriate callback function for each match">miniargv_process_env()</a> </dd></dl>
+<a class="el" href="miniargv_8h.html#a55bcaa2e259524598275426976285d7b" title="process environment variables and call the appropriate callback function for each match">miniargv_process_env()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a4368e8e038e6ce7bf7a8133107ccc2f9" title="get next value command line argument">miniargv_get_next_arg_param()</a> </dd></dl>
 
 </div>
 </div>
@@ -562,7 +569,9 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="miniargv_8h.html#a98a3d4f90c5edc3fb2581928b3807312" title="process only standalone value command line arguments and call the appropriate callback function for e...">miniargv_process_arg_params()</a> </dd>
 <dd>
-<a class="el" href="miniargv_8h.html#a55bcaa2e259524598275426976285d7b" title="process environment variables and call the appropriate callback function for each match">miniargv_process_env()</a> </dd></dl>
+<a class="el" href="miniargv_8h.html#a55bcaa2e259524598275426976285d7b" title="process environment variables and call the appropriate callback function for each match">miniargv_process_env()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a4368e8e038e6ce7bf7a8133107ccc2f9" title="get next value command line argument">miniargv_get_next_arg_param()</a> </dd></dl>
 
 </div>
 </div>
@@ -692,7 +701,9 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="miniargv_8h.html#a8f6d14b929f3bf980d99d1d99d2a7a0d" title="process only flag command line arguments and call the appropriate callback function for each one (exc...">miniargv_process_arg_flags()</a> </dd>
 <dd>
-<a class="el" href="miniargv_8h.html#a55bcaa2e259524598275426976285d7b" title="process environment variables and call the appropriate callback function for each match">miniargv_process_env()</a> </dd></dl>
+<a class="el" href="miniargv_8h.html#a55bcaa2e259524598275426976285d7b" title="process environment variables and call the appropriate callback function for each match">miniargv_process_env()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a4368e8e038e6ce7bf7a8133107ccc2f9" title="get next value command line argument">miniargv_get_next_arg_param()</a> </dd></dl>
 
 </div>
 </div>
@@ -751,6 +762,67 @@ Functions</h2></td></tr>
 <a class="el" href="miniargv_8h.html#a8f6d14b929f3bf980d99d1d99d2a7a0d" title="process only flag command line arguments and call the appropriate callback function for each one (exc...">miniargv_process_arg_flags()</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a98a3d4f90c5edc3fb2581928b3807312" title="process only standalone value command line arguments and call the appropriate callback function for e...">miniargv_process_arg_params()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a4368e8e038e6ce7bf7a8133107ccc2f9" name="a4368e8e038e6ce7bf7a8133107ccc2f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4368e8e038e6ce7bf7a8133107ccc2f9">&#9670;&nbsp;</a></span>miniargv_get_next_arg_param()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DLL_EXPORT_MINIARGV int miniargv_get_next_arg_param </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>argindex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>argv</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a>&#160;</td>
+          <td class="paramname"><em>argdef</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d">miniargv_handler_fn</a>&#160;</td>
+          <td class="paramname"><em>badfn</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>get next value command line argument </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">argindex</td><td>index of current argument or 0 for the first call </td></tr>
+    <tr><td class="paramname">argv</td><td>NULL-terminated array of arguments (first one is the application itself) </td></tr>
+    <tr><td class="paramname">argdef</td><td>definitions of possible command line arguments </td></tr>
+    <tr><td class="paramname">badfn</td><td>callback function for bad arguments </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>index of next value command line argument, zero when done or negative on error </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d" title="callback function called by miniargv_process_arg() for each argument encountered">miniargv_handler_fn</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables, then process command line argument flags and finally process com...">miniargv_process()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aea855b23ce394e82dea54ebf6a4f474b" title="first process environment variables and then process command line arguments (flags and values,...">miniargv_process_ltr()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process_arg()</a> </dd></dl>
 
 </div>
 </div>
