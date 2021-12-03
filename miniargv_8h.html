@@ -126,8 +126,11 @@ Typedefs</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:aff212d68e5ceff2ed20eb660204a71c3"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3">miniargv_process</a> (char *argv[], char *env[], const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> argdef[], const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> envdef[], <a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d">miniargv_handler_fn</a> badfn, void *callbackdata)</td></tr>
-<tr class="memdesc:aff212d68e5ceff2ed20eb660204a71c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">first process environment variables and then process command line arguments and call the appropriate callback function for each match  <a href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3">More...</a><br /></td></tr>
+<tr class="memdesc:aff212d68e5ceff2ed20eb660204a71c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">first process environment variables, then process command line argument flags and finally process command line arguments values, and call the appropriate callback function for each match  <a href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3">More...</a><br /></td></tr>
 <tr class="separator:aff212d68e5ceff2ed20eb660204a71c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea855b23ce394e82dea54ebf6a4f474b"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#aea855b23ce394e82dea54ebf6a4f474b">miniargv_process_ltr</a> (char *argv[], char *env[], const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> argdef[], const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> envdef[], <a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d">miniargv_handler_fn</a> badfn, void *callbackdata)</td></tr>
+<tr class="memdesc:aea855b23ce394e82dea54ebf6a4f474b"><td class="mdescLeft">&#160;</td><td class="mdescRight">first process environment variables and then process command line arguments (flags and values, from left to right), and call the appropriate callback function for each match  <a href="miniargv_8h.html#aea855b23ce394e82dea54ebf6a4f474b">More...</a><br /></td></tr>
+<tr class="separator:aea855b23ce394e82dea54ebf6a4f474b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07b7a401f18615ba4ac31b8271fa6bd3"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3">miniargv_process_arg</a> (char *argv[], const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> argdef[], <a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d">miniargv_handler_fn</a> badfn, void *callbackdata)</td></tr>
 <tr class="memdesc:a07b7a401f18615ba4ac31b8271fa6bd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">process command line arguments and call the appropriate callback function for each one (except the first one which is the application name)  <a href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3">More...</a><br /></td></tr>
 <tr class="separator:a07b7a401f18615ba4ac31b8271fa6bd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -167,15 +170,39 @@ Functions</h2></td></tr>
 <tr class="memitem:aacf591e5cce4f764de6d029c54842a2b"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#aacf591e5cce4f764de6d029c54842a2b">miniargv_cb_set_int</a> (const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *argdef, const char *value, void *callbackdata)</td></tr>
 <tr class="memdesc:aacf591e5cce4f764de6d029c54842a2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">predefined callback function to set the integer pointed to by <b>userdata</b> to the numeric value of <b>value</b>  <a href="miniargv_8h.html#aacf591e5cce4f764de6d029c54842a2b">More...</a><br /></td></tr>
 <tr class="separator:aacf591e5cce4f764de6d029c54842a2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a80a2d2bf3fbfb65f75219f36a66917"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a2a80a2d2bf3fbfb65f75219f36a66917">miniargv_cb_set_long</a> (const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *argdef, const char *value, void *callbackdata)</td></tr>
-<tr class="memdesc:a2a80a2d2bf3fbfb65f75219f36a66917"><td class="mdescLeft">&#160;</td><td class="mdescRight">predefined callback function to set the long integer pointed to by <b>userdata</b> to the numeric value of <b>value</b>  <a href="miniargv_8h.html#a2a80a2d2bf3fbfb65f75219f36a66917">More...</a><br /></td></tr>
-<tr class="separator:a2a80a2d2bf3fbfb65f75219f36a66917"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a0e22cf07b985f240011a1bccfd0595"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a7a0e22cf07b985f240011a1bccfd0595">miniargv_cb_set_int_to_zero</a> (const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *argdef, const char *value, void *callbackdata)</td></tr>
+<tr class="memdesc:a7a0e22cf07b985f240011a1bccfd0595"><td class="mdescLeft">&#160;</td><td class="mdescRight">predefined callback function to set the integer pointed to by <b>userdata</b> to 0  <a href="miniargv_8h.html#a7a0e22cf07b985f240011a1bccfd0595">More...</a><br /></td></tr>
+<tr class="separator:a7a0e22cf07b985f240011a1bccfd0595"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f056bc470536698c12f8f0f80d55699"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a3f056bc470536698c12f8f0f80d55699">miniargv_cb_set_int_to_one</a> (const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *argdef, const char *value, void *callbackdata)</td></tr>
+<tr class="memdesc:a3f056bc470536698c12f8f0f80d55699"><td class="mdescLeft">&#160;</td><td class="mdescRight">predefined callback function to set the integer pointed to by <b>userdata</b> to 1  <a href="miniargv_8h.html#a3f056bc470536698c12f8f0f80d55699">More...</a><br /></td></tr>
+<tr class="separator:a3f056bc470536698c12f8f0f80d55699"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b574d88e260549cc3a2cdf33352469b"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a6b574d88e260549cc3a2cdf33352469b">miniargv_cb_set_int_to_minus_one</a> (const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *argdef, const char *value, void *callbackdata)</td></tr>
+<tr class="memdesc:a6b574d88e260549cc3a2cdf33352469b"><td class="mdescLeft">&#160;</td><td class="mdescRight">predefined callback function to set the integer pointed to by <b>userdata</b> to -1  <a href="miniargv_8h.html#a6b574d88e260549cc3a2cdf33352469b">More...</a><br /></td></tr>
+<tr class="separator:a6b574d88e260549cc3a2cdf33352469b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada777adc0e97fef3c3aed07ae159805f"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#ada777adc0e97fef3c3aed07ae159805f">miniargv_cb_increment_int</a> (const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *argdef, const char *value, void *callbackdata)</td></tr>
 <tr class="memdesc:ada777adc0e97fef3c3aed07ae159805f"><td class="mdescLeft">&#160;</td><td class="mdescRight">predefined callback function to increment the integer pointed to by <b>userdata</b>  <a href="miniargv_8h.html#ada777adc0e97fef3c3aed07ae159805f">More...</a><br /></td></tr>
 <tr class="separator:ada777adc0e97fef3c3aed07ae159805f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a832a1963c2cecc9307da0afdd5ca3734"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a832a1963c2cecc9307da0afdd5ca3734">miniargv_cb_decrement_int</a> (const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *argdef, const char *value, void *callbackdata)</td></tr>
+<tr class="memdesc:a832a1963c2cecc9307da0afdd5ca3734"><td class="mdescLeft">&#160;</td><td class="mdescRight">predefined callback function to decrement the integer pointed to by <b>userdata</b>  <a href="miniargv_8h.html#a832a1963c2cecc9307da0afdd5ca3734">More...</a><br /></td></tr>
+<tr class="separator:a832a1963c2cecc9307da0afdd5ca3734"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a80a2d2bf3fbfb65f75219f36a66917"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a2a80a2d2bf3fbfb65f75219f36a66917">miniargv_cb_set_long</a> (const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *argdef, const char *value, void *callbackdata)</td></tr>
+<tr class="memdesc:a2a80a2d2bf3fbfb65f75219f36a66917"><td class="mdescLeft">&#160;</td><td class="mdescRight">predefined callback function to set the long integer pointed to by <b>userdata</b> to the numeric value of <b>value</b>  <a href="miniargv_8h.html#a2a80a2d2bf3fbfb65f75219f36a66917">More...</a><br /></td></tr>
+<tr class="separator:a2a80a2d2bf3fbfb65f75219f36a66917"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f3ecad8f42959ce8f9679f42d70504c"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a8f3ecad8f42959ce8f9679f42d70504c">miniargv_cb_set_long_to_zero</a> (const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *argdef, const char *value, void *callbackdata)</td></tr>
+<tr class="memdesc:a8f3ecad8f42959ce8f9679f42d70504c"><td class="mdescLeft">&#160;</td><td class="mdescRight">predefined callback function to set the long integer pointed to by <b>userdata</b> to 0  <a href="miniargv_8h.html#a8f3ecad8f42959ce8f9679f42d70504c">More...</a><br /></td></tr>
+<tr class="separator:a8f3ecad8f42959ce8f9679f42d70504c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a462096513eb56c5f30dd065c676ac5b5"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a462096513eb56c5f30dd065c676ac5b5">miniargv_cb_set_long_to_one</a> (const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *argdef, const char *value, void *callbackdata)</td></tr>
+<tr class="memdesc:a462096513eb56c5f30dd065c676ac5b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">predefined callback function to set the long integer pointed to by <b>userdata</b> to 1  <a href="miniargv_8h.html#a462096513eb56c5f30dd065c676ac5b5">More...</a><br /></td></tr>
+<tr class="separator:a462096513eb56c5f30dd065c676ac5b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae57b36623e306ac5c42c0fa4ba57e916"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#ae57b36623e306ac5c42c0fa4ba57e916">miniargv_cb_set_long_to_minus_one</a> (const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *argdef, const char *value, void *callbackdata)</td></tr>
+<tr class="memdesc:ae57b36623e306ac5c42c0fa4ba57e916"><td class="mdescLeft">&#160;</td><td class="mdescRight">predefined callback function to set the long integer pointed to by <b>userdata</b> to -1  <a href="miniargv_8h.html#ae57b36623e306ac5c42c0fa4ba57e916">More...</a><br /></td></tr>
+<tr class="separator:ae57b36623e306ac5c42c0fa4ba57e916"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99c477e3ce350156bfb9d26a56f50300"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a99c477e3ce350156bfb9d26a56f50300">miniargv_cb_increment_long</a> (const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *argdef, const char *value, void *callbackdata)</td></tr>
 <tr class="memdesc:a99c477e3ce350156bfb9d26a56f50300"><td class="mdescLeft">&#160;</td><td class="mdescRight">predefined callback function to increment the long integer pointed to by <b>userdata</b>  <a href="miniargv_8h.html#a99c477e3ce350156bfb9d26a56f50300">More...</a><br /></td></tr>
 <tr class="separator:a99c477e3ce350156bfb9d26a56f50300"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87737e42d9e673e46cc4e05d75b913f7"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a87737e42d9e673e46cc4e05d75b913f7">miniargv_cb_decrement_long</a> (const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *argdef, const char *value, void *callbackdata)</td></tr>
+<tr class="memdesc:a87737e42d9e673e46cc4e05d75b913f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">predefined callback function to decrement the long integer pointed to by <b>userdata</b>  <a href="miniargv_8h.html#a87737e42d9e673e46cc4e05d75b913f7">More...</a><br /></td></tr>
+<tr class="separator:a87737e42d9e673e46cc4e05d75b913f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5101866e681a0bec69a8c2ceb636c7cd"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a5101866e681a0bec69a8c2ceb636c7cd">miniargv_get_version</a> (int *pmajor, int *pminor, int *pmicro)</td></tr>
 <tr class="memdesc:a5101866e681a0bec69a8c2ceb636c7cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">get miniargv library version string  <a href="miniargv_8h.html#a5101866e681a0bec69a8c2ceb636c7cd">More...</a><br /></td></tr>
 <tr class="separator:a5101866e681a0bec69a8c2ceb636c7cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -370,7 +397,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>first process environment variables and then process command line arguments and call the appropriate callback function for each match </p>
+<p>first process environment variables, then process command line argument flags and finally process command line arguments values, and call the appropriate callback function for each match </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">argv</td><td>NULL-terminated array of arguments (first one is the application itself) </td></tr>
@@ -385,11 +412,92 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>zero on success or index of argument that caused processing to abort </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d" title="callback function called by miniargv_process_arg() for each argument encountered">miniargv_handler_fn</a> </dd>
 <dd>
+<a class="el" href="miniargv_8h.html#aea855b23ce394e82dea54ebf6a4f474b" title="first process environment variables and then process command line arguments (flags and values,...">miniargv_process_ltr()</a> </dd>
+<dd>
 <a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process_arg()</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a8f6d14b929f3bf980d99d1d99d2a7a0d" title="process only flag command line arguments and call the appropriate callback function for each one (exc...">miniargv_process_arg_flags()</a> </dd>
 <dd>
-<a class="el" href="miniargv_8h.html#a98a3d4f90c5edc3fb2581928b3807312" title="process only standalone value command line arguments and call the appropriate callback function for e...">miniargv_process_arg_params()</a> </dd></dl>
+<a class="el" href="miniargv_8h.html#a98a3d4f90c5edc3fb2581928b3807312" title="process only standalone value command line arguments and call the appropriate callback function for e...">miniargv_process_arg_params()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a55bcaa2e259524598275426976285d7b" title="process environment variables and call the appropriate callback function for each match">miniargv_process_env()</a> </dd></dl>
+
+</div>
+</div>
+<a id="aea855b23ce394e82dea54ebf6a4f474b" name="aea855b23ce394e82dea54ebf6a4f474b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea855b23ce394e82dea54ebf6a4f474b">&#9670;&nbsp;</a></span>miniargv_process_ltr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DLL_EXPORT_MINIARGV int miniargv_process_ltr </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>argv</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>env</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a>&#160;</td>
+          <td class="paramname"><em>argdef</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a>&#160;</td>
+          <td class="paramname"><em>envdef</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d">miniargv_handler_fn</a>&#160;</td>
+          <td class="paramname"><em>badfn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>callbackdata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>first process environment variables and then process command line arguments (flags and values, from left to right), and call the appropriate callback function for each match </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">argv</td><td>NULL-terminated array of arguments (first one is the application itself) </td></tr>
+    <tr><td class="paramname">env</td><td>NULL-terminated array of environment variables </td></tr>
+    <tr><td class="paramname">argdef</td><td>definitions of possible command line arguments </td></tr>
+    <tr><td class="paramname">envdef</td><td>definitions of possible environment variables </td></tr>
+    <tr><td class="paramname">badfn</td><td>callback function for bad arguments </td></tr>
+    <tr><td class="paramname">callbackdata</td><td>user data passed to callback functions </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>zero on success or index of argument that caused processing to abort </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d" title="callback function called by miniargv_process_arg() for each argument encountered">miniargv_handler_fn</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables, then process command line argument flags and finally process com...">miniargv_process()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process_arg()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a8f6d14b929f3bf980d99d1d99d2a7a0d" title="process only flag command line arguments and call the appropriate callback function for each one (exc...">miniargv_process_arg_flags()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a98a3d4f90c5edc3fb2581928b3807312" title="process only standalone value command line arguments and call the appropriate callback function for e...">miniargv_process_arg_params()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a55bcaa2e259524598275426976285d7b" title="process environment variables and call the appropriate callback function for each match">miniargv_process_env()</a> </dd></dl>
 
 </div>
 </div>
@@ -445,6 +553,10 @@ Functions</h2></td></tr>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d" title="callback function called by miniargv_process_arg() for each argument encountered">miniargv_handler_fn</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables, then process command line argument flags and finally process com...">miniargv_process()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aea855b23ce394e82dea54ebf6a4f474b" title="first process environment variables and then process command line arguments (flags and values,...">miniargv_process_ltr()</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a8f6d14b929f3bf980d99d1d99d2a7a0d" title="process only flag command line arguments and call the appropriate callback function for each one (exc...">miniargv_process_arg_flags()</a> </dd>
 <dd>
@@ -507,7 +619,9 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d" title="callback function called by miniargv_process_arg() for each argument encountered">miniargv_handler_fn</a> </dd>
 <dd>
-<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables and then process command line arguments and call the appropriate ...">miniargv_process()</a> </dd>
+<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables, then process command line argument flags and finally process com...">miniargv_process()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aea855b23ce394e82dea54ebf6a4f474b" title="first process environment variables and then process command line arguments (flags and values,...">miniargv_process_ltr()</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process_arg()</a> </dd>
 <dd>
@@ -570,7 +684,9 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d" title="callback function called by miniargv_process_arg() for each argument encountered">miniargv_handler_fn</a> </dd>
 <dd>
-<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables and then process command line arguments and call the appropriate ...">miniargv_process()</a> </dd>
+<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables, then process command line argument flags and finally process com...">miniargv_process()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aea855b23ce394e82dea54ebf6a4f474b" title="first process environment variables and then process command line arguments (flags and values,...">miniargv_process_ltr()</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process_arg()</a> </dd>
 <dd>
@@ -626,7 +742,9 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d" title="callback function called by miniargv_process_arg() for each argument encountered">miniargv_handler_fn</a> </dd>
 <dd>
-<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables and then process command line arguments and call the appropriate ...">miniargv_process()</a> </dd>
+<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables, then process command line argument flags and finally process com...">miniargv_process()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aea855b23ce394e82dea54ebf6a4f474b" title="first process environment variables and then process command line arguments (flags and values,...">miniargv_process_ltr()</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process_arg()</a> </dd>
 <dd>
@@ -711,6 +829,11 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a23c15df98d2fb78a3c32147b1f5e93eb" title="lists possible environment variables on one line">miniargv_env_list()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a6e281f3ed371f8e05a77cdded8594666" title="display help text explaining command line arguments and environment variables">miniargv_help()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a4d7659faa8dbb2d6a4c6dbe76a55f3f4" title="display help text explaining environment variables">miniargv_env_help()</a> </dd></dl>
 
 </div>
 </div>
@@ -748,6 +871,11 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a5f40edf85ba2a4d5b4416c7bd599201e" title="lists possible command line arguments on one line">miniargv_arg_list()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a6e281f3ed371f8e05a77cdded8594666" title="display help text explaining command line arguments and environment variables">miniargv_help()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a4d7659faa8dbb2d6a4c6dbe76a55f3f4" title="display help text explaining environment variables">miniargv_env_help()</a> </dd></dl>
 
 </div>
 </div>
@@ -849,6 +977,10 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="miniargv_8h.html#a1f098748c7cfa09a22a5f78adbcf9dee" title="display help text explaining command line arguments">miniargv_arg_help()</a> </dd>
 <dd>
+<a class="el" href="miniargv_8h.html#a5f40edf85ba2a4d5b4416c7bd599201e" title="lists possible command line arguments on one line">miniargv_arg_list()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a23c15df98d2fb78a3c32147b1f5e93eb" title="lists possible environment variables on one line">miniargv_env_list()</a> </dd>
+<dd>
 <a class="el" href="miniargv_8h.html#a3fa56706bc5f1df6b14aaff322007bd4" title="display help text wile wrapping it at a maximum width and indenting new lines">miniargv_wrap_and_indent_text()</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
@@ -908,6 +1040,10 @@ Functions</h2></td></tr>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a1f098748c7cfa09a22a5f78adbcf9dee" title="display help text explaining command line arguments">miniargv_arg_help()</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a4d7659faa8dbb2d6a4c6dbe76a55f3f4" title="display help text explaining environment variables">miniargv_env_help()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a5f40edf85ba2a4d5b4416c7bd599201e" title="lists possible command line arguments on one line">miniargv_arg_list()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a23c15df98d2fb78a3c32147b1f5e93eb" title="lists possible environment variables on one line">miniargv_env_list()</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a3fa56706bc5f1df6b14aaff322007bd4" title="display help text wile wrapping it at a maximum width and indenting new lines">miniargv_wrap_and_indent_text()</a> </dd>
 <dd>
@@ -971,6 +1107,10 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="miniargv_8h.html#a4d7659faa8dbb2d6a4c6dbe76a55f3f4" title="display help text explaining environment variables">miniargv_env_help()</a> </dd>
 <dd>
+<a class="el" href="miniargv_8h.html#a5f40edf85ba2a4d5b4416c7bd599201e" title="lists possible command line arguments on one line">miniargv_arg_list()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a23c15df98d2fb78a3c32147b1f5e93eb" title="lists possible environment variables on one line">miniargv_env_list()</a> </dd>
+<dd>
 <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
 <dd>
 <a class="el" href="structminiargv__definition__struct.html" title="structure for command line argument definition">miniargv_definition_struct</a> </dd></dl>
@@ -1014,7 +1154,7 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">argdef</td><td>definition of command line argument, or NULL for standalone value argument </td></tr>
     <tr><td class="paramname">value</td><td>value if specified, otherwise NULL (always specified for standalone value arguments or if <em>argdef-&gt;argparam</em> is not NULL) </td></tr>
-    <tr><td class="paramname">callbackdata</td><td>user data as passed to <em><a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process_arg()</a></em> </td></tr>
+    <tr><td class="paramname">callbackdata</td><td>(unused) </td></tr>
   </table>
   </dd>
 </dl>
@@ -1023,7 +1163,7 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
 <dd>
-<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables and then process command line arguments and call the appropriate ...">miniargv_process()</a> </dd>
+<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables, then process command line argument flags and finally process com...">miniargv_process()</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process_arg()</a> </dd>
 <dd>
@@ -1071,8 +1211,8 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">argdef</td><td>definition of command line argument, or NULL for standalone value argument </td></tr>
-    <tr><td class="paramname">value</td><td>value if specified, otherwise NULL (always specified for standalone value arguments or if <em>argdef-&gt;argparam</em> is not NULL) </td></tr>
-    <tr><td class="paramname">callbackdata</td><td>user data as passed to <em><a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process_arg()</a></em> </td></tr>
+    <tr><td class="paramname">value</td><td>value, must be specified and must be a number </td></tr>
+    <tr><td class="paramname">callbackdata</td><td>(unused) </td></tr>
   </table>
   </dd>
 </dl>
@@ -1083,7 +1223,7 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="miniargv_8h.html#a2a80a2d2bf3fbfb65f75219f36a66917" title="predefined callback function to set the long integer pointed to by userdata to the numeric value of v...">miniargv_cb_set_long()</a> </dd>
 <dd>
-<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables and then process command line arguments and call the appropriate ...">miniargv_process()</a> </dd>
+<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables, then process command line argument flags and finally process com...">miniargv_process()</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process_arg()</a> </dd>
 <dd>
@@ -1095,14 +1235,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a2a80a2d2bf3fbfb65f75219f36a66917" name="a2a80a2d2bf3fbfb65f75219f36a66917"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2a80a2d2bf3fbfb65f75219f36a66917">&#9670;&nbsp;</a></span>miniargv_cb_set_long()</h2>
+<a id="a7a0e22cf07b985f240011a1bccfd0595" name="a7a0e22cf07b985f240011a1bccfd0595"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a0e22cf07b985f240011a1bccfd0595">&#9670;&nbsp;</a></span>miniargv_cb_set_int_to_zero()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">DLL_EXPORT_MINIARGV int miniargv_cb_set_long </td>
+          <td class="memname">DLL_EXPORT_MINIARGV int miniargv_cb_set_int_to_zero </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *&#160;</td>
           <td class="paramname"><em>argdef</em>, </td>
@@ -1127,12 +1267,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>predefined callback function to set the long integer pointed to by <b>userdata</b> to the numeric value of <b>value</b> </p>
+<p>predefined callback function to set the integer pointed to by <b>userdata</b> to 0 </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">argdef</td><td>definition of command line argument, or NULL for standalone value argument </td></tr>
-    <tr><td class="paramname">value</td><td>value if specified, otherwise NULL (always specified for standalone value arguments or if <em>argdef-&gt;argparam</em> is not NULL) </td></tr>
-    <tr><td class="paramname">callbackdata</td><td>user data as passed to <em><a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process_arg()</a></em> </td></tr>
+    <tr><td class="paramname">value</td><td>(unused) </td></tr>
+    <tr><td class="paramname">callbackdata</td><td>(unused) </td></tr>
   </table>
   </dd>
 </dl>
@@ -1143,7 +1283,141 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="miniargv_8h.html#aacf591e5cce4f764de6d029c54842a2b" title="predefined callback function to set the integer pointed to by userdata to the numeric value of value">miniargv_cb_set_int()</a> </dd>
 <dd>
-<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables and then process command line arguments and call the appropriate ...">miniargv_process()</a> </dd>
+<a class="el" href="miniargv_8h.html#a3f056bc470536698c12f8f0f80d55699" title="predefined callback function to set the integer pointed to by userdata to 1">miniargv_cb_set_int_to_one()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a6b574d88e260549cc3a2cdf33352469b" title="predefined callback function to set the integer pointed to by userdata to -1">miniargv_cb_set_int_to_minus_one()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables, then process command line argument flags and finally process com...">miniargv_process()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process_arg()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a8f6d14b929f3bf980d99d1d99d2a7a0d" title="process only flag command line arguments and call the appropriate callback function for each one (exc...">miniargv_process_arg_flags()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a98a3d4f90c5edc3fb2581928b3807312" title="process only standalone value command line arguments and call the appropriate callback function for e...">miniargv_process_arg_params()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a55bcaa2e259524598275426976285d7b" title="process environment variables and call the appropriate callback function for each match">miniargv_process_env()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a3f056bc470536698c12f8f0f80d55699" name="a3f056bc470536698c12f8f0f80d55699"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f056bc470536698c12f8f0f80d55699">&#9670;&nbsp;</a></span>miniargv_cb_set_int_to_one()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DLL_EXPORT_MINIARGV int miniargv_cb_set_int_to_one </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *&#160;</td>
+          <td class="paramname"><em>argdef</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>callbackdata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>predefined callback function to set the integer pointed to by <b>userdata</b> to 1 </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">argdef</td><td>definition of command line argument, or NULL for standalone value argument </td></tr>
+    <tr><td class="paramname">value</td><td>(unused) </td></tr>
+    <tr><td class="paramname">callbackdata</td><td>(unused) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 to continue processing or non-zero to abort </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d" title="callback function called by miniargv_process_arg() for each argument encountered">miniargv_handler_fn</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aacf591e5cce4f764de6d029c54842a2b" title="predefined callback function to set the integer pointed to by userdata to the numeric value of value">miniargv_cb_set_int()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a7a0e22cf07b985f240011a1bccfd0595" title="predefined callback function to set the integer pointed to by userdata to 0">miniargv_cb_set_int_to_zero()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a6b574d88e260549cc3a2cdf33352469b" title="predefined callback function to set the integer pointed to by userdata to -1">miniargv_cb_set_int_to_minus_one()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables, then process command line argument flags and finally process com...">miniargv_process()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables, then process command line argument flags and finally process com...">miniargv_process()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process_arg()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a8f6d14b929f3bf980d99d1d99d2a7a0d" title="process only flag command line arguments and call the appropriate callback function for each one (exc...">miniargv_process_arg_flags()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a98a3d4f90c5edc3fb2581928b3807312" title="process only standalone value command line arguments and call the appropriate callback function for e...">miniargv_process_arg_params()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a55bcaa2e259524598275426976285d7b" title="process environment variables and call the appropriate callback function for each match">miniargv_process_env()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a6b574d88e260549cc3a2cdf33352469b" name="a6b574d88e260549cc3a2cdf33352469b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b574d88e260549cc3a2cdf33352469b">&#9670;&nbsp;</a></span>miniargv_cb_set_int_to_minus_one()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DLL_EXPORT_MINIARGV int miniargv_cb_set_int_to_minus_one </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *&#160;</td>
+          <td class="paramname"><em>argdef</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>callbackdata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>predefined callback function to set the integer pointed to by <b>userdata</b> to -1 </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">argdef</td><td>definition of command line argument, or NULL for standalone value argument </td></tr>
+    <tr><td class="paramname">value</td><td>(unused) </td></tr>
+    <tr><td class="paramname">callbackdata</td><td>(unused) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 to continue processing or non-zero to abort </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d" title="callback function called by miniargv_process_arg() for each argument encountered">miniargv_handler_fn</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aacf591e5cce4f764de6d029c54842a2b" title="predefined callback function to set the integer pointed to by userdata to the numeric value of value">miniargv_cb_set_int()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a7a0e22cf07b985f240011a1bccfd0595" title="predefined callback function to set the integer pointed to by userdata to 0">miniargv_cb_set_int_to_zero()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a3f056bc470536698c12f8f0f80d55699" title="predefined callback function to set the integer pointed to by userdata to 1">miniargv_cb_set_int_to_one()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables, then process command line argument flags and finally process com...">miniargv_process()</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process_arg()</a> </dd>
 <dd>
@@ -1191,8 +1465,8 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">argdef</td><td>definition of command line argument, or NULL for standalone value argument </td></tr>
-    <tr><td class="paramname">value</td><td>value if specified, otherwise NULL (always specified for standalone value arguments or if <em>argdef-&gt;argparam</em> is not NULL) </td></tr>
-    <tr><td class="paramname">callbackdata</td><td>user data as passed to <em><a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process_arg()</a></em> </td></tr>
+    <tr><td class="paramname">value</td><td>(unused) </td></tr>
+    <tr><td class="paramname">callbackdata</td><td>(unused) </td></tr>
   </table>
   </dd>
 </dl>
@@ -1201,9 +1475,331 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
 <dd>
+<a class="el" href="miniargv_8h.html#a832a1963c2cecc9307da0afdd5ca3734" title="predefined callback function to decrement the integer pointed to by userdata">miniargv_cb_decrement_int()</a> </dd>
+<dd>
 <a class="el" href="miniargv_8h.html#a99c477e3ce350156bfb9d26a56f50300" title="predefined callback function to increment the long integer pointed to by userdata">miniargv_cb_increment_long()</a> </dd>
 <dd>
-<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables and then process command line arguments and call the appropriate ...">miniargv_process()</a> </dd>
+<a class="el" href="miniargv_8h.html#a87737e42d9e673e46cc4e05d75b913f7" title="predefined callback function to decrement the long integer pointed to by userdata">miniargv_cb_decrement_long()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables, then process command line argument flags and finally process com...">miniargv_process()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process_arg()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a8f6d14b929f3bf980d99d1d99d2a7a0d" title="process only flag command line arguments and call the appropriate callback function for each one (exc...">miniargv_process_arg_flags()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a98a3d4f90c5edc3fb2581928b3807312" title="process only standalone value command line arguments and call the appropriate callback function for e...">miniargv_process_arg_params()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a55bcaa2e259524598275426976285d7b" title="process environment variables and call the appropriate callback function for each match">miniargv_process_env()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a832a1963c2cecc9307da0afdd5ca3734" name="a832a1963c2cecc9307da0afdd5ca3734"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a832a1963c2cecc9307da0afdd5ca3734">&#9670;&nbsp;</a></span>miniargv_cb_decrement_int()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DLL_EXPORT_MINIARGV int miniargv_cb_decrement_int </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *&#160;</td>
+          <td class="paramname"><em>argdef</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>callbackdata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>predefined callback function to decrement the integer pointed to by <b>userdata</b> </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">argdef</td><td>definition of command line argument, or NULL for standalone value argument </td></tr>
+    <tr><td class="paramname">value</td><td>(unused) </td></tr>
+    <tr><td class="paramname">callbackdata</td><td>(unused) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 to continue processing or non-zero to abort </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d" title="callback function called by miniargv_process_arg() for each argument encountered">miniargv_handler_fn</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#ada777adc0e97fef3c3aed07ae159805f" title="predefined callback function to increment the integer pointed to by userdata">miniargv_cb_increment_int()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a99c477e3ce350156bfb9d26a56f50300" title="predefined callback function to increment the long integer pointed to by userdata">miniargv_cb_increment_long()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a87737e42d9e673e46cc4e05d75b913f7" title="predefined callback function to decrement the long integer pointed to by userdata">miniargv_cb_decrement_long()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables, then process command line argument flags and finally process com...">miniargv_process()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process_arg()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a8f6d14b929f3bf980d99d1d99d2a7a0d" title="process only flag command line arguments and call the appropriate callback function for each one (exc...">miniargv_process_arg_flags()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a98a3d4f90c5edc3fb2581928b3807312" title="process only standalone value command line arguments and call the appropriate callback function for e...">miniargv_process_arg_params()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a55bcaa2e259524598275426976285d7b" title="process environment variables and call the appropriate callback function for each match">miniargv_process_env()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a2a80a2d2bf3fbfb65f75219f36a66917" name="a2a80a2d2bf3fbfb65f75219f36a66917"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a80a2d2bf3fbfb65f75219f36a66917">&#9670;&nbsp;</a></span>miniargv_cb_set_long()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DLL_EXPORT_MINIARGV int miniargv_cb_set_long </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *&#160;</td>
+          <td class="paramname"><em>argdef</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>callbackdata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>predefined callback function to set the long integer pointed to by <b>userdata</b> to the numeric value of <b>value</b> </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">argdef</td><td>definition of command line argument, or NULL for standalone value argument </td></tr>
+    <tr><td class="paramname">value</td><td>value, must be specified and must be a number </td></tr>
+    <tr><td class="paramname">callbackdata</td><td>(unused) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 to continue processing or non-zero to abort </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d" title="callback function called by miniargv_process_arg() for each argument encountered">miniargv_handler_fn</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aacf591e5cce4f764de6d029c54842a2b" title="predefined callback function to set the integer pointed to by userdata to the numeric value of value">miniargv_cb_set_int()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables, then process command line argument flags and finally process com...">miniargv_process()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process_arg()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a8f6d14b929f3bf980d99d1d99d2a7a0d" title="process only flag command line arguments and call the appropriate callback function for each one (exc...">miniargv_process_arg_flags()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a98a3d4f90c5edc3fb2581928b3807312" title="process only standalone value command line arguments and call the appropriate callback function for e...">miniargv_process_arg_params()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a55bcaa2e259524598275426976285d7b" title="process environment variables and call the appropriate callback function for each match">miniargv_process_env()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a8f3ecad8f42959ce8f9679f42d70504c" name="a8f3ecad8f42959ce8f9679f42d70504c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f3ecad8f42959ce8f9679f42d70504c">&#9670;&nbsp;</a></span>miniargv_cb_set_long_to_zero()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DLL_EXPORT_MINIARGV int miniargv_cb_set_long_to_zero </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *&#160;</td>
+          <td class="paramname"><em>argdef</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>callbackdata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>predefined callback function to set the long integer pointed to by <b>userdata</b> to 0 </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">argdef</td><td>definition of command line argument, or NULL for standalone value argument </td></tr>
+    <tr><td class="paramname">value</td><td>(unused) </td></tr>
+    <tr><td class="paramname">callbackdata</td><td>(unused) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 to continue processing or non-zero to abort </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d" title="callback function called by miniargv_process_arg() for each argument encountered">miniargv_handler_fn</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a2a80a2d2bf3fbfb65f75219f36a66917" title="predefined callback function to set the long integer pointed to by userdata to the numeric value of v...">miniargv_cb_set_long()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a462096513eb56c5f30dd065c676ac5b5" title="predefined callback function to set the long integer pointed to by userdata to 1">miniargv_cb_set_long_to_one()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#ae57b36623e306ac5c42c0fa4ba57e916" title="predefined callback function to set the long integer pointed to by userdata to -1">miniargv_cb_set_long_to_minus_one()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables, then process command line argument flags and finally process com...">miniargv_process()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process_arg()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a8f6d14b929f3bf980d99d1d99d2a7a0d" title="process only flag command line arguments and call the appropriate callback function for each one (exc...">miniargv_process_arg_flags()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a98a3d4f90c5edc3fb2581928b3807312" title="process only standalone value command line arguments and call the appropriate callback function for e...">miniargv_process_arg_params()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a55bcaa2e259524598275426976285d7b" title="process environment variables and call the appropriate callback function for each match">miniargv_process_env()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a462096513eb56c5f30dd065c676ac5b5" name="a462096513eb56c5f30dd065c676ac5b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a462096513eb56c5f30dd065c676ac5b5">&#9670;&nbsp;</a></span>miniargv_cb_set_long_to_one()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DLL_EXPORT_MINIARGV int miniargv_cb_set_long_to_one </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *&#160;</td>
+          <td class="paramname"><em>argdef</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>callbackdata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>predefined callback function to set the long integer pointed to by <b>userdata</b> to 1 </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">argdef</td><td>definition of command line argument, or NULL for standalone value argument </td></tr>
+    <tr><td class="paramname">value</td><td>(unused) </td></tr>
+    <tr><td class="paramname">callbackdata</td><td>(unused) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 to continue processing or non-zero to abort </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d" title="callback function called by miniargv_process_arg() for each argument encountered">miniargv_handler_fn</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a2a80a2d2bf3fbfb65f75219f36a66917" title="predefined callback function to set the long integer pointed to by userdata to the numeric value of v...">miniargv_cb_set_long()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a8f3ecad8f42959ce8f9679f42d70504c" title="predefined callback function to set the long integer pointed to by userdata to 0">miniargv_cb_set_long_to_zero()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#ae57b36623e306ac5c42c0fa4ba57e916" title="predefined callback function to set the long integer pointed to by userdata to -1">miniargv_cb_set_long_to_minus_one()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables, then process command line argument flags and finally process com...">miniargv_process()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables, then process command line argument flags and finally process com...">miniargv_process()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process_arg()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a8f6d14b929f3bf980d99d1d99d2a7a0d" title="process only flag command line arguments and call the appropriate callback function for each one (exc...">miniargv_process_arg_flags()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a98a3d4f90c5edc3fb2581928b3807312" title="process only standalone value command line arguments and call the appropriate callback function for e...">miniargv_process_arg_params()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a55bcaa2e259524598275426976285d7b" title="process environment variables and call the appropriate callback function for each match">miniargv_process_env()</a> </dd></dl>
+
+</div>
+</div>
+<a id="ae57b36623e306ac5c42c0fa4ba57e916" name="ae57b36623e306ac5c42c0fa4ba57e916"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae57b36623e306ac5c42c0fa4ba57e916">&#9670;&nbsp;</a></span>miniargv_cb_set_long_to_minus_one()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DLL_EXPORT_MINIARGV int miniargv_cb_set_long_to_minus_one </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *&#160;</td>
+          <td class="paramname"><em>argdef</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>callbackdata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>predefined callback function to set the long integer pointed to by <b>userdata</b> to -1 </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">argdef</td><td>definition of command line argument, or NULL for standalone value argument </td></tr>
+    <tr><td class="paramname">value</td><td>(unused) </td></tr>
+    <tr><td class="paramname">callbackdata</td><td>(unused) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 to continue processing or non-zero to abort </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d" title="callback function called by miniargv_process_arg() for each argument encountered">miniargv_handler_fn</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a2a80a2d2bf3fbfb65f75219f36a66917" title="predefined callback function to set the long integer pointed to by userdata to the numeric value of v...">miniargv_cb_set_long()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a8f3ecad8f42959ce8f9679f42d70504c" title="predefined callback function to set the long integer pointed to by userdata to 0">miniargv_cb_set_long_to_zero()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a462096513eb56c5f30dd065c676ac5b5" title="predefined callback function to set the long integer pointed to by userdata to 1">miniargv_cb_set_long_to_one()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables, then process command line argument flags and finally process com...">miniargv_process()</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process_arg()</a> </dd>
 <dd>
@@ -1251,8 +1847,8 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">argdef</td><td>definition of command line argument, or NULL for standalone value argument </td></tr>
-    <tr><td class="paramname">value</td><td>value if specified, otherwise NULL (always specified for standalone value arguments or if <em>argdef-&gt;argparam</em> is not NULL) </td></tr>
-    <tr><td class="paramname">callbackdata</td><td>user data as passed to <em><a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process_arg()</a></em> </td></tr>
+    <tr><td class="paramname">value</td><td>(unused) </td></tr>
+    <tr><td class="paramname">callbackdata</td><td>(unused) </td></tr>
   </table>
   </dd>
 </dl>
@@ -1263,7 +1859,75 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="miniargv_8h.html#ada777adc0e97fef3c3aed07ae159805f" title="predefined callback function to increment the integer pointed to by userdata">miniargv_cb_increment_int()</a> </dd>
 <dd>
-<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables and then process command line arguments and call the appropriate ...">miniargv_process()</a> </dd>
+<a class="el" href="miniargv_8h.html#a832a1963c2cecc9307da0afdd5ca3734" title="predefined callback function to decrement the integer pointed to by userdata">miniargv_cb_decrement_int()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a87737e42d9e673e46cc4e05d75b913f7" title="predefined callback function to decrement the long integer pointed to by userdata">miniargv_cb_decrement_long()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables, then process command line argument flags and finally process com...">miniargv_process()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process_arg()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a8f6d14b929f3bf980d99d1d99d2a7a0d" title="process only flag command line arguments and call the appropriate callback function for each one (exc...">miniargv_process_arg_flags()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a98a3d4f90c5edc3fb2581928b3807312" title="process only standalone value command line arguments and call the appropriate callback function for e...">miniargv_process_arg_params()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a55bcaa2e259524598275426976285d7b" title="process environment variables and call the appropriate callback function for each match">miniargv_process_env()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a87737e42d9e673e46cc4e05d75b913f7" name="a87737e42d9e673e46cc4e05d75b913f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87737e42d9e673e46cc4e05d75b913f7">&#9670;&nbsp;</a></span>miniargv_cb_decrement_long()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DLL_EXPORT_MINIARGV int miniargv_cb_decrement_long </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *&#160;</td>
+          <td class="paramname"><em>argdef</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>callbackdata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>predefined callback function to decrement the long integer pointed to by <b>userdata</b> </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">argdef</td><td>definition of command line argument, or NULL for standalone value argument </td></tr>
+    <tr><td class="paramname">value</td><td>(unused) </td></tr>
+    <tr><td class="paramname">callbackdata</td><td>(unused) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 to continue processing or non-zero to abort </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d" title="callback function called by miniargv_process_arg() for each argument encountered">miniargv_handler_fn</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#ada777adc0e97fef3c3aed07ae159805f" title="predefined callback function to increment the integer pointed to by userdata">miniargv_cb_increment_int()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a832a1963c2cecc9307da0afdd5ca3734" title="predefined callback function to decrement the integer pointed to by userdata">miniargv_cb_decrement_int()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a99c477e3ce350156bfb9d26a56f50300" title="predefined callback function to increment the long integer pointed to by userdata">miniargv_cb_increment_long()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables, then process command line argument flags and finally process com...">miniargv_process()</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process_arg()</a> </dd>
 <dd>
