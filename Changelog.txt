@@ -1,3 +1,9 @@
+0.2.9
+
+2021-12-04  Brecht Sanders  https://github.com/brechtsanders/
+
+  * added miniargv_cb_strdup()
+
 0.2.8
 
 2021-12-03  Brecht Sanders  https://github.com/brechtsanders/

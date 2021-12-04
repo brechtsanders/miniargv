@@ -297,6 +297,21 @@ DLL_EXPORT_MINIARGV void miniargv_wrap_and_indent_text (const char* text, int cu
  */
 DLL_EXPORT_MINIARGV int miniargv_cb_set_const_str (const miniargv_definition* argdef, const char* value, void* callbackdata);
 
+/*! \brief predefined callback function to set string \b userdata to a copy of \b value
+ * \param  argdef                definition of command line argument, or NULL for standalone value argument
+ * \param  value                 value if specified, otherwise NULL (always specified for standalone value arguments or if \a argdef->argparam is not NULL)
+ * \param  callbackdata          (unused)
+ * \return 0 to continue processing or non-zero to abort
+ * \sa     miniargv_handler_fn
+ * \sa     miniargv_definition
+ * \sa     miniargv_process()
+ * \sa     miniargv_process_arg()
+ * \sa     miniargv_process_arg_flags()
+ * \sa     miniargv_process_arg_params()
+ * \sa     miniargv_process_env()
+ */
+DLL_EXPORT_MINIARGV int miniargv_cb_strdup (const miniargv_definition* argdef, const char* value, void* callbackdata);
+
 /*! \brief predefined callback function to set the integer pointed to by \b userdata to the numeric value of \b value
  * \param  argdef                definition of command line argument, or NULL for standalone value argument
  * \param  value                 value, must be specified and must be a number
@@ -585,7 +600,7 @@ DLL_EXPORT_MINIARGV const char* miniargv_get_version_string ();
 /*! \brief minor version number \hideinitializer */
 #define MINIARGV_VERSION_MINOR 2
 /*! \brief micro version number \hideinitializer */
-#define MINIARGV_VERSION_MICRO 8
+#define MINIARGV_VERSION_MICRO 9
 /** @} */
 
 /*! \brief packed version number (bits 24-31: major version, bits 16-23: minor version, bits 8-15: micro version)

@@ -402,6 +402,14 @@ DLL_EXPORT_MINIARGV int miniargv_cb_set_const_str (const miniargv_definition* ar
   return 0;
 }
 
+DLL_EXPORT_MINIARGV int miniargv_cb_strdup (const miniargv_definition* argdef, const char* value, void* callbackdata)
+{
+  if (*(char**)argdef->userdata)
+    free(*(char**)argdef->userdata);
+  *(char**)argdef->userdata = (value ? strdup(value) : NULL);
+  return 0;
+}
+
 DLL_EXPORT_MINIARGV int miniargv_cb_set_int (const miniargv_definition* argdef, const char* value, void* callbackdata)
 {
   long intval;
