@@ -288,7 +288,7 @@ DLL_EXPORT_MINIARGV void miniargv_cfgfile_generate (FILE* cfgfile, const miniarg
   const miniargv_definition* current_cfgdef = cfgdef;
   while (current_cfgdef->callbackfn) {
     if (current_cfgdef->longarg) {
-      fprintf(cfgfile, "; %s\n;   %s\n%s = %s\n", current_cfgdef->longarg, current_cfgdef->help, current_cfgdef->longarg, (current_cfgdef->argparam ? current_cfgdef->argparam : ""));
+      fprintf(cfgfile, "; %s\n;   %s\n%s = %s\n\n", current_cfgdef->longarg, current_cfgdef->help, current_cfgdef->longarg, (current_cfgdef->argparam ? current_cfgdef->argparam : ""));
     }
     current_cfgdef++;
   }
