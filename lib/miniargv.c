@@ -166,6 +166,11 @@ DLL_EXPORT_MINIARGV int miniargv_process_arg_params (char* argv[], const miniarg
   return miniargv_process_partial(MINIARG_PROCESS_FLAG_VALUES, argv, argdef, badfn, callbackdata);
 }
 
+DLL_EXPORT_MINIARGV int miniargv_get_next_arg_param (int argindex, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn)
+{
+  return miniargv_process_partial(MINIARG_PROCESS_FLAG_FIND_VALUE, argv, argdef, badfn, &argindex);
+}
+
 DLL_EXPORT_MINIARGV int miniargv_process_env (char* env[], const miniargv_definition envdef[], void* callbackdata)
 {
   char* s;
@@ -190,9 +195,103 @@ DLL_EXPORT_MINIARGV int miniargv_process_env (char* env[], const miniargv_defini
   return 0;
 }
 
-DLL_EXPORT_MINIARGV int miniargv_get_next_arg_param (int argindex, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn)
+#define READLINE_BLOCK_SIZE 128
+
+typedef int (*cfg_value_fn)(const char* varname, const char* value, void* callbackdata);
+
+char* readline (FILE* src)
 {
-  return miniargv_process_partial(MINIARG_PROCESS_FLAG_FIND_VALUE, argv, argdef, badfn, &argindex);
+  int datalen;
+  char data[READLINE_BLOCK_SIZE];
+  int resultlen = 0;
+  char* result = NULL;
+  //read next data
+  while (fgets(data, sizeof(data), src)) {
+    datalen = strlen(data);
+    //allocate memory and store the result
+    result = (char*)realloc(result, resultlen + datalen + 1);
+    memcpy(result + resultlen, data, datalen + 1);
+    resultlen += datalen;
+    //check for line end, if found remove it and return result
+    if (resultlen > 0 && result[resultlen - 1] == '\n') {
+      result[--resultlen] = 0;
+      if (resultlen > 0 && result[resultlen - 1] == '\r')
+        result[--resultlen] = 0;
+      break;
+    }
+  }
+  return result;
+}
+
+DLL_EXPORT_MINIARGV int miniargv_process_cfgfile (const char* cfgfile, const miniargv_definition cfgdef[], void* callbackdata)
+{
+  FILE* src;
+  char* line;
+  char* p;
+  char* varname;
+  size_t varnamelen;
+  char* value;
+  const miniargv_definition* current_cfgdef;
+  int status = 0;
+  //open file for reading
+  if ((src = fopen(cfgfile, "rb")) != NULL) {
+    //read lines
+    while (status == 0 && (line = readline(src)) != NULL) {
+      varname = line;
+      //skip spaces preceding varname
+      while (*varname && isspace(*varname))
+        varname++;
+      if (*varname) {
+        //find starting position of value
+        p = varname;
+        while (*p && *p != '=' && *p != ':' && *p != '#' && *p != ';')
+          p++;
+        if (*p == '=' || *p == ':') {
+          value = p + 1;
+          //skip spaces following varname
+          while (p != varname && isspace(*(p - 1)))
+            p--;
+          if (p != varname) {
+            varnamelen = p - varname;
+            //skip spaces preceding value
+            while (*value && isspace(*value))
+              value++;
+            //skip spaces following value
+            if ((p = strchr(value, 0)) != NULL) {
+              while (p != value && isspace(*(p - 1)))
+                p--;
+              *p = 0;
+            }
+            //process variable
+            current_cfgdef = cfgdef;
+            while (current_cfgdef->callbackfn) {
+              if (current_cfgdef->longarg) {
+                if (strncmp(varname, current_cfgdef->longarg, varnamelen) == 0) {
+                  status = (current_cfgdef->callbackfn)(current_cfgdef, value, callbackdata);
+                  break;
+                }
+              }
+              current_cfgdef++;
+            }
+          }
+        }
+      }
+      free(line);
+    }
+    fclose(src);
+  }
+  return 0;
+}
+
+DLL_EXPORT_MINIARGV void miniargv_cfgfile_generate (FILE* cfgfile, const miniargv_definition cfgdef[])
+{
+  const miniargv_definition* current_cfgdef = cfgdef;
+  while (current_cfgdef->callbackfn) {
+    if (current_cfgdef->longarg) {
+      fprintf(cfgfile, "; %s\n;   %s\n%s = %s\n", current_cfgdef->longarg, current_cfgdef->help, current_cfgdef->longarg, (current_cfgdef->argparam ? current_cfgdef->argparam : ""));
+    }
+    current_cfgdef++;
+  }
 }
 
 DLL_EXPORT_MINIARGV const char* miniargv_getprogramname (const char* argv0, int* length)

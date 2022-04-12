@@ -1,3 +1,10 @@
+0.2.10
+
+2022-04-12  Brecht Sanders  https://github.com/brechtsanders/
+
+  * added miniargv_process_cfgfile()
+  * added miniargv_cfgfile_generate()
+
 0.2.9
 
 2021-12-04  Brecht Sanders  https://github.com/brechtsanders/

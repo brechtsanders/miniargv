@@ -9,6 +9,8 @@
 #ifndef INCLUDED_MINIARGV_H
 #define INCLUDED_MINIARGV_H
 
+#include <stdio.h>
+
 /*! \cond PRIVATE */
 #if !defined(DLL_EXPORT_MINIARGV)
 # if defined(_WIN32) && (defined(BUILD_MINIARGV_DLL) || defined(MINIARGV_EXPORTS))
@@ -163,6 +165,20 @@ DLL_EXPORT_MINIARGV int miniargv_process_arg_flags (char* argv[], const miniargv
  */
 DLL_EXPORT_MINIARGV int miniargv_process_arg_params (char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata);
 
+/*! \brief get next value command line argument
+ * \param  argindex      index of current argument or 0 for the first call
+ * \param  argv          NULL-terminated array of arguments (first one is the application itself)
+ * \param  argdef        definitions of possible command line arguments
+ * \param  badfn         callback function for bad arguments
+ * \return index of next value command line argument, zero when done or negative on error
+ * \sa     miniargv_definition
+ * \sa     miniargv_handler_fn
+ * \sa     miniargv_process()
+ * \sa     miniargv_process_ltr()
+ * \sa     miniargv_process_arg()
+ */
+DLL_EXPORT_MINIARGV int miniargv_get_next_arg_param (int argindex, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn);
+
 /*! \brief process environment variables and call the appropriate callback function for each match
  * \param  env           NULL-terminated array of environment variables
  * \param  envdef        definitions of possible environment variables
@@ -178,19 +194,32 @@ DLL_EXPORT_MINIARGV int miniargv_process_arg_params (char* argv[], const miniarg
  */
 DLL_EXPORT_MINIARGV int miniargv_process_env (char* env[], const miniargv_definition envdef[], void* callbackdata);
 
-/*! \brief get next value command line argument
- * \param  argindex      index of current argument or 0 for the first call
- * \param  argv          NULL-terminated array of arguments (first one is the application itself)
- * \param  argdef        definitions of possible command line arguments
- * \param  badfn         callback function for bad arguments
- * \return index of next value command line argument, zero when done or negative on error
+/*! \brief process configuration file variables and call the appropriate callback function for each match (note: the values read are not kept in memory, so use miniargv_cb_strdup instead of miniargv_cb_set_const_str for string data and make sure free the allocated data when no longer needed)
+ * \param  cfgfile       path of configuration file to read
+ * \param  cfgdef        definitions of possible configuration file variables
+ * \param  callbackdata  user data passed to callback functions
+ * \return zero on success or abort code returned by callback function
  * \sa     miniargv_definition
  * \sa     miniargv_handler_fn
  * \sa     miniargv_process()
  * \sa     miniargv_process_ltr()
  * \sa     miniargv_process_arg()
+ * \sa     miniargv_process_arg_flags()
+ * \sa     miniargv_process_arg_params()
+ * \sa     miniargv_process_env()
  */
-DLL_EXPORT_MINIARGV int miniargv_get_next_arg_param (int argindex, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn);
+DLL_EXPORT_MINIARGV int miniargv_process_cfgfile (const char* cfgfile, const miniargv_definition cfgdef[], void* callbackdata);
+
+/*! \brief generate configuration file template (\a argparam will be used as default value)
+ * \param  cfgfile       handle where configuration file template will be written to
+ * \param  cfgdef        definitions of possible configuration file variables
+ * \sa     miniargv_help()
+ * \sa     miniargv_arg_help()
+ * \sa     miniargv_env_help()
+ * \sa     miniargv_definition
+ * \sa     miniargv_definition_struct
+ */
+DLL_EXPORT_MINIARGV void miniargv_cfgfile_generate (FILE* cfgfile, const miniargv_definition cfgdef[]);
 
 /*! \brief get application name and length
  *
@@ -600,7 +629,7 @@ DLL_EXPORT_MINIARGV const char* miniargv_get_version_string ();
 /*! \brief minor version number \hideinitializer */
 #define MINIARGV_VERSION_MINOR 2
 /*! \brief micro version number \hideinitializer */
-#define MINIARGV_VERSION_MICRO 9
+#define MINIARGV_VERSION_MICRO 10
 /** @} */
 
 /*! \brief packed version number (bits 24-31: major version, bits 16-23: minor version, bits 8-15: micro version)

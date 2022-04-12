@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_workspace_file>
-	<Workspace title="Workspace">
+	<Workspace title="miniargv">
 		<Project filename="miniargv_static.cbp" />
 		<Project filename="miniargv_shared.cbp" />
 		<Project filename="miniargv-test.cbp">
@@ -13,5 +13,8 @@
 			<Depends filename="miniargv_shared.cbp" />
 		</Project>
 		<Project filename="miniargv-example-userdata.cbp" />
+		<Project filename="miniargv-example-cfgfile.cbp">
+			<Depends filename="miniargv_shared.cbp" />
+		</Project>
 	</Workspace>
 </CodeBlocks_workspace_file>

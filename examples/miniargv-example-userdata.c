@@ -17,7 +17,7 @@
 #define INT_PARAM_NUMBER   2
 #define INT_PARAMS         3
 
-//callback function to increment an integer paremeter with specified index
+//callback function to increment an integer parameter with specified index
 int process_arg_increment (const miniargv_definition* argdef, const char* value, void* callbackdata)
 {
   int* params = (int*)callbackdata;
@@ -26,7 +26,7 @@ int process_arg_increment (const miniargv_definition* argdef, const char* value,
   return 0;
 }
 
-//callback function to set paremeter with specified index to an integer value
+//callback function to set parameter with specified index to an integer value
 int process_arg_number (const miniargv_definition* argdef, const char* value, void* callbackdata)
 {
   int* params = (int*)callbackdata;
