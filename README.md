@@ -19,7 +19,7 @@ Lightweight cross-platform C/C++ library for processing command line arguments a
  * does not include constraints checking (e.g. mandatory arguments or arguments that may not occur multiple times)
 
 ## Documentation
-Please see the documentation generated with Doxygen at: https://brechtsanders.github.io/miniargv/miniargv_8h.html
+Please see the [online documentation](https://brechtsanders.github.io/miniargv/miniargv_8h.html) (generated with Doxygen).
 
 ## Installation
 Download and extract the source code and use `make` to build and install:
@@ -104,7 +104,7 @@ number = 64
 ## Links
 The official repository can be found at: https://github.com/brechtsanders/miniargv
 
-The documentation can be found at: https://brechtsanders.github.io/miniargv/miniargv_8h.html
+The documentation can be found at: https://brechtsanders.github.io/miniargv/
 
 ## License
 
