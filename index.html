@@ -72,50 +72,64 @@ Features</h1>
 <li>cross-platform (tested on Windows, Linux and macOS)</li>
 <li>low footprint (small code footprint and very low memory requirements)</li>
 <li>no external dependencies (requires no other libraries)</li>
-<li>zero copy approach (no memory is allocated or copied)</li>
+<li>zero copy approach: no memory is allocated or copied (except when reading from configuration files)</li>
 <li>data passed to <code>main()</code> is processed using callback functions<ul>
 <li><code>argv</code> as passed to <code>int main (int argc, char *argv[])</code></li>
 <li><code>envp</code> as passed to <code>int main (int argc, char *argv[], char *envp[])</code></li>
 </ul>
 </li>
-<li>values passed to callback functions live as long as <code>main()</code>, so no copying or duplication (like <code>strdup()</code>) needed</li>
-<li>no cleanup functions needed before exiting the program</li>
+<li>values passed to callback functions live as long as <code>main()</code>, so no memory allocation and copying (like <code>strdup()</code>) needed</li>
+<li>no cleanup functions needed before exiting the program (except when reading from configuration files)</li>
+<li>possibility to read settings from configuration file (does require memory allocation and copying and cleanup afterwards)</li>
 <li>definitions for processing and displaying help are done in a common data structure</li>
 <li>basic error checking to report unknown arguments</li>
 <li>does not include constraints checking (e.g. mandatory arguments or arguments that may not occur multiple times)</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md2"></a>
+Installation</h1>
+<p >Download and extract the source code and use <code>make</code> to build and install: </p><div class="fragment"><div class="line">make install</div>
+</div><!-- fragment --><p> The default install location is <code>/usr/local</code> but you can override this by setting <code>PREFIX</code> to a different location: </p><div class="fragment"><div class="line">make install PREFIX=/usr/custom</div>
+</div><!-- fragment --><p> On Windows you can run the above commands from the <a href="https://msys2.org/">MSYS2</a> shell using the <a href="https://www.mingw-w64.org/">MinGW-w64</a> compiler.</p>
+<h1><a class="anchor" id="autotoc_md3"></a>
 Example</h1>
+<h3><a class="anchor" id="autotoc_md4"></a>
+**&lt;tt&gt;example.c&lt;/tt&gt;**</h3>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;stdlib.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;<a class="code" href="miniargv_8h.html">miniargv.h</a>&gt;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main (<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> *argv[], <span class="keywordtype">char</span> *envp[])</div>
 <div class="line">{</div>
+<div class="line">  <span class="comment">//variables to be configured via command line or environment</span></div>
 <div class="line">  <span class="keywordtype">int</span> showhelp = 0;</div>
 <div class="line">  <span class="keywordtype">int</span> number = 0;</div>
+<div class="line"> </div>
 <div class="line">  <span class="comment">//definition of command line arguments</span></div>
 <div class="line">  <span class="keyword">const</span> <a class="code hl_struct" href="structminiargv__definition__struct.html">miniargv_definition</a> argdef[] = {</div>
 <div class="line">    {<span class="charliteral">&#39;h&#39;</span>, <span class="stringliteral">&quot;help&quot;</span>, NULL, <a class="code hl_function" href="miniargv_8h.html#ada777adc0e97fef3c3aed07ae159805f">miniargv_cb_increment_int</a>, &amp;showhelp, <span class="stringliteral">&quot;show command line help&quot;</span>},</div>
 <div class="line">    {<span class="charliteral">&#39;n&#39;</span>, <span class="stringliteral">&quot;number&quot;</span>, <span class="stringliteral">&quot;N&quot;</span>, <a class="code hl_function" href="miniargv_8h.html#aacf591e5cce4f764de6d029c54842a2b">miniargv_cb_set_int</a>, &amp;number, <span class="stringliteral">&quot;set number to N&quot;</span>},</div>
 <div class="line">    {0, NULL, NULL, NULL, NULL, NULL}</div>
 <div class="line">  };</div>
+<div class="line"> </div>
 <div class="line">  <span class="comment">//definition of environment variables</span></div>
 <div class="line">  <span class="keyword">const</span> <a class="code hl_struct" href="structminiargv__definition__struct.html">miniargv_definition</a> envdef[] = {</div>
 <div class="line">    {0, <span class="stringliteral">&quot;NUMBER&quot;</span>, <span class="stringliteral">&quot;N&quot;</span>, <a class="code hl_function" href="miniargv_8h.html#aacf591e5cce4f764de6d029c54842a2b">miniargv_cb_set_int</a>, &amp;number, <span class="stringliteral">&quot;set number to N&quot;</span>},</div>
 <div class="line">    {0, NULL, NULL, NULL, NULL, NULL}</div>
 <div class="line">  };</div>
+<div class="line"> </div>
 <div class="line">  <span class="comment">//parse program arguments</span></div>
 <div class="line">  <span class="keywordflow">if</span> (<a class="code hl_function" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3">miniargv_process</a>(argv, envp, argdef, envdef, NULL, NULL) != 0)</div>
 <div class="line">    <span class="keywordflow">return</span> 1;</div>
-<div class="line">  <span class="comment">//show help if requested or if no command line arguments were given</span></div>
-<div class="line">  <span class="keywordflow">if</span> (showhelp || argc &lt;= 1) {</div>
+<div class="line"> </div>
+<div class="line">  <span class="comment">//show help if requested</span></div>
+<div class="line">  <span class="keywordflow">if</span> (showhelp) {</div>
 <div class="line">    printf(<span class="stringliteral">&quot;Usage: &quot;</span>);</div>
 <div class="line">    <a class="code hl_function" href="miniargv_8h.html#a5f40edf85ba2a4d5b4416c7bd599201e">miniargv_arg_list</a>(argdef, 1);</div>
 <div class="line">    printf(<span class="stringliteral">&quot;\n&quot;</span>);</div>
 <div class="line">    <a class="code hl_function" href="miniargv_8h.html#a6e281f3ed371f8e05a77cdded8594666">miniargv_help</a>(argdef, envdef, 0, 0);</div>
 <div class="line">    <span class="keywordflow">return</span> 0;</div>
 <div class="line">  }</div>
+<div class="line"> </div>
 <div class="line">  <span class="comment">//show values</span></div>
 <div class="line">  printf(<span class="stringliteral">&quot;number = %i\n&quot;</span>, number);</div>
 <div class="line">  <span class="keywordflow">return</span> 0;</div>
@@ -127,14 +141,28 @@ Example</h1>
 <div class="ttc" id="aminiargv_8h_html_ada777adc0e97fef3c3aed07ae159805f"><div class="ttname"><a href="miniargv_8h.html#ada777adc0e97fef3c3aed07ae159805f">miniargv_cb_increment_int</a></div><div class="ttdeci">DLL_EXPORT_MINIARGV int miniargv_cb_increment_int(const miniargv_definition *argdef, const char *value, void *callbackdata)</div><div class="ttdoc">predefined callback function to increment the integer pointed to by userdata</div></div>
 <div class="ttc" id="aminiargv_8h_html_aff212d68e5ceff2ed20eb660204a71c3"><div class="ttname"><a href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3">miniargv_process</a></div><div class="ttdeci">DLL_EXPORT_MINIARGV int miniargv_process(char *argv[], char *env[], const miniargv_definition argdef[], const miniargv_definition envdef[], miniargv_handler_fn badfn, void *callbackdata)</div><div class="ttdoc">first process environment variables, then process command line argument flags and finally process com...</div></div>
 <div class="ttc" id="astructminiargv__definition__struct_html"><div class="ttname"><a href="structminiargv__definition__struct.html">miniargv_definition_struct</a></div><div class="ttdoc">structure for command line argument definition</div><div class="ttdef"><b>Definition:</b> miniargv.h:73</div></div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md3"></a>
+</div><!-- fragment --><p> To build the example above: </p><div class="fragment"><div class="line">gcc -o example example.c -lminiargv</div>
+</div><!-- fragment --><p> Then run the example to test it: </p><div class="fragment"><div class="line"># ./example -h</div>
+<div class="line">Usage: [-h] [-n N]</div>
+<div class="line">Command line arguments:</div>
+<div class="line">  -h, --help             show command line help</div>
+<div class="line">  -n N, --number=N       set number to N</div>
+<div class="line">Environment variables:</div>
+<div class="line">  NUMBER=N               set number to N</div>
+<div class="line"> </div>
+<div class="line"># ./example -n 42</div>
+<div class="line">number = 42</div>
+<div class="line"> </div>
+<div class="line"># NUMBER=64 ./example</div>
+<div class="line">number = 64</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md5"></a>
 GitHub Actions CI</h1>
 <p ><a href="https://github.com/brechtsanders/miniargv/actions"><img src="https://github.com/brechtsanders/miniargv/workflows/GitHub-CI%20for%20miniargv/badge.svg" alt="GitHub-CI for miniargv" style="pointer-events: none;" class="inline"/></a> <a href="https://github.com/brechtsanders/miniargv/actions/workflows/miniargv-doxygen.yml"><img src="https://github.com/brechtsanders/miniargv/actions/workflows/miniargv-doxygen.yml/badge.svg" alt="Doxygen Action for miniargv" style="pointer-events: none;" class="inline"/></a></p>
-<h1><a class="anchor" id="autotoc_md4"></a>
+<h1><a class="anchor" id="autotoc_md6"></a>
 Links</h1>
 <p >The official repository can be found at: <a href="https://github.com/brechtsanders/miniargv">https://github.com/brechtsanders/miniargv</a></p>
 <p >The documentation can be found at: <a href="https://brechtsanders.github.io/miniargv/miniargv_8h.html">https://brechtsanders.github.io/miniargv/miniargv_8h.html</a></p>
-<h1><a class="anchor" id="autotoc_md5"></a>
+<h1><a class="anchor" id="autotoc_md7"></a>
 License</h1>
 <p >[MIT](LICENSE) </p>
 </div></div><!-- PageDoc -->
