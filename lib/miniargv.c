@@ -286,9 +286,12 @@ DLL_EXPORT_MINIARGV int miniargv_process_cfgfile (const char* cfgfile, const min
 DLL_EXPORT_MINIARGV void miniargv_cfgfile_generate (FILE* cfgfile, const miniargv_definition cfgdef[])
 {
   const miniargv_definition* current_cfgdef = cfgdef;
+  static const char* help_indent = "\n;   ";
   while (current_cfgdef->callbackfn) {
     if (current_cfgdef->longarg) {
-      fprintf(cfgfile, "; %s\n;   %s\n%s = %s\n\n", current_cfgdef->longarg, current_cfgdef->help, current_cfgdef->longarg, (current_cfgdef->argparam ? current_cfgdef->argparam : ""));
+      fprintf(cfgfile, "; %s:%s", current_cfgdef->longarg, help_indent);
+      miniargv_wrap_and_indent_text(cfgfile, current_cfgdef->help, 0, 0, 79 - 4, help_indent);
+      fprintf(cfgfile, "\n%s = %s\n\n", current_cfgdef->longarg, (current_cfgdef->argparam ? current_cfgdef->argparam : ""));
     }
     current_cfgdef++;
   }
@@ -396,7 +399,7 @@ DLL_EXPORT_MINIARGV void miniargv_arg_help (const miniargv_definition argdef[], 
       printf("\n%*s", descindent, "");
     else
       printf("%*s", (pos < descindent ? descindent - pos : 2), "");
-    miniargv_wrap_and_indent_text(current_argdef->help, descindent, descindent, wrapwidth);
+    miniargv_wrap_and_indent_text(stdout, current_argdef->help, descindent, descindent, wrapwidth, NULL);
     printf("\n");
     current_argdef++;
   }
@@ -425,7 +428,7 @@ DLL_EXPORT_MINIARGV void miniargv_env_help (const miniargv_definition envdef[], 
       printf("\n%*s", descindent, "");
     else
       printf("%*s", (pos < descindent ? descindent - pos : 2), "");
-    miniargv_wrap_and_indent_text(current_envdef->help, descindent, descindent, wrapwidth);
+    miniargv_wrap_and_indent_text(stdout, current_envdef->help, descindent, descindent, wrapwidth, NULL);
     printf("\n");
     current_envdef++;
   }
@@ -443,7 +446,7 @@ DLL_EXPORT_MINIARGV void miniargv_help (const miniargv_definition argdef[], cons
   }
 }
 
-DLL_EXPORT_MINIARGV void miniargv_wrap_and_indent_text (const char* text, int currentpos, int indentpos, int wrapwidth)
+DLL_EXPORT_MINIARGV void miniargv_wrap_and_indent_text (FILE* dst, const char* text, int currentpos, int indentpos, int wrapwidth, const char* newline)
 {
   const char* p;
   const char* q;
@@ -479,11 +482,11 @@ DLL_EXPORT_MINIARGV void miniargv_wrap_and_indent_text (const char* text, int cu
     //print line
     if (!*q) {
       //print as a whole if last section of text
-      printf("%s", p);
+      fprintf(dst, "%s", p);
       p = NULL;
     } else {
       //print partial text, go to new line and indent
-      printf("%.*s\n%*s", (int)(q - p), p, indentpos, "");
+      fprintf(dst, "%.*s%s%*s", (int)(q - p), p, (newline ? newline : "\n"), indentpos, "");
       currentpos = indentpos;
       //skip blank space
       p = q;
@@ -506,6 +509,40 @@ DLL_EXPORT_MINIARGV int miniargv_cb_strdup (const miniargv_definition* argdef, c
   if (*(char**)argdef->userdata)
     free(*(char**)argdef->userdata);
   *(char**)argdef->userdata = (value ? strdup(value) : NULL);
+  return 0;
+}
+
+#define BOOLEAN_VALUES_LISTS_ENTRIES 6
+static const char* boolean_values_lists[2][BOOLEAN_VALUES_LISTS_ENTRIES] = {
+  {"0", "no",  "off", "false", "disable", "disabled"},
+  {"1", "yes", "on",  "true",  "enable",  "enabled"}
+};
+
+DLL_EXPORT_MINIARGV int miniargv_cb_set_boolean (const miniargv_definition* argdef, const char* value, void* callbackdata)
+{
+  int i;
+  int j;
+  if (!value)
+    return 1;
+  if (!*value)
+    return 0;
+  for (i = 0; i < 2; i++) {
+    for (j = 0; j < BOOLEAN_VALUES_LISTS_ENTRIES; j++) {
+      if (strcasecmp(value, boolean_values_lists[i][j]) == 0) {
+        *(int*)argdef->userdata = i;
+        return 0;
+      }
+    }
+  }
+  i = 0;
+  while (value[i]) {
+    if (!isspace(value[i])) {
+      //not an acceptable value, empty or whitespace
+      return 2;
+    }
+    i++;
+  }
+  *(int*)argdef->userdata = 0;
   return 0;
 }
 

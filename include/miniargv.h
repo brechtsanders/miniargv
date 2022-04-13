@@ -196,7 +196,7 @@ DLL_EXPORT_MINIARGV int miniargv_process_env (char* env[], const miniargv_defini
 
 /*! \brief process configuration file variables and call the appropriate callback function for each match (note: the values read are not kept in memory, so use miniargv_cb_strdup instead of miniargv_cb_set_const_str for string data and make sure free the allocated data when no longer needed)
  * \param  cfgfile       path of configuration file to read
- * \param  cfgdef        definitions of possible configuration file variables
+ * \param  cfgdef        definitions of possible configuration file variables (shortarg is ignored)
  * \param  callbackdata  user data passed to callback functions
  * \return zero on success or abort code returned by callback function
  * \sa     miniargv_definition
@@ -207,12 +207,14 @@ DLL_EXPORT_MINIARGV int miniargv_process_env (char* env[], const miniargv_defini
  * \sa     miniargv_process_arg_flags()
  * \sa     miniargv_process_arg_params()
  * \sa     miniargv_process_env()
+ * \sa     miniargv_cfgfile_generate()
  */
 DLL_EXPORT_MINIARGV int miniargv_process_cfgfile (const char* cfgfile, const miniargv_definition cfgdef[], void* callbackdata);
 
 /*! \brief generate configuration file template (\a argparam will be used as default value)
  * \param  cfgfile       handle where configuration file template will be written to
- * \param  cfgdef        definitions of possible configuration file variables
+ * \param  cfgdef        definitions of possible configuration file variables (shortarg is ignored, values are set to argparam)
+ * \sa     miniargv_process_cfgfile()
  * \sa     miniargv_help()
  * \sa     miniargv_arg_help()
  * \sa     miniargv_env_help()
@@ -295,10 +297,12 @@ DLL_EXPORT_MINIARGV void miniargv_env_help (const miniargv_definition envdef[], 
 DLL_EXPORT_MINIARGV void miniargv_help (const miniargv_definition argdef[], const miniargv_definition envdef[], int descindent, int wrapwidth);
 
 /*! \brief display help text wile wrapping it at a maximum width and indenting new lines
+ * \param  dst                   stream to write to (use stdout for console output)
  * \param  text                  text to display
  * \param  currentpos            current position when this function is called (leftmost position is 0)
  * \param  indentpos             position to indent new lines at (leftmost position is 0)
  * \param  wrapwidth             maximum line length, defaults to 79 if set to 0
+ * \param  newline               new line sequence (set to NULL to use default newline)
  * \sa     miniargv_help()
  * \sa     miniargv_arg_help()
  * \sa     miniargv_env_help()
@@ -307,7 +311,7 @@ DLL_EXPORT_MINIARGV void miniargv_help (const miniargv_definition argdef[], cons
  * \sa     miniargv_definition
  * \sa     miniargv_definition_struct
  */
-DLL_EXPORT_MINIARGV void miniargv_wrap_and_indent_text (const char* text, int currentpos, int indentpos, int wrapwidth);
+DLL_EXPORT_MINIARGV void miniargv_wrap_and_indent_text (FILE* dst, const char* text, int currentpos, int indentpos, int wrapwidth, const char* newline);
 
 
 
@@ -341,6 +345,22 @@ DLL_EXPORT_MINIARGV int miniargv_cb_set_const_str (const miniargv_definition* ar
  */
 DLL_EXPORT_MINIARGV int miniargv_cb_strdup (const miniargv_definition* argdef, const char* value, void* callbackdata);
 
+/*! \brief predefined callback function to set the integer value pointed to by \b userdata to the boolean value of \b value (allowed values: 0,1,no,yes,off,on,false,true)
+ * \param  argdef                definition of command line argument, or NULL for standalone value argument
+ * \param  value                 value, must be specified and must be a number
+ * \param  callbackdata          (unused)
+ * \return 0 to continue processing or non-zero to abort
+ * \sa     miniargv_handler_fn
+ * \sa     miniargv_definition
+ * \sa     miniargv_cb_set_int()
+ * \sa     miniargv_process()
+ * \sa     miniargv_process_arg()
+ * \sa     miniargv_process_arg_flags()
+ * \sa     miniargv_process_arg_params()
+ * \sa     miniargv_process_env()
+ */
+DLL_EXPORT_MINIARGV int miniargv_cb_set_boolean (const miniargv_definition* argdef, const char* value, void* callbackdata);
+
 /*! \brief predefined callback function to set the integer pointed to by \b userdata to the numeric value of \b value
  * \param  argdef                definition of command line argument, or NULL for standalone value argument
  * \param  value                 value, must be specified and must be a number
@@ -348,7 +368,7 @@ DLL_EXPORT_MINIARGV int miniargv_cb_strdup (const miniargv_definition* argdef, c
  * \return 0 to continue processing or non-zero to abort
  * \sa     miniargv_handler_fn
  * \sa     miniargv_definition
- * \sa     miniargv_cb_set_long()
+ * \sa     miniargv_cb_set_int()
  * \sa     miniargv_process()
  * \sa     miniargv_process_arg()
  * \sa     miniargv_process_arg_flags()
@@ -629,7 +649,7 @@ DLL_EXPORT_MINIARGV const char* miniargv_get_version_string ();
 /*! \brief minor version number \hideinitializer */
 #define MINIARGV_VERSION_MINOR 2
 /*! \brief micro version number \hideinitializer */
-#define MINIARGV_VERSION_MICRO 10
+#define MINIARGV_VERSION_MICRO 11
 /** @} */
 
 /*! \brief packed version number (bits 24-31: major version, bits 16-23: minor version, bits 8-15: micro version)

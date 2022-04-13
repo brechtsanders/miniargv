@@ -1,3 +1,11 @@
+0.2.11
+
+2022-04-13  Brecht Sanders  https://github.com/brechtsanders/
+
+  * added miniargv_cb_set_boolean()
+  * added dst and newline arguments to  miniargv_wrap_and_indent_text()
+  * changed miniargv_cfgfile_generate() to handle wrapping of help text
+
 0.2.10
 
 2022-04-12  Brecht Sanders  https://github.com/brechtsanders/
