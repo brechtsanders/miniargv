@@ -14,100 +14,119 @@
 #define MINIARG_PROCESS_FLAG_FIND_ONLY  0x08
 #define MINIARG_PROCESS_FLAG_FIND_VALUE (MINIARG_PROCESS_FLAG_FIND_ONLY | MINIARG_PROCESS_FLAG_VALUES)
 
+/* process single command line argument, returns non-zero if argument was processed */
+int miniargv_process_partial_single_arg (int* index, int* success, unsigned int flags, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
+{
+  int result;
+  size_t l;
+  const miniargv_definition* current_argdef;
+  const miniargv_definition* standalonevaluedef = NULL;
+  int standalonevaluedefset = 0;
+  (*success) = 0;
+  if (argv[*index][0] == '-' && argv[*index][1]) {
+    if (argv[*index][1] != '-') {
+      //short argument
+      current_argdef = argdef;
+      while (!*success && current_argdef->callbackfn) {
+        if (current_argdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
+          if ((result = miniargv_process_partial_single_arg(index, success, flags, argv, (struct miniargv_definition_struct*)(current_argdef->callbackfn), badfn, callbackdata)) != 0)
+            return result;
+        } else if (current_argdef->shortarg) {
+          if (argv[*index][1] == current_argdef->shortarg) {
+            if (!current_argdef->argparam) {
+              //without value
+              if (argv[*index][2] == 0) {
+                if ((flags & MINIARG_PROCESS_FLAG_FLAGS) == 0)
+                  (*success)++;
+                else if ((current_argdef->callbackfn)(current_argdef, NULL, callbackdata) == 0)
+                  (*success)++;
+              }
+            } else if (argv[*index][2] != 0) {
+              //with value and no space
+              if ((flags & MINIARG_PROCESS_FLAG_FLAGS) == 0)
+                (*success)++;
+              else if ((current_argdef->callbackfn)(current_argdef, argv[*index] + 2, callbackdata) == 0)
+                (*success)++;
+            } else if (argv[*index + 1]) {
+              //with value and space
+              (*index)++;
+              if ((flags & MINIARG_PROCESS_FLAG_FLAGS) == 0)
+                (*success)++;
+              else if ((current_argdef->callbackfn)(current_argdef, argv[*index], callbackdata) == 0)
+                (*success)++;
+            }
+            return 1;
+          }
+        }
+        current_argdef++;
+      }
+    } else {
+      //long argument
+      current_argdef = argdef;
+      while (!*success && current_argdef->callbackfn) {
+        if (current_argdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
+          if ((result = miniargv_process_partial_single_arg(index, success, flags, argv, (struct miniargv_definition_struct*)(current_argdef->callbackfn), badfn, callbackdata)) != 0)
+            return result;
+        } else if (current_argdef->longarg) {
+          l = strlen(current_argdef->longarg);
+          if (strncmp(argv[*index] + 2, current_argdef->longarg, l) == 0 && (argv[*index][2 + l] == 0 || argv[*index][2 + l] == '=')) {
+            if (!current_argdef->argparam) {
+              //without value
+              if (argv[*index][2 + l] == 0) {
+                if ((flags & MINIARG_PROCESS_FLAG_FLAGS) == 0)
+                  (*success)++;
+                else if ((current_argdef->callbackfn)(current_argdef, NULL, callbackdata) == 0)
+                  (*success)++;
+              }
+            } else if (argv[*index][2 + l] == '=') {
+              //with value
+              if ((flags & MINIARG_PROCESS_FLAG_FLAGS) == 0)
+                (*success)++;
+              else if ((current_argdef->callbackfn)(current_argdef, argv[*index] + 3 + l, callbackdata) == 0)
+                (*success)++;
+            }
+            return 2;
+          }
+        }
+        current_argdef++;
+      }
+    }
+  } else {
+    //standalone value argument
+    if (!standalonevaluedefset) {
+      current_argdef = argdef;
+      while (!*success && current_argdef->callbackfn) {
+        if (current_argdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
+          if ((result = miniargv_process_partial_single_arg(index, success, flags, argv, (struct miniargv_definition_struct*)(current_argdef->callbackfn), badfn, callbackdata)) != 0)
+            return result;
+        } else if (!current_argdef->shortarg && !current_argdef->longarg) {
+          standalonevaluedef = current_argdef;
+          (*success)++;
+          return 3;
+        }
+        current_argdef++;
+      }
+      standalonevaluedefset = 1;
+    }
+    if (standalonevaluedef && standalonevaluedef->callbackfn) {
+      if ((flags & MINIARG_PROCESS_FLAG_VALUES) == 0)
+        (*success)++;
+      else if ((flags & MINIARG_PROCESS_FLAG_FIND_ONLY) != 0)
+        return *index;
+      else if ((standalonevaluedef->callbackfn)(standalonevaluedef, argv[*index], callbackdata) == 0)
+        (*success)++;
+    }
+  }
+  return 0;
+}
+
+/* partially process argv */
 int miniargv_process_partial (unsigned int flags, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
 {
   int i;
-  size_t l;
-  const miniargv_definition* current_argdef;
   int success;
-  int standalonevaluedefset = 0;
-  const miniargv_definition* standalonevaluedef = NULL;
   for (i = ((flags & MINIARG_PROCESS_FLAG_FIND_ONLY) == 0 ? 1 : *(int*)callbackdata + 1); argv[i]; i++) {
-    success = 0;
-    if (argv[i][0] == '-' && argv[i][1]) {
-      if (argv[i][1] != '-') {
-        //short argument
-        current_argdef = argdef;
-        while (!success && current_argdef->callbackfn) {
-          if (current_argdef->shortarg) {
-            if (argv[i][1] == current_argdef->shortarg) {
-              if (!current_argdef->argparam) {
-                //without value
-                if (argv[i][2] == 0) {
-                  if ((flags & MINIARG_PROCESS_FLAG_FLAGS) == 0)
-                    success++;
-                  else if ((current_argdef->callbackfn)(current_argdef, NULL, callbackdata) == 0)
-                    success++;
-                }
-              } else if (argv[i][2] != 0) {
-                //with value and no space
-                if ((flags & MINIARG_PROCESS_FLAG_FLAGS) == 0)
-                  success++;
-                else if ((current_argdef->callbackfn)(current_argdef, argv[i] + 2, callbackdata) == 0)
-                  success++;
-              } else if (argv[i + 1]) {
-                //with value and space
-                i++;
-                if ((flags & MINIARG_PROCESS_FLAG_FLAGS) == 0)
-                  success++;
-                else if ((current_argdef->callbackfn)(current_argdef, argv[i], callbackdata) == 0)
-                  success++;
-              }
-              break;
-            }
-          }
-          current_argdef++;
-        }
-      } else {
-        //long argument
-        current_argdef = argdef;
-        while (!success && current_argdef->callbackfn) {
-          if (current_argdef->longarg) {
-            l = strlen(current_argdef->longarg);
-            if (strncmp(argv[i] + 2, current_argdef->longarg, l) == 0 && (argv[i][2 + l] == 0 || argv[i][2 + l] == '=')) {
-              if (!current_argdef->argparam) {
-                //without value
-                if (argv[i][2 + l] == 0) {
-                  if ((flags & MINIARG_PROCESS_FLAG_FLAGS) == 0)
-                    success++;
-                  else if ((current_argdef->callbackfn)(current_argdef, NULL, callbackdata) == 0)
-                    success++;
-                }
-              } else if (argv[i][2 + l] == '=') {
-                //with value
-                if ((flags & MINIARG_PROCESS_FLAG_FLAGS) == 0)
-                  success++;
-                else if ((current_argdef->callbackfn)(current_argdef, argv[i] + 3 + l, callbackdata) == 0)
-                  success++;
-              }
-              break;
-            }
-          }
-          current_argdef++;
-        }
-      }
-    } else {
-      //standalone value argument
-      if (!standalonevaluedefset) {
-        current_argdef = argdef;
-        while (!success && current_argdef->callbackfn) {
-          if (!current_argdef->shortarg && !current_argdef->longarg) {
-            standalonevaluedef = current_argdef;
-            break;
-          }
-          current_argdef++;
-        }
-        standalonevaluedefset = 1;
-      }
-      if (standalonevaluedef && standalonevaluedef->callbackfn) {
-        if ((flags & MINIARG_PROCESS_FLAG_VALUES) == 0)
-          success++;
-        else if ((flags & MINIARG_PROCESS_FLAG_FIND_ONLY) != 0)
-          return i;
-        else if ((standalonevaluedef->callbackfn)(standalonevaluedef, argv[i], callbackdata) == 0)
-          success++;
-      }
-    }
+    miniargv_process_partial_single_arg(&i, &success, flags, argv, argdef, badfn, callbackdata);
     if (!success && badfn) {
       //bad argument
       if (badfn && (badfn)(NULL, argv[i], callbackdata) == 0)
@@ -178,7 +197,10 @@ DLL_EXPORT_MINIARGV int miniargv_process_env (char* env[], const miniargv_defini
   const miniargv_definition* current_envdef = envdef;
   int result;
   while (current_envdef->callbackfn) {
-    if (current_envdef->longarg) {
+    if (current_envdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
+      if ((result = miniargv_process_env(env, (struct miniargv_definition_struct*)(current_envdef->callbackfn), callbackdata)) != 0)
+        return result;
+    } else if (current_envdef->longarg) {
       current_env = env;
       while (*current_env) {
         if ((s = strchr(*current_env, '=')) != NULL) {
@@ -195,14 +217,14 @@ DLL_EXPORT_MINIARGV int miniargv_process_env (char* env[], const miniargv_defini
   return 0;
 }
 
-#define READLINE_BLOCK_SIZE 128
+//initial block size and increment steps for reading/allocating line data
+#define MINIARGV_READLINE_BLOCK_SIZE 128
 
-typedef int (*cfg_value_fn)(const char* varname, const char* value, void* callbackdata);
-
-char* readline (FILE* src)
+//read line from file, NULL when no more lines, caller must call free()
+char* miniargv_readline (FILE* src)
 {
   int datalen;
-  char data[READLINE_BLOCK_SIZE];
+  char data[MINIARGV_READLINE_BLOCK_SIZE];
   int resultlen = 0;
   char* result = NULL;
   //read next data
@@ -223,6 +245,28 @@ char* readline (FILE* src)
   return result;
 }
 
+const miniargv_definition* miniargv_find_longarg (const char* longarg, size_t longarglen, const miniargv_definition cfgdef[])
+{
+  const miniargv_definition* result;
+  const miniargv_definition* current_cfgdef = cfgdef;
+  if (!longarg || !current_cfgdef)
+    return NULL;
+  if (longarglen <= 0)
+    longarglen = strlen(longarg);
+  while (current_cfgdef->callbackfn) {
+    if (current_cfgdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
+      if ((result = miniargv_find_longarg(longarg, longarglen, (struct miniargv_definition_struct*)(current_cfgdef->callbackfn))) != NULL)
+        return result;
+    } else if (current_cfgdef->longarg) {
+      if (strncmp(longarg, current_cfgdef->longarg, longarglen) == 0) {
+        return current_cfgdef;
+      }
+    }
+    current_cfgdef++;
+  }
+  return NULL;
+}
+
 DLL_EXPORT_MINIARGV int miniargv_process_cfgfile (const char* cfgfile, const miniargv_definition cfgdef[], void* callbackdata)
 {
   FILE* src;
@@ -236,7 +280,7 @@ DLL_EXPORT_MINIARGV int miniargv_process_cfgfile (const char* cfgfile, const min
   //open file for reading
   if ((src = fopen(cfgfile, "rb")) != NULL) {
     //read lines
-    while (status == 0 && (line = readline(src)) != NULL) {
+    while (status == 0 && (line = miniargv_readline(src)) != NULL) {
       varname = line;
       //skip spaces preceding varname
       while (*varname && isspace(*varname))
@@ -263,15 +307,8 @@ DLL_EXPORT_MINIARGV int miniargv_process_cfgfile (const char* cfgfile, const min
               *p = 0;
             }
             //process variable
-            current_cfgdef = cfgdef;
-            while (current_cfgdef->callbackfn) {
-              if (current_cfgdef->longarg) {
-                if (strncmp(varname, current_cfgdef->longarg, varnamelen) == 0) {
-                  status = (current_cfgdef->callbackfn)(current_cfgdef, value, callbackdata);
-                  break;
-                }
-              }
-              current_cfgdef++;
+            if ((current_cfgdef = miniargv_find_longarg(varname, varnamelen, cfgdef)) != NULL) {
+              status = (current_cfgdef->callbackfn)(current_cfgdef, value, callbackdata);
             }
           }
         }
@@ -288,7 +325,9 @@ DLL_EXPORT_MINIARGV void miniargv_cfgfile_generate (FILE* cfgfile, const miniarg
   const miniargv_definition* current_cfgdef = cfgdef;
   static const char* help_indent = "\n;   ";
   while (current_cfgdef->callbackfn) {
-    if (current_cfgdef->longarg) {
+    if (current_cfgdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
+      miniargv_cfgfile_generate(cfgfile, (struct miniargv_definition_struct*)(current_cfgdef->callbackfn));
+    } else if (current_cfgdef->longarg) {
       fprintf(cfgfile, "; %s:%s", current_cfgdef->longarg, help_indent);
       miniargv_wrap_and_indent_text(cfgfile, current_cfgdef->help, 0, 0, 79 - 4, help_indent);
       fprintf(cfgfile, "\n%s = %s\n\n", current_cfgdef->longarg, (current_cfgdef->argparam ? current_cfgdef->argparam : ""));
@@ -328,47 +367,63 @@ DLL_EXPORT_MINIARGV const char* miniargv_getprogramname (const char* argv0, int*
   return argv0 + pos;
 }
 
-DLL_EXPORT_MINIARGV void miniargv_arg_list (const miniargv_definition argdef[], int shortonly)
+DLL_EXPORT_MINIARGV unsigned int miniargv_arg_list (const miniargv_definition argdef[], int shortonly)
 {
+  unsigned int count = 0;
   const miniargv_definition* current_argdef = argdef;
   while (current_argdef->callbackfn) {
-    if (current_argdef != argdef)
+    if (count > 0)
       printf(" ");
-    if (current_argdef->shortarg  || current_argdef->longarg) {
-      printf("[");
-      if (current_argdef->shortarg) {
-        printf("-%c", current_argdef->shortarg);
-        if (current_argdef->argparam)
-          printf(" %s", current_argdef->argparam);
-      }
-      if (current_argdef->longarg && !(shortonly && current_argdef->shortarg)) {
-        if (current_argdef->shortarg)
-          printf("|");
-        printf("--%s", current_argdef->longarg);
-        if (current_argdef->argparam)
-          printf("=%s", current_argdef->argparam);
-      }
-      printf("]");
+    if (current_argdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
+      //note: if the next command prints nothing and it's the last entry there will be an extra space at the end
+      count += miniargv_arg_list((struct miniargv_definition_struct*)(current_argdef->callbackfn), shortonly);
     } else {
-      printf("%s", (current_argdef->argparam ? current_argdef->argparam : "param"));
+      if (current_argdef->shortarg  || current_argdef->longarg) {
+        printf("[");
+        if (current_argdef->shortarg) {
+          printf("-%c", current_argdef->shortarg);
+          if (current_argdef->argparam)
+            printf(" %s", current_argdef->argparam);
+        }
+        if (current_argdef->longarg && !(shortonly && current_argdef->shortarg)) {
+          if (current_argdef->shortarg)
+            printf("|");
+          printf("--%s", current_argdef->longarg);
+          if (current_argdef->argparam)
+            printf("=%s", current_argdef->argparam);
+        }
+        printf("]");
+      } else {
+        printf("%s", (current_argdef->argparam ? current_argdef->argparam : "param"));
+      }
+      count++;
     }
     current_argdef++;
   }
+  return count;
 }
 
-DLL_EXPORT_MINIARGV void miniargv_env_list (const miniargv_definition envdef[], int noparam)
+DLL_EXPORT_MINIARGV unsigned int miniargv_env_list (const miniargv_definition envdef[], int noparam)
 {
+  unsigned int count = 0;
   const miniargv_definition* current_envdef = envdef;
   while (current_envdef->callbackfn) {
-    if (current_envdef != envdef)
+    if (count > 0)
       printf(" ");
-    if (current_envdef->longarg) {
-      printf("%s", current_envdef->longarg);
-      if (!noparam && current_envdef->argparam)
-        printf("=%s", current_envdef->argparam);
+    if (current_envdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
+      //note: if the next command prints nothing and it's the last entry there will be an extra space at the end
+      count += miniargv_env_list((struct miniargv_definition_struct*)(current_envdef->callbackfn), noparam);
+    } else {
+      if (current_envdef->longarg) {
+        printf("%s", current_envdef->longarg);
+        if (!noparam && current_envdef->argparam)
+          printf("=%s", current_envdef->argparam);
+        count++;
+      }
     }
     current_envdef++;
   }
+  return count;
 }
 
 DLL_EXPORT_MINIARGV void miniargv_arg_help (const miniargv_definition argdef[], int descindent, int wrapwidth)
@@ -378,29 +433,34 @@ DLL_EXPORT_MINIARGV void miniargv_arg_help (const miniargv_definition argdef[], 
   if (!descindent)
     descindent = 25;
   while (current_argdef->callbackfn) {
-    pos = printf("  ");
-    if (!current_argdef->shortarg && !current_argdef->longarg) {
-      pos += printf("%s", (current_argdef->argparam ? current_argdef->argparam : "param"));
+    if (current_argdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
+      //note: if the next command prints nothing and it's the last entry there will be an extra space at the end
+      miniargv_arg_help((struct miniargv_definition_struct*)(current_argdef->callbackfn), descindent, wrapwidth);
     } else {
-      if (current_argdef->shortarg) {
-        pos += printf("-%c", current_argdef->shortarg);
-        if (current_argdef->argparam)
-          pos += printf(" %s", current_argdef->argparam);
+      pos = printf("  ");
+      if (!current_argdef->shortarg && !current_argdef->longarg) {
+        pos += printf("%s", (current_argdef->argparam ? current_argdef->argparam : "param"));
+      } else {
+        if (current_argdef->shortarg) {
+          pos += printf("-%c", current_argdef->shortarg);
+          if (current_argdef->argparam)
+            pos += printf(" %s", current_argdef->argparam);
+        }
+        if (current_argdef->longarg) {
+          if (current_argdef->shortarg)
+            pos += printf(", ");
+          pos += printf("--%s", current_argdef->longarg);
+          if (current_argdef->argparam)
+            pos += printf("=%s", current_argdef->argparam);
+        }
       }
-      if (current_argdef->longarg) {
-        if (current_argdef->shortarg)
-          pos += printf(", ");
-        pos += printf("--%s", current_argdef->longarg);
-        if (current_argdef->argparam)
-          pos += printf("=%s", current_argdef->argparam);
-      }
+      if (pos > descindent - 2)
+        printf("\n%*s", descindent, "");
+      else
+        printf("%*s", (pos < descindent ? descindent - pos : 2), "");
+      miniargv_wrap_and_indent_text(stdout, current_argdef->help, descindent, descindent, wrapwidth, NULL);
+      printf("\n");
     }
-    if (pos > descindent - 2)
-      printf("\n%*s", descindent, "");
-    else
-      printf("%*s", (pos < descindent ? descindent - pos : 2), "");
-    miniargv_wrap_and_indent_text(stdout, current_argdef->help, descindent, descindent, wrapwidth, NULL);
-    printf("\n");
     current_argdef++;
   }
 }
@@ -412,24 +472,29 @@ DLL_EXPORT_MINIARGV void miniargv_env_help (const miniargv_definition envdef[], 
   if (!descindent)
     descindent = 25;
   while (current_envdef->callbackfn) {
-    pos = printf("  ");
-    if (!current_envdef->shortarg && !current_envdef->longarg) {
-      pos += printf(" %s", (current_envdef->argparam ? current_envdef->argparam : "param"));
+    if (current_envdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
+      //note: if the next command prints nothing and it's the last entry there will be an extra space at the end
+      miniargv_env_help((struct miniargv_definition_struct*)(current_envdef->callbackfn), descindent, wrapwidth);
     } else {
-      if (current_envdef->longarg) {
-        if (current_envdef->shortarg)
-          pos += printf(", ");
-        pos += printf("%s", current_envdef->longarg);
-        if (current_envdef->argparam)
-          pos += printf("=%s", current_envdef->argparam);
+      pos = printf("  ");
+      if (!current_envdef->shortarg && !current_envdef->longarg) {
+        pos += printf(" %s", (current_envdef->argparam ? current_envdef->argparam : "param"));
+      } else {
+        if (current_envdef->longarg) {
+          if (current_envdef->shortarg)
+            pos += printf(", ");
+          pos += printf("%s", current_envdef->longarg);
+          if (current_envdef->argparam)
+            pos += printf("=%s", current_envdef->argparam);
+        }
       }
+      if (pos > descindent - 2)
+        printf("\n%*s", descindent, "");
+      else
+        printf("%*s", (pos < descindent ? descindent - pos : 2), "");
+      miniargv_wrap_and_indent_text(stdout, current_envdef->help, descindent, descindent, wrapwidth, NULL);
+      printf("\n");
     }
-    if (pos > descindent - 2)
-      printf("\n%*s", descindent, "");
-    else
-      printf("%*s", (pos < descindent ? descindent - pos : 2), "");
-    miniargv_wrap_and_indent_text(stdout, current_envdef->help, descindent, descindent, wrapwidth, NULL);
-    printf("\n");
     current_envdef++;
   }
 }

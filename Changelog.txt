@@ -1,3 +1,11 @@
+0.2.12
+
+2022-04-18  Brecht Sanders  https://github.com/brechtsanders/
+
+  * changed miniargv_arg_list() and miniargv_env_list() to return counter
+  * added support for including definitions blocks
+  * added MINIARGV_DEFINITION_INCLUDE() macro to include a definitions block
+
 0.2.11
 
 2022-04-13  Brecht Sanders  https://github.com/brechtsanders/

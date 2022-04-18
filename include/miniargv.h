@@ -50,7 +50,7 @@ typedef struct miniargv_definition_struct miniargv_definition;
  */
 typedef int (*miniargv_handler_fn)(const miniargv_definition* argdef, const char* value, void* callbackdata);
 
-/*! \brief structure for command line argument definition
+/*! \brief structure for argument definition
  *
  * This structure contains the specification for a specific command line argument.
  *
@@ -78,6 +78,12 @@ struct miniargv_definition_struct {
   const void* userdata;             /**< user data specific for this argument, can be used in callback functions */
   const char* help;                 /**< description of what this command line argument is for, used by \a miniargv_arg_help() */
 };
+
+/*! \cond PRIVATE */
+#define MINIARGV_DEFINITION_INCLUDE_SHORTARG -0x80
+
+/*! \brief include another argument definition block */
+#define MINIARGV_DEFINITION_INCLUDE(def) {MINIARGV_DEFINITION_INCLUDE_SHORTARG, NULL, NULL, (miniargv_handler_fn)(def), NULL, NULL}
 
 /*! \brief first process environment variables, then process command line argument flags and finally process command line arguments values, and call the appropriate callback function for each match
  * \param  argv          NULL-terminated array of arguments (first one is the application itself)
@@ -240,20 +246,22 @@ DLL_EXPORT_MINIARGV const char* miniargv_getprogramname (const char* argv0, int*
 /*! \brief lists possible command line arguments on one line
  * \param  argdef                definitions of possible command line arguments
  * \param  shortonly             set to non-zero to only show short arguments
+ * \return number of command line arguments listed
  * \sa     miniargv_env_list()
  * \sa     miniargv_help()
  * \sa     miniargv_env_help()
  */
-DLL_EXPORT_MINIARGV void miniargv_arg_list (const miniargv_definition argdef[], int shortonly);
+DLL_EXPORT_MINIARGV unsigned int miniargv_arg_list (const miniargv_definition argdef[], int shortonly);
 
-/*! \brief lists possible environment variables  on one line
+/*! \brief lists possible environment variables on one line
  * \param  argdef                definitions of possible command line arguments
  * \param  noparam               set to non-zero to only show the variable names without value parameter
+ * \return number of environment variables listed
  * \sa     miniargv_arg_list()
  * \sa     miniargv_help()
  * \sa     miniargv_env_help()
  */
-DLL_EXPORT_MINIARGV void miniargv_env_list (const miniargv_definition envdef[], int noparam);
+DLL_EXPORT_MINIARGV unsigned int miniargv_env_list (const miniargv_definition envdef[], int noparam);
 
 /*! \brief display help text explaining command line arguments
  * \param  argdef                array of command line argument definitions
@@ -649,7 +657,7 @@ DLL_EXPORT_MINIARGV const char* miniargv_get_version_string ();
 /*! \brief minor version number \hideinitializer */
 #define MINIARGV_VERSION_MINOR 2
 /*! \brief micro version number \hideinitializer */
-#define MINIARGV_VERSION_MICRO 11
+#define MINIARGV_VERSION_MICRO 12
 /** @} */
 
 /*! \brief packed version number (bits 24-31: major version, bits 16-23: minor version, bits 8-15: micro version)

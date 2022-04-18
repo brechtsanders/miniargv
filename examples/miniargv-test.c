@@ -47,9 +47,15 @@ int process_arg_error (const miniargv_definition* argdef, const char* value, voi
   return 1;
 }
 
+const miniargv_definition argsubdef[] = {
+  {'d', "digit", "D", process_arg_number, NULL, "set number to D"},
+  {0, NULL, NULL, NULL, NULL, NULL}
+};
+
 const miniargv_definition argdef[] = {
   {'v', "verbose", NULL, process_arg_verbose, NULL, "verbose mode"},
   {'n', "number", "N", process_arg_number, NULL, "set number to N"},
+  MINIARGV_DEFINITION_INCLUDE(argsubdef),
   {'f', "file", "FILE", process_arg_number, NULL, "specify file"},
   {'s', "string", "STR", process_arg_number, NULL, "specify string"},
   {'a', NULL, NULL, process_arg_general_without_value, NULL, "general parameter without value (short)"},
