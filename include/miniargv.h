@@ -205,6 +205,13 @@ DLL_EXPORT_MINIARGV int miniargv_process_env (char* env[], const miniargv_defini
  * \param  cfgdef        definitions of possible configuration file variables (shortarg is ignored)
  * \param  callbackdata  user data passed to callback functions
  * \return zero on success or abort code returned by callback function
+ *         A configuration file can have any extenstion (though .cfg or .ini is recommended).
+ *         Whitespace at the beginning of a line is ignored.
+ *         Any line starting with a semicolon (;) or hash sign (#) is considered as command and will be ignored.
+ *         Lines starting with an at-sign (@) will cause the configuration file specified after the at-sign (@) to be processed.
+ *         Configuration lines consist of a variable name, followed by an equals (=) sign or a colon (:), followed by a value.
+ *         Whitespace before and after the equals (=) sign or a colon (:) is ignored.
+ *         It is also possible to use an at-sign (@) instead of an equals (=) sign or a colon (:), but then the value specifies a file that will be loaded.
  * \sa     miniargv_definition
  * \sa     miniargv_handler_fn
  * \sa     miniargv_process()
@@ -338,7 +345,7 @@ DLL_EXPORT_MINIARGV void miniargv_wrap_and_indent_text (FILE* dst, const char* t
  */
 DLL_EXPORT_MINIARGV int miniargv_cb_set_const_str (const miniargv_definition* argdef, const char* value, void* callbackdata);
 
-/*! \brief predefined callback function to set string \b userdata to a copy of \b value
+/*! \brief predefined callback function to set string \b userdata to a copy of \b value (calls free() on previous \b userdata if not NULL)
  * \param  argdef                definition of command line argument, or NULL for standalone value argument
  * \param  value                 value if specified, otherwise NULL (always specified for standalone value arguments or if \a argdef->argparam is not NULL)
  * \param  callbackdata          (unused)
@@ -657,7 +664,7 @@ DLL_EXPORT_MINIARGV const char* miniargv_get_version_string ();
 /*! \brief minor version number \hideinitializer */
 #define MINIARGV_VERSION_MINOR 2
 /*! \brief micro version number \hideinitializer */
-#define MINIARGV_VERSION_MICRO 12
+#define MINIARGV_VERSION_MICRO 13
 /** @} */
 
 /*! \brief packed version number (bits 24-31: major version, bits 16-23: minor version, bits 8-15: micro version)

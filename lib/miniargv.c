@@ -274,6 +274,7 @@ DLL_EXPORT_MINIARGV int miniargv_process_cfgfile (const char* cfgfile, const min
   char* p;
   char* varname;
   size_t varnamelen;
+  char separator;
   char* value;
   const miniargv_definition* current_cfgdef;
   int status = 0;
@@ -285,12 +286,27 @@ DLL_EXPORT_MINIARGV int miniargv_process_cfgfile (const char* cfgfile, const min
       //skip spaces preceding varname
       while (*varname && isspace(*varname))
         varname++;
-      if (*varname) {
+      //include specified file if line starts with @
+      if (*varname == '@') {
+        //skip spaces preceding include file
+        varname++;
+        while (*varname && isspace(*varname))
+          varname++;
+        //skip spaces following include file
+        if ((p = strchr(varname, 0)) != NULL) {
+          while (p != varname && isspace(*(p - 1)))
+            p--;
+          *p = 0;
+        }
+        if (*varname)
+          status = miniargv_process_cfgfile(varname, cfgdef, callbackdata);
+      } else if (*varname) {
         //find starting position of value
         p = varname;
-        while (*p && *p != '=' && *p != ':' && *p != '#' && *p != ';')
+        while (*p && *p != '=' && *p != ':' && *p != '@' && *p != '#' && *p != ';')
           p++;
-        if (*p == '=' || *p == ':') {
+        separator = *p;
+        if (separator == '=' || separator == ':' || separator == '@') {
           value = p + 1;
           //skip spaces following varname
           while (p != varname && isspace(*(p - 1)))
@@ -308,7 +324,36 @@ DLL_EXPORT_MINIARGV int miniargv_process_cfgfile (const char* cfgfile, const min
             }
             //process variable
             if ((current_cfgdef = miniargv_find_longarg(varname, varnamelen, cfgdef)) != NULL) {
-              status = (current_cfgdef->callbackfn)(current_cfgdef, value, callbackdata);
+              if (separator == '@') {
+                //process contents of another file
+                FILE* valuesrc;
+                int datalen;
+                char data[MINIARGV_READLINE_BLOCK_SIZE];
+                int loadedvaluelen = 0;
+                char* loadedvalue = NULL;
+                if ((valuesrc = fopen(value, "rb")) != NULL) {
+                  //read next data
+                  while ((datalen = fread(data, 1, sizeof(data), valuesrc)) > 0) {
+                    //allocate memory and store the result
+                    if ((loadedvalue = (char*)realloc(loadedvalue, loadedvaluelen + datalen + 1)) == NULL)
+                      break;
+                    memcpy(loadedvalue + loadedvaluelen, data, datalen + 1);
+                    loadedvaluelen += datalen;
+                  }
+                  fclose(valuesrc);
+                  if (loadedvalue) {
+                    loadedvalue[loadedvaluelen] = 0;
+                    status = (current_cfgdef->callbackfn)(current_cfgdef, loadedvalue, callbackdata);
+                    free(loadedvalue);
+                  }
+                }
+              } else {
+                //process variable value
+                status = (current_cfgdef->callbackfn)(current_cfgdef, value, callbackdata);
+              }
+            } else {
+              //variable name not found
+              //printf("Error: unknown variable: %.*s\n", (int)varnamelen, varname);/////
             }
           }
         }
