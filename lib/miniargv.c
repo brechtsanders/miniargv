@@ -127,6 +127,9 @@ int miniargv_process_partial (unsigned int flags, char* argv[], const miniargv_d
   int success;
   for (i = ((flags & MINIARG_PROCESS_FLAG_FIND_ONLY) == 0 ? 1 : *(int*)callbackdata + 1); argv[i]; i++) {
     miniargv_process_partial_single_arg(&i, &success, flags, argv, argdef, badfn, callbackdata);
+    if (success && (flags & MINIARG_PROCESS_FLAG_FIND_ONLY) != 0) {
+      return i;
+    }
     if (!success && badfn) {
       //bad argument
       if (badfn && (badfn)(NULL, argv[i], callbackdata) == 0)

@@ -664,7 +664,7 @@ DLL_EXPORT_MINIARGV const char* miniargv_get_version_string ();
 /*! \brief minor version number \hideinitializer */
 #define MINIARGV_VERSION_MINOR 2
 /*! \brief micro version number \hideinitializer */
-#define MINIARGV_VERSION_MICRO 13
+#define MINIARGV_VERSION_MICRO 14
 /** @} */
 
 /*! \brief packed version number (bits 24-31: major version, bits 16-23: minor version, bits 8-15: micro version)

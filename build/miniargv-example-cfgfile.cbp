@@ -85,9 +85,11 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-DSTATIC" />
 			<Add directory="../include" />
 		</Compiler>
 		<Linker>
+			<Add option="-static" />
 			<Add library="miniargv" />
 		</Linker>
 		<Unit filename="../examples/miniargv-example-cfgfile.c">
