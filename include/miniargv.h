@@ -328,6 +328,20 @@ DLL_EXPORT_MINIARGV void miniargv_help (const miniargv_definition argdef[], cons
  */
 DLL_EXPORT_MINIARGV void miniargv_wrap_and_indent_text (FILE* dst, const char* text, int currentpos, int indentpos, int wrapwidth, const char* newline);
 
+/*! \brief clean up dynamically allocated memory (currently only when using miniargv_cb_strdup)
+ * \param  envdef        definitions of possible environment variables
+ * \return zero on success or index of argument that caused processing to abort
+ * \sa     miniargv_definition
+ * \sa     miniargv_cb_strdup()
+ * \sa     miniargv_process_ltr()
+ * \sa     miniargv_process_arg()
+ * \sa     miniargv_process_arg_flags()
+ * \sa     miniargv_process_arg_params()
+ * \sa     miniargv_process_env()
+ * \sa     miniargv_process_cfgfile()
+ */
+DLL_EXPORT_MINIARGV int miniargv_cleanup (const miniargv_definition envdef[]);
+
 
 
 /*! \brief predefined callback function to set constant string \b userdata to \b value
@@ -357,6 +371,7 @@ DLL_EXPORT_MINIARGV int miniargv_cb_set_const_str (const miniargv_definition* ar
  * \sa     miniargv_process_arg_flags()
  * \sa     miniargv_process_arg_params()
  * \sa     miniargv_process_env()
+ * \sa     miniargv_cleanup()
  */
 DLL_EXPORT_MINIARGV int miniargv_cb_strdup (const miniargv_definition* argdef, const char* value, void* callbackdata);
 
@@ -664,7 +679,7 @@ DLL_EXPORT_MINIARGV const char* miniargv_get_version_string ();
 /*! \brief minor version number \hideinitializer */
 #define MINIARGV_VERSION_MINOR 2
 /*! \brief micro version number \hideinitializer */
-#define MINIARGV_VERSION_MICRO 14
+#define MINIARGV_VERSION_MICRO 15
 /** @} */
 
 /*! \brief packed version number (bits 24-31: major version, bits 16-23: minor version, bits 8-15: micro version)

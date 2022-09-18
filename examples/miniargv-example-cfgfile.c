@@ -49,6 +49,7 @@ int main (int argc, char *argv[])
   printf("boolean = %i\n", bln);
   printf("string = %s\n", (str ? str : "NULL"));
   //clean up
-  free(str);
+  miniargv_cleanup(cfgdef);
+  //free(str);
   return 0;
 }

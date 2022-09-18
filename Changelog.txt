@@ -1,3 +1,9 @@
+0.2.15
+
+2022-09-18  Brecht Sanders  https://github.com/brechtsanders/
+
+  * added miniargv_cleanup()
+
 0.2.14
 
 2022-09-14  Brecht Sanders  https://github.com/brechtsanders/
