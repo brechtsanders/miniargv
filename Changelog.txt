@@ -1,9 +1,14 @@
+0.2.17
+
+2022-12-28  Brecht Sanders  https://github.com/brechtsanders/
+
+  * fixes in internal function miniargv_process_partial_single_arg()
+
 0.2.16
 
 2022-10-04  Brecht Sanders  https://github.com/brechtsanders/
 
   * fixes in internal function miniargv_process_partial_single_arg()
-  * fixes in argument processing logic
 
 0.2.15
 

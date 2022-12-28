@@ -71,7 +71,7 @@ SOURCE_PACKAGE_FILES = $(COMMON_PACKAGE_FILES) Makefile doc/Doxyfile include/*.h
 
 default: all
 
-all: static-lib shared-lib tests
+all: static-lib shared-lib pkg-config-files tests
 
 static-lib: $(LIBPREFIX)miniargv$(LIBEXT)
 
@@ -97,6 +97,28 @@ examples/%$(BINEXT): examples/%.static.o $(LIBPREFIX)miniargv$(LIBEXT)
 
 tests: $(TESTS_BIN)
 
+
+.PHONY: pkg-config-files
+pkg-config-files: miniargv.pc
+
+
+define MINIARGV_PC
+prefix=$(PREFIX)
+exec_prefix=$${prefix}
+includedir=$${prefix}/include
+libdir=$${exec_prefix}/lib
+
+Name: miniargv
+Description: C library for processing command line arguments and displaying command line help
+Version: $(shell cat version)
+Cflags: -I$${includedir}
+Libs: -L$${libdir} -lminiargv
+endef
+
+$(OBJDIR)miniargv.pc: version
+	$(file > $@,$(MINIARGV_PC))
+
+
 .PHONY: doc
 doc:
 ifdef DOXYGEN
@@ -104,9 +126,10 @@ ifdef DOXYGEN
 endif
 
 install: all doc
-	$(MKDIR) $(PREFIX)/include $(PREFIX)/lib $(PREFIX)/bin
+	$(MKDIR) $(PREFIX)/include $(PREFIX)/lib/pkgconfig $(PREFIX)/bin
 	$(CP) include/*.h $(PREFIX)/include/
 	$(CP) *$(LIBEXT) $(PREFIX)/lib/
+	$(CP) *.pc $(PREFIX)/lib/pkgconfig/
 	$(CP) $(TESTS_BIN) $(PREFIX)/bin/
 ifeq ($(OS),Windows_NT)
 	$(CP) *$(SOEXT) $(PREFIX)/bin/
@@ -141,7 +164,7 @@ endif
 
 .PHONY: clean
 clean:
-	$(RM) lib/*.o examples/*.o *$(LIBEXT) *$(SOEXT) $(TESTS_BIN) version miniargv-*.tar.xz doc/doxygen_sqlite3.db
+	$(RM) lib/*.o examples/*.o *.pc *$(LIBEXT) *$(SOEXT) $(TESTS_BIN) version miniargv-*.tar.xz doc/doxygen_sqlite3.db
 ifeq ($(OS),Windows_NT)
 	$(RM) *.def
 endif
