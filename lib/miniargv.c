@@ -36,42 +36,54 @@ int miniargv_process_partial_single_arg (int* index, int* success, unsigned int 
             if (!current_argdef->argparam) {
               //without value
               if (argv[*index][2] == 0) {
+/*
                 //abort with error if not looking for flags
                 if ((flags & MINIARG_PROCESS_MASK_FLAGS) == 0)
                   return 1;
+*/
                 //if only looking for flag return index
                 if ((flags & MINIARG_PROCESS_MASK_FIND_ONLY) != 0) {
-                  (*success)++;
-                  return *index;
-                }
+                  if ((flags & MINIARG_PROCESS_MASK_FLAGS) != 0) {
+                    (*success)++;
+                    return *index;
+                  }
+                } else
                 //process flag by calling callback function
                 if ((current_argdef->callbackfn)(current_argdef, NULL, callbackdata) == 0)
                   (*success)++;
               }
             } else if (argv[*index][2] != 0) {
               //with value and no space
+/*
               //abort with error if not looking for flags
               if ((flags & MINIARG_PROCESS_MASK_FLAGS) == 0)
                 return 1;
+*/
               //if only looking for flag return index
               if ((flags & MINIARG_PROCESS_MASK_FIND_ONLY) != 0) {
-                (*success)++;
-                return *index;
-              }
+                if ((flags & MINIARG_PROCESS_MASK_FLAGS) != 0) {
+                  (*success)++;
+                  return *index;
+                }
+              } else
               //process flag by calling callback function
               if ((current_argdef->callbackfn)(current_argdef, argv[*index] + 2, callbackdata) == 0)
                 (*success)++;
             } else if (argv[*index + 1]) {
               //with value and space
               (*index)++;
+/*
               //abort with error if not looking for flags
               if ((flags & MINIARG_PROCESS_MASK_FLAGS) == 0)
                 return 1;
+*/
               //if only looking for flag return index
               if ((flags & MINIARG_PROCESS_MASK_FIND_ONLY) != 0) {
-                (*success)++;
-                return *index;
-              }
+                if ((flags & MINIARG_PROCESS_MASK_FLAGS) != 0) {
+                  (*success)++;
+                  return *index;
+                }
+              } else
               //process flag by calling callback function
               if ((current_argdef->callbackfn)(current_argdef, argv[*index], callbackdata) == 0)
                 (*success)++;
@@ -95,13 +107,17 @@ int miniargv_process_partial_single_arg (int* index, int* success, unsigned int 
             if (!current_argdef->argparam) {
               //without value
               if (argv[*index][2 + l] == 0) {
+/*
                 //abort with error if not looking for flags
                 if ((flags & MINIARG_PROCESS_MASK_FLAGS) == 0)
                   return 2;
+*/
                 //if only looking for flag return index
                 if ((flags & MINIARG_PROCESS_MASK_FIND_ONLY) != 0) {
-                  (*success)++;
-                  return *index;
+                  if ((flags & MINIARG_PROCESS_MASK_VALUES) != 0) {
+                    (*success)++;
+                    return *index;
+                  }
                 }
                 //process flag by calling callback function
                 if ((current_argdef->callbackfn)(current_argdef, NULL, callbackdata) == 0)
@@ -109,13 +125,17 @@ int miniargv_process_partial_single_arg (int* index, int* success, unsigned int 
               }
             } else if (argv[*index][2 + l] == '=') {
               //with value
+/*
               //abort with error if not looking for flags
               if ((flags & MINIARG_PROCESS_MASK_FLAGS) == 0)
                 return 2;
+*/
               //if only looking for flag return index
               if ((flags & MINIARG_PROCESS_MASK_FIND_ONLY) != 0) {
-                (*success)++;
-                return *index;
+                if ((flags & MINIARG_PROCESS_MASK_VALUES) != 0) {
+                  (*success)++;
+                  return *index;
+                }
               }
               //process flag by calling callback function
               if ((current_argdef->callbackfn)(current_argdef, argv[*index] + 3 + l, callbackdata) == 0)
@@ -140,17 +160,19 @@ int miniargv_process_partial_single_arg (int* index, int* success, unsigned int 
         standalonevaluedef = current_argdef;
         (*success)++;
         if (standalonevaluedef->callbackfn) {
+/*
           //abort with error if not looking for value arguments
           if ((flags & MINIARG_PROCESS_MASK_VALUES) == 0)
             return 3;
+*/
           //if only looking for standalone value argument return index
           if ((flags & MINIARG_PROCESS_MASK_FIND_ONLY) != 0) {
             (*success)++;
             return *index;
           }
           //process standalone value argument by calling callback function
-          if ((standalonevaluedef->callbackfn)(standalonevaluedef, argv[*index], callbackdata) != 0)
-            *success = 0;
+          if ((standalonevaluedef->callbackfn)(standalonevaluedef, argv[*index], callbackdata) == 0)
+            (*success)++;
         }
         return 3;
       }
