@@ -102,7 +102,7 @@ tests: $(TESTS_BIN)
 pkg-config-file: miniargv.pc
 
 miniargv.pc: version
-	sed -e "s?\$PREFIX?$(PREFIX)?; s?\$VERSION?$(shell cat version)?" miniargv.pc.in > miniargv.pc.in
+	sed -e "s?\$PREFIX?$(PREFIX)?; s?\$VERSION?$(shell cat version)?" miniargv.pc.in > miniargv.pc
 
 
 .PHONY: doc
