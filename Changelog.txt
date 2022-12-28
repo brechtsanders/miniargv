@@ -3,6 +3,7 @@
 2022-12-28  Brecht Sanders  https://github.com/brechtsanders/
 
   * fixes in internal function miniargv_process_partial_single_arg()
+  * add generation and installation of miniargv.pc to Makefile
 
 0.2.16
 
