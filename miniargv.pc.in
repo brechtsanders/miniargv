@@ -1,10 +1,10 @@
-prefix=$PREFIX
+prefix=_PREFIX_
 exec_prefix=${prefix}
 includedir=${prefix}/include
 libdir=${exec_prefix}/lib
 
 Name: miniargv
 Description: C library for processing command line arguments and displaying command line help
-Version: $VERSION
+Version: _VERSION_
 Cflags: -I${includedir}
 Libs: -L${libdir} -lminiargv
