@@ -115,7 +115,7 @@ Cflags: -I$${includedir}
 Libs: -L$${libdir} -lminiargv
 endef
 
-$(OBJDIR)miniargv.pc: version
+miniargv.pc: version
 	$(file > $@,$(MINIARGV_PC))
 
 
