@@ -39,7 +39,6 @@ jobs:
     - uses: actions/checkout@v1
     - name: Compile, install, package
       run: |
-        make pkg-config-file
         make install PREFIX=build_result DOXYGEN= CC=${{ matrix.config.cc }}
         tar cfj ./${{ matrix.config.artifact }} --strip-components=1 build_result
     - name: Pack

@@ -101,22 +101,8 @@ tests: $(TESTS_BIN)
 .PHONY: pkg-config-file
 pkg-config-file: miniargv.pc
 
-
-define MINIARGV_PC
-prefix=$(PREFIX)
-exec_prefix=$${prefix}
-includedir=$${prefix}/include
-libdir=$${exec_prefix}/lib
-
-Name: miniargv
-Description: C library for processing command line arguments and displaying command line help
-Version: $(shell cat version)
-Cflags: -I$${includedir}
-Libs: -L$${libdir} -lminiargv
-endef
-
 miniargv.pc: version
-	$(file > $@,$(MINIARGV_PC))
+	sed -e "s?\$PREFIX?$(PREFIX)?; s?\$VERSION?$(shell cat version)?" miniargv.pc.in > miniargv.pc.in
 
 
 .PHONY: doc
