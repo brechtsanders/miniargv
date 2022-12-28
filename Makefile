@@ -71,7 +71,7 @@ SOURCE_PACKAGE_FILES = $(COMMON_PACKAGE_FILES) Makefile doc/Doxyfile include/*.h
 
 default: all
 
-all: static-lib shared-lib pkg-config-files tests
+all: static-lib shared-lib tests
 
 static-lib: $(LIBPREFIX)miniargv$(LIBEXT)
 
@@ -98,8 +98,8 @@ examples/%$(BINEXT): examples/%.static.o $(LIBPREFIX)miniargv$(LIBEXT)
 tests: $(TESTS_BIN)
 
 
-.PHONY: pkg-config-files
-pkg-config-files: miniargv.pc
+.PHONY: pkg-config-file
+pkg-config-file: miniargv.pc
 
 
 define MINIARGV_PC
@@ -125,7 +125,7 @@ ifdef DOXYGEN
 	$(DOXYGEN) -q doc/Doxyfile
 endif
 
-install: all doc
+install: all pkg-config-file doc
 	$(MKDIR) $(PREFIX)/include $(PREFIX)/lib/pkgconfig $(PREFIX)/bin
 	$(CP) include/*.h $(PREFIX)/include/
 	$(CP) *$(LIBEXT) $(PREFIX)/lib/
