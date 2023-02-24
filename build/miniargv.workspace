@@ -6,6 +6,9 @@
 		<Project filename="miniargv-test.cbp">
 			<Depends filename="miniargv_shared.cbp" />
 		</Project>
+		<Project filename="miniargv-test-static.cbp">
+			<Depends filename="miniargv_static.cbp" />
+		</Project>
 		<Project filename="miniargv-example-global.cbp">
 			<Depends filename="miniargv_shared.cbp" />
 		</Project>

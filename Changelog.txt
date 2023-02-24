@@ -1,3 +1,10 @@
+0.2.18
+
+2023-02-24  Brecht Sanders  https://github.com/brechtsanders/
+
+  * added miniargv_find_shortarg(), miniargv_find_longarg(), miniargv_find_standalonearg()
+  * changed to miniargv_process_partial_single_arg() to use the above functions
+
 0.2.17
 
 2022-12-28  Brecht Sanders  https://github.com/brechtsanders/

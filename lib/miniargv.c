@@ -14,7 +14,233 @@
 #define MINIARG_PROCESS_MASK_FIND_ONLY  0x08
 #define MINIARG_PROCESS_MASK_FIND_VALUE (MINIARG_PROCESS_MASK_FIND_ONLY | MINIARG_PROCESS_MASK_VALUES)
 
+/* find short argument definition */
+DLL_EXPORT_MINIARGV const miniargv_definition* miniargv_find_shortarg (char shortarg, const miniargv_definition argdef[])
+{
+  const miniargv_definition* result;
+  const miniargv_definition* current_argdef = argdef;
+  if (!shortarg || !current_argdef)
+    return NULL;
+  while (current_argdef->callbackfn) {
+    if (current_argdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
+      if ((result = miniargv_find_shortarg(shortarg, (struct miniargv_definition_struct*)(current_argdef->callbackfn))) != NULL)
+        return result;
+    } else if (shortarg == current_argdef->shortarg) {
+      return current_argdef;
+    }
+    current_argdef++;
+  }
+  return NULL;
+}
+
+/* find long argument definition */
+DLL_EXPORT_MINIARGV const miniargv_definition* miniargv_find_longarg (const char* longarg, size_t longarglen, const miniargv_definition argdef[])
+{
+  const miniargv_definition* result;
+  const miniargv_definition* current_argdef = argdef;
+  if (!longarg || !current_argdef)
+    return NULL;
+  if (longarglen <= 0)
+    longarglen = strlen(longarg);
+  while (current_argdef->callbackfn) {
+    if (current_argdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
+      if ((result = miniargv_find_longarg(longarg, longarglen, (struct miniargv_definition_struct*)(current_argdef->callbackfn))) != NULL)
+        return result;
+    } else if (current_argdef->longarg) {
+      if (strncmp(longarg, current_argdef->longarg, longarglen) == 0) {
+        return current_argdef;
+      }
+    }
+    current_argdef++;
+  }
+  return NULL;
+}
+
+/* find standalone argument definition */
+DLL_EXPORT_MINIARGV const miniargv_definition* miniargv_find_standalonearg (const miniargv_definition argdef[])
+{
+  const miniargv_definition* result;
+  const miniargv_definition* current_argdef = argdef;
+  while (current_argdef->callbackfn) {
+    if (current_argdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
+      if ((result = miniargv_find_standalonearg((struct miniargv_definition_struct*)(current_argdef->callbackfn))) != NULL)
+        return result;
+    } else if (!current_argdef->shortarg && !current_argdef->longarg) {
+      return current_argdef;
+    }
+    current_argdef++;
+  }
+  return NULL;
+}
+
+#if 1
 /* process single command line argument, returns non-zero if argument was processed */
+int miniargv_process_partial_single_arg (int* index, int* success, unsigned int flags, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
+{
+  size_t l;
+  const char* arg;
+  const miniargv_definition* current_argdef;
+  (*success) = 0;
+  if (argv[*index][0] == '-' && argv[*index][1]) {
+    if (argv[*index][1] != '-') {
+      //find short argument in argument definitions
+      if ((current_argdef = miniargv_find_shortarg(argv[*index][1], argdef)) != NULL) {
+        if (!current_argdef->argparam) {
+          //without value
+          if (argv[*index][2] == 0) {
+/*
+            //abort with error if not looking for flags
+            if ((flags & MINIARG_PROCESS_MASK_FLAGS) == 0)
+              return 1;
+*/
+            //if only looking for flag return index
+            if ((flags & MINIARG_PROCESS_MASK_FIND_ONLY) != 0) {
+              if ((flags & MINIARG_PROCESS_MASK_FLAGS) != 0) {
+                (*success)++;
+                return *index;
+              }
+            } else
+            //process flag by calling callback function
+            if ((flags & MINIARG_PROCESS_MASK_FLAGS) != 0) {
+              if ((current_argdef->callbackfn)(current_argdef, NULL, callbackdata) == 0)
+                (*success)++;
+            } else {
+              (*success)++;
+            }
+          }
+        } else if (argv[*index][2] != 0) {
+          //with value and no space
+/*
+          //abort with error if not looking for flags
+          if ((flags & MINIARG_PROCESS_MASK_FLAGS) == 0)
+            return 1;
+*/
+          //if only looking for flag return index
+          if ((flags & MINIARG_PROCESS_MASK_FIND_ONLY) != 0) {
+            if ((flags & MINIARG_PROCESS_MASK_FLAGS) != 0) {
+              (*success)++;
+              return *index;
+            }
+          } else
+          //process flag by calling callback function
+          if ((flags & MINIARG_PROCESS_MASK_FLAGS) != 0) {
+            if ((current_argdef->callbackfn)(current_argdef, argv[*index] + 2, callbackdata) == 0)
+              (*success)++;
+          } else {
+            (*success)++;
+          }
+        } else if (argv[*index + 1]) {
+          //with value and space
+          (*index)++;
+/*
+          //abort with error if not looking for flags
+          if ((flags & MINIARG_PROCESS_MASK_FLAGS) == 0)
+            return 1;
+*/
+          //if only looking for flag return index
+          if ((flags & MINIARG_PROCESS_MASK_FIND_ONLY) != 0) {
+            if ((flags & MINIARG_PROCESS_MASK_FLAGS) != 0) {
+              (*success)++;
+              return *index;
+            }
+          } else
+          //process flag by calling callback function
+          if ((flags & MINIARG_PROCESS_MASK_FLAGS) != 0) {
+            if ((current_argdef->callbackfn)(current_argdef, argv[*index], callbackdata) == 0)
+              (*success)++;
+          } else {
+            (*success)++;
+          }
+        }
+        return 1;
+      }
+    } else {
+      //find long argument in argument definitions
+      l = 0;
+      arg = argv[*index] + 2;
+      while (arg[l] && arg[l] != '=')
+        l++;
+      if ((current_argdef = miniargv_find_longarg(arg, l, argdef)) != NULL) {
+        if (!current_argdef->argparam) {
+          //without value
+          if (arg[l] == 0) {
+/*
+            //abort with error if not looking for flags
+            if ((flags & MINIARG_PROCESS_MASK_FLAGS) == 0)
+              return 2;
+*/
+            //if only looking for flag return index
+            if ((flags & MINIARG_PROCESS_MASK_FIND_ONLY) != 0) {
+              if ((flags & MINIARG_PROCESS_MASK_FLAGS) != 0) {
+                (*success)++;
+                return *index;
+              }
+            } else
+            //process flag by calling callback function
+            if ((flags & MINIARG_PROCESS_MASK_FLAGS) != 0) {
+              if ((current_argdef->callbackfn)(current_argdef, NULL, callbackdata) == 0)
+                (*success)++;
+            } else {
+              (*success)++;
+            }
+          }
+        } else if (arg[l] == '=') {
+          //with value
+/*
+          //abort with error if not looking for flags
+          if ((flags & MINIARG_PROCESS_MASK_FLAGS) == 0)
+            return 2;
+*/
+          //if only looking for flag return index
+          if ((flags & MINIARG_PROCESS_MASK_FIND_ONLY) != 0) {
+            if ((flags & MINIARG_PROCESS_MASK_FLAGS) != 0) {
+              (*success)++;
+              return *index;
+            }
+          } else
+          //process flag by calling callback function
+          if ((flags & MINIARG_PROCESS_MASK_FLAGS) != 0) {
+            if ((current_argdef->callbackfn)(current_argdef, argv[*index] + 3 + l, callbackdata) == 0)
+              (*success)++;
+          } else {
+            (*success)++;
+          }
+        }
+        return 2;
+      }
+    }
+  } else {
+    //standalone value argument
+    if ((current_argdef = miniargv_find_standalonearg(argdef)) != NULL) {
+      //standalone value argument definition found
+      (*success)++;
+      if (current_argdef->callbackfn) {
+/*
+        //abort with error if not looking for value arguments
+        if ((flags & MINIARG_PROCESS_MASK_VALUES) == 0)
+          return 3;
+*/
+        //if only looking for standalone value argument return index
+        if ((flags & MINIARG_PROCESS_MASK_FIND_ONLY) != 0) {
+          if ((flags & MINIARG_PROCESS_MASK_VALUES) != 0) {
+            (*success)++;
+            return *index;
+          }
+        } else
+        //process standalone value argument by calling callback function
+        if ((flags & MINIARG_PROCESS_MASK_VALUES) != 0) {
+          if ((current_argdef->callbackfn)(current_argdef, argv[*index], callbackdata) == 0)
+            (*success)++;
+        } else {
+          (*success)++;
+        }
+      }
+      return 3;
+    }
+  }
+  return 0;
+}
+#else
 int miniargv_process_partial_single_arg (int* index, int* success, unsigned int flags, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
 {
   int result;
@@ -207,6 +433,7 @@ int miniargv_process_partial_single_arg (int* index, int* success, unsigned int 
   }
   return 0;
 }
+#endif
 
 /* partially process argv */
 int miniargv_process_partial (unsigned int flags, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
@@ -334,28 +561,6 @@ char* miniargv_readline (FILE* src)
     }
   }
   return result;
-}
-
-const miniargv_definition* miniargv_find_longarg (const char* longarg, size_t longarglen, const miniargv_definition cfgdef[])
-{
-  const miniargv_definition* result;
-  const miniargv_definition* current_cfgdef = cfgdef;
-  if (!longarg || !current_cfgdef)
-    return NULL;
-  if (longarglen <= 0)
-    longarglen = strlen(longarg);
-  while (current_cfgdef->callbackfn) {
-    if (current_cfgdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
-      if ((result = miniargv_find_longarg(longarg, longarglen, (struct miniargv_definition_struct*)(current_cfgdef->callbackfn))) != NULL)
-        return result;
-    } else if (current_cfgdef->longarg) {
-      if (strncmp(longarg, current_cfgdef->longarg, longarglen) == 0) {
-        return current_cfgdef;
-      }
-    }
-    current_cfgdef++;
-  }
-  return NULL;
 }
 
 DLL_EXPORT_MINIARGV int miniargv_process_cfgfile (const char* cfgfile, const miniargv_definition cfgdef[], void* callbackdata)

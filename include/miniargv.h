@@ -311,6 +311,39 @@ DLL_EXPORT_MINIARGV void miniargv_env_help (const miniargv_definition envdef[], 
  */
 DLL_EXPORT_MINIARGV void miniargv_help (const miniargv_definition argdef[], const miniargv_definition envdef[], int descindent, int wrapwidth);
 
+/*! \brief find short argument definition
+ * \param  shortarg              short argument character
+ * \param  argdef                array of command line argument definitions
+ * \return command line argument definition or NULL if not found
+ * \sa     miniargv_definition
+ * \sa     miniargv_definition_struct
+ * \sa     miniargv_find_longarg
+ * \sa     miniargv_find_standalonearg
+ */
+DLL_EXPORT_MINIARGV const miniargv_definition* miniargv_find_shortarg (char shortarg, const miniargv_definition argdef[]);
+
+/*! \brief find long argument definition
+ * \param  longarg               long argument name (without leading hyphens)
+ * \param  longarglen            length of long argument name (without leading hyphens)
+ * \param  argdef                array of command line argument definitions
+ * \return command line argument definition or NULL if not found
+ * \sa     miniargv_definition
+ * \sa     miniargv_definition_struct
+ * \sa     miniargv_find_shortarg
+ * \sa     miniargv_find_standalonearg
+ */
+DLL_EXPORT_MINIARGV const miniargv_definition* miniargv_find_longarg (const char* longarg, size_t longarglen, const miniargv_definition argdef[]);
+
+/*! \brief find standalone argument definition
+ * \param  argdef                array of command line argument definitions
+ * \return command line argument definition or NULL if not found
+ * \sa     miniargv_definition
+ * \sa     miniargv_definition_struct
+ * \sa     miniargv_find_shortarg
+ * \sa     miniargv_find_longarg
+ */
+DLL_EXPORT_MINIARGV const miniargv_definition* miniargv_find_standalonearg (const miniargv_definition argdef[]);
+
 /*! \brief display help text wile wrapping it at a maximum width and indenting new lines
  * \param  dst                   stream to write to (use stdout for console output)
  * \param  text                  text to display
@@ -679,7 +712,7 @@ DLL_EXPORT_MINIARGV const char* miniargv_get_version_string ();
 /*! \brief minor version number \hideinitializer */
 #define MINIARGV_VERSION_MINOR 2
 /*! \brief micro version number \hideinitializer */
-#define MINIARGV_VERSION_MICRO 17
+#define MINIARGV_VERSION_MICRO 18
 /** @} */
 
 /*! \brief packed version number (bits 24-31: major version, bits 16-23: minor version, bits 8-15: micro version)
