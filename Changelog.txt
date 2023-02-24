@@ -4,6 +4,7 @@
 
   * added miniargv_find_shortarg(), miniargv_find_longarg(), miniargv_find_standalonearg()
   * changed to miniargv_process_partial_single_arg() to use the above functions
+  * fix missing \endcond in miniargv.h (caused Doxygen error)
 
 0.2.17
 

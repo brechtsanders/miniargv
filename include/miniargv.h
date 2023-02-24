@@ -81,6 +81,7 @@ struct miniargv_definition_struct {
 
 /*! \cond PRIVATE */
 #define MINIARGV_DEFINITION_INCLUDE_SHORTARG -0x80
+/*! \endcond */
 
 /*! \brief include another argument definition block */
 #define MINIARGV_DEFINITION_INCLUDE(def) {MINIARGV_DEFINITION_INCLUDE_SHORTARG, NULL, NULL, (miniargv_handler_fn)(def), NULL, NULL}
