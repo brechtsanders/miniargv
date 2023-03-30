@@ -194,9 +194,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a7bc6847de2e16813516c85844eca7d59"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a7bc6847de2e16813516c85844eca7d59">miniargv_wrap_and_indent_text</a> (FILE *dst, const char *text, int currentpos, int indentpos, int wrapwidth, const char *newline)</td></tr>
 <tr class="memdesc:a7bc6847de2e16813516c85844eca7d59"><td class="mdescLeft">&#160;</td><td class="mdescRight">display help text wile wrapping it at a maximum width and indenting new lines  <br /></td></tr>
 <tr class="separator:a7bc6847de2e16813516c85844eca7d59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e8d605bf928707898dbb90e21d3fc92"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a8e8d605bf928707898dbb90e21d3fc92">miniargv_cleanup</a> (const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> envdef[])</td></tr>
-<tr class="memdesc:a8e8d605bf928707898dbb90e21d3fc92"><td class="mdescLeft">&#160;</td><td class="mdescRight">clean up dynamically allocated memory (currently only when using miniargv_cb_strdup)  <br /></td></tr>
-<tr class="separator:a8e8d605bf928707898dbb90e21d3fc92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f44fbab4c478c33a5edde7343ddf4fb"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a7f44fbab4c478c33a5edde7343ddf4fb">miniargv_cleanup</a> (const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> argdef[])</td></tr>
+<tr class="memdesc:a7f44fbab4c478c33a5edde7343ddf4fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">clean up dynamically allocated memory (currently only when using miniargv_cb_strdup)  <br /></td></tr>
+<tr class="separator:a7f44fbab4c478c33a5edde7343ddf4fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86220c6e91b813fb781b3f982b865522"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a86220c6e91b813fb781b3f982b865522">miniargv_cb_set_const_str</a> (const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *argdef, const char *value, void *callbackdata)</td></tr>
 <tr class="memdesc:a86220c6e91b813fb781b3f982b865522"><td class="mdescLeft">&#160;</td><td class="mdescRight">predefined callback function to set constant string <b>userdata</b> to <b>value</b>  <br /></td></tr>
 <tr class="separator:a86220c6e91b813fb781b3f982b865522"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1091,7 +1091,7 @@ Functions</h2></td></tr>
 <p>lists possible environment variables on one line </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">argdef</td><td>definitions of possible command line arguments </td></tr>
+    <tr><td class="paramname">argdef</td><td>definitions of possible environment variables </td></tr>
     <tr><td class="paramname">noparam</td><td>set to non-zero to only show the variable names without value parameter </td></tr>
   </table>
   </dd>
@@ -1256,7 +1256,7 @@ Functions</h2></td></tr>
 <p>display help text explaining command line arguments and environment variables </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">argdef</td><td>array of command line argument definitions </td></tr>
+    <tr><td class="paramname">argdef</td><td>definitions of possible command line arguments </td></tr>
     <tr><td class="paramname">envdef</td><td>definitions of possible environment variables </td></tr>
     <tr><td class="paramname">descindent</td><td>indent where description starts, defaults to 25 if set to 0 </td></tr>
     <tr><td class="paramname">wrapwidth</td><td>maximum line length, defaults to 79 if set to 0 </td></tr>
@@ -1488,8 +1488,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a8e8d605bf928707898dbb90e21d3fc92" name="a8e8d605bf928707898dbb90e21d3fc92"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8e8d605bf928707898dbb90e21d3fc92">&#9670;&#160;</a></span>miniargv_cleanup()</h2>
+<a id="a7f44fbab4c478c33a5edde7343ddf4fb" name="a7f44fbab4c478c33a5edde7343ddf4fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f44fbab4c478c33a5edde7343ddf4fb">&#9670;&#160;</a></span>miniargv_cleanup()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1498,7 +1498,7 @@ Functions</h2></td></tr>
           <td class="memname">DLL_EXPORT_MINIARGV int miniargv_cleanup </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a>&#160;</td>
-          <td class="paramname"><em>envdef</em>[]</td><td>)</td>
+          <td class="paramname"><em>argdef</em>[]</td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1507,7 +1507,7 @@ Functions</h2></td></tr>
 <p>clean up dynamically allocated memory (currently only when using miniargv_cb_strdup) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">envdef</td><td>definitions of possible environment variables </td></tr>
+    <tr><td class="paramname">argdef</td><td>definitions of possible command line arguments or environment variables </td></tr>
   </table>
   </dd>
 </dl>
@@ -1644,7 +1644,7 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="miniargv_8h.html#a55bcaa2e259524598275426976285d7b" title="process environment variables and call the appropriate callback function for each match">miniargv_process_env()</a> </dd>
 <dd>
-<a class="el" href="miniargv_8h.html#a8e8d605bf928707898dbb90e21d3fc92" title="clean up dynamically allocated memory (currently only when using miniargv_cb_strdup)">miniargv_cleanup()</a> </dd></dl>
+<a class="el" href="miniargv_8h.html#a7f44fbab4c478c33a5edde7343ddf4fb" title="clean up dynamically allocated memory (currently only when using miniargv_cb_strdup)">miniargv_cleanup()</a> </dd></dl>
 
 </div>
 </div>

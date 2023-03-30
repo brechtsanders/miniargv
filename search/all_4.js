@@ -22,7 +22,7 @@ var searchData=
   ['miniargv_5fcb_5fset_5flong_5fto_5fzero_19',['miniargv_cb_set_long_to_zero',['../miniargv_8h.html#a8f3ecad8f42959ce8f9679f42d70504c',1,'miniargv.h']]],
   ['miniargv_5fcb_5fstrdup_20',['miniargv_cb_strdup',['../miniargv_8h.html#a223dcaf0e53c6de9876e2da226bce50f',1,'miniargv.h']]],
   ['miniargv_5fcfgfile_5fgenerate_21',['miniargv_cfgfile_generate',['../miniargv_8h.html#ae179d717986a0bdf7ed8069db55242aa',1,'miniargv.h']]],
-  ['miniargv_5fcleanup_22',['miniargv_cleanup',['../miniargv_8h.html#a8e8d605bf928707898dbb90e21d3fc92',1,'miniargv.h']]],
+  ['miniargv_5fcleanup_22',['miniargv_cleanup',['../miniargv_8h.html#a7f44fbab4c478c33a5edde7343ddf4fb',1,'miniargv.h']]],
   ['miniargv_5fdefinition_23',['miniargv_definition',['../miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff',1,'miniargv.h']]],
   ['miniargv_5fdefinition_5finclude_24',['MINIARGV_DEFINITION_INCLUDE',['../miniargv_8h.html#a4775eed8a4934b35866a85cbba811b1e',1,'miniargv.h']]],
   ['miniargv_5fdefinition_5fstruct_25',['miniargv_definition_struct',['../structminiargv__definition__struct.html',1,'']]],

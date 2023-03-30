@@ -20,7 +20,7 @@ var searchData=
   ['miniargv_5fcb_5fset_5flong_5fto_5fzero_17',['miniargv_cb_set_long_to_zero',['../miniargv_8h.html#a8f3ecad8f42959ce8f9679f42d70504c',1,'miniargv.h']]],
   ['miniargv_5fcb_5fstrdup_18',['miniargv_cb_strdup',['../miniargv_8h.html#a223dcaf0e53c6de9876e2da226bce50f',1,'miniargv.h']]],
   ['miniargv_5fcfgfile_5fgenerate_19',['miniargv_cfgfile_generate',['../miniargv_8h.html#ae179d717986a0bdf7ed8069db55242aa',1,'miniargv.h']]],
-  ['miniargv_5fcleanup_20',['miniargv_cleanup',['../miniargv_8h.html#a8e8d605bf928707898dbb90e21d3fc92',1,'miniargv.h']]],
+  ['miniargv_5fcleanup_20',['miniargv_cleanup',['../miniargv_8h.html#a7f44fbab4c478c33a5edde7343ddf4fb',1,'miniargv.h']]],
   ['miniargv_5fenv_5fhelp_21',['miniargv_env_help',['../miniargv_8h.html#a4d7659faa8dbb2d6a4c6dbe76a55f3f4',1,'miniargv.h']]],
   ['miniargv_5fenv_5flist_22',['miniargv_env_list',['../miniargv_8h.html#a598cbba41122b9f1d7defac3fc4ff1b2',1,'miniargv.h']]],
   ['miniargv_5ffind_5flongarg_23',['miniargv_find_longarg',['../miniargv_8h.html#a0d0a9fc287eed4d707d1ad602088bcaa',1,'miniargv.h']]],
