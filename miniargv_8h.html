@@ -97,9 +97,13 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a4775eed8a4934b35866a85cbba811b1e"><td class="memItemLeft" align="right" valign="top"><a id="a4775eed8a4934b35866a85cbba811b1e" name="a4775eed8a4934b35866a85cbba811b1e"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MINIARGV_DEFINITION_INCLUDE</b>(def)&#160;&#160;&#160;{MINIARGV_DEFINITION_INCLUDE_SHORTARG, NULL, NULL, (<a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d">miniargv_handler_fn</a>)(def), NULL, NULL}</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MINIARGV_DEFINITION_INCLUDE</b>(def)&#160;&#160;&#160;{MINIARGV_DEFINITION_INCLUDE_SHORTARG, NULL, NULL, (<a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d">miniargv_handler_fn</a>)(def), NULL, NULL, NULL}</td></tr>
 <tr class="memdesc:a4775eed8a4934b35866a85cbba811b1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">include another argument definition block <br /></td></tr>
 <tr class="separator:a4775eed8a4934b35866a85cbba811b1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa385dda0d434995cd41916a02cb81862"><td class="memItemLeft" align="right" valign="top"><a id="aa385dda0d434995cd41916a02cb81862" name="aa385dda0d434995cd41916a02cb81862"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MINIARGV_DEFINITION_END</b>&#160;&#160;&#160;{0, NULL, NULL, NULL, NULL, NULL, NULL}</td></tr>
+<tr class="memdesc:aa385dda0d434995cd41916a02cb81862"><td class="mdescLeft">&#160;</td><td class="mdescRight">include another argument definition block <br /></td></tr>
+<tr class="separator:aa385dda0d434995cd41916a02cb81862"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5386cffd5ee1d15699492a5d5cdde7c7"><td class="memItemLeft" align="right" valign="top">
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>MINIARGV_VERSION_MAJOR</b></td></tr>
 <tr class="memdesc:ga5386cffd5ee1d15699492a5d5cdde7c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">major version number <br /></td></tr>
@@ -134,6 +138,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a07fb665b9d40f22c4d349e3f1b77d35d"><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d">miniargv_handler_fn</a>) (const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *argdef, const char *value, void *callbackdata)</td></tr>
 <tr class="memdesc:a07fb665b9d40f22c4d349e3f1b77d35d"><td class="mdescLeft">&#160;</td><td class="mdescRight">callback function called by <a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process_arg()</a> for each argument encountered  <br /></td></tr>
 <tr class="separator:a07fb665b9d40f22c4d349e3f1b77d35d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a812fbe87ca33fd3c436bfff1ddd41024"><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a812fbe87ca33fd3c436bfff1ddd41024">miniargv_complete_fn</a>) (char *argv[], const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *argdef, const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *currentarg, const char *arg, int argparampos, void *callbackdata)</td></tr>
+<tr class="memdesc:a812fbe87ca33fd3c436bfff1ddd41024"><td class="mdescLeft">&#160;</td><td class="mdescRight">callback function called by <a class="el" href="miniargv_8h.html#abd59d44e33ef45c3cef4d788633ef626" title="perform bash shell completion (using tab key on the command line, configured via: complete -C&quot;&lt;path&gt; ...">miniargv_completion()</a> to list possible parameters during bash completion  <br /></td></tr>
+<tr class="separator:a812fbe87ca33fd3c436bfff1ddd41024"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -182,15 +189,21 @@ Functions</h2></td></tr>
 <tr class="memitem:a6e281f3ed371f8e05a77cdded8594666"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a6e281f3ed371f8e05a77cdded8594666">miniargv_help</a> (const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> argdef[], const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> envdef[], int descindent, int wrapwidth)</td></tr>
 <tr class="memdesc:a6e281f3ed371f8e05a77cdded8594666"><td class="mdescLeft">&#160;</td><td class="mdescRight">display help text explaining command line arguments and environment variables  <br /></td></tr>
 <tr class="separator:a6e281f3ed371f8e05a77cdded8594666"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd59d44e33ef45c3cef4d788633ef626"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#abd59d44e33ef45c3cef4d788633ef626">miniargv_completion</a> (char *argv[], const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> argdef[], const char *completionparam, void *callbackdata)</td></tr>
+<tr class="memdesc:abd59d44e33ef45c3cef4d788633ef626"><td class="mdescLeft">&#160;</td><td class="mdescRight">perform bash shell completion (using tab key on the command line, configured via: complete -C"&lt;path&gt; &lt;completionparam&gt;" &lt;programname&gt;)  <br /></td></tr>
+<tr class="separator:abd59d44e33ef45c3cef4d788633ef626"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a709573f990e57542fde26855d83139f7"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a709573f990e57542fde26855d83139f7">miniargv_find_shortarg</a> (char shortarg, const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> argdef[])</td></tr>
 <tr class="memdesc:a709573f990e57542fde26855d83139f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">find short argument definition  <br /></td></tr>
 <tr class="separator:a709573f990e57542fde26855d83139f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d0a9fc287eed4d707d1ad602088bcaa"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a0d0a9fc287eed4d707d1ad602088bcaa">miniargv_find_longarg</a> (const char *longarg, size_t longarglen, const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> argdef[])</td></tr>
-<tr class="memdesc:a0d0a9fc287eed4d707d1ad602088bcaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">find long argument definition  <br /></td></tr>
+<tr class="memdesc:a0d0a9fc287eed4d707d1ad602088bcaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">find long argument definition or environment variable definition  <br /></td></tr>
 <tr class="separator:a0d0a9fc287eed4d707d1ad602088bcaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a156cc1903f5a19537e5f77b867e023c8"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a156cc1903f5a19537e5f77b867e023c8">miniargv_find_standalonearg</a> (const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> argdef[])</td></tr>
 <tr class="memdesc:a156cc1903f5a19537e5f77b867e023c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">find standalone argument definition  <br /></td></tr>
 <tr class="separator:a156cc1903f5a19537e5f77b867e023c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a781a409b45c7ab3cc61df5f190f6e518"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a781a409b45c7ab3cc61df5f190f6e518">miniargv_find_arg</a> (const char *arg, const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> argdef[])</td></tr>
+<tr class="memdesc:a781a409b45c7ab3cc61df5f190f6e518"><td class="mdescLeft">&#160;</td><td class="mdescRight">find argument definition for short ("-" followed by 1 character) long (starting with "--") argument  <br /></td></tr>
+<tr class="separator:a781a409b45c7ab3cc61df5f190f6e518"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bc6847de2e16813516c85844eca7d59"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a7bc6847de2e16813516c85844eca7d59">miniargv_wrap_and_indent_text</a> (FILE *dst, const char *text, int currentpos, int indentpos, int wrapwidth, const char *newline)</td></tr>
 <tr class="memdesc:a7bc6847de2e16813516c85844eca7d59"><td class="mdescLeft">&#160;</td><td class="mdescRight">display help text wile wrapping it at a maximum width and indenting new lines  <br /></td></tr>
 <tr class="separator:a7bc6847de2e16813516c85844eca7d59"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -384,6 +397,39 @@ Functions</h2></td></tr>
 <a class="el" href="miniargv_8h.html#a8f6d14b929f3bf980d99d1d99d2a7a0d" title="process only flag command line arguments and call the appropriate callback function for each one (exc...">miniargv_process_arg_flags()</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a98a3d4f90c5edc3fb2581928b3807312" title="process only standalone value command line arguments and call the appropriate callback function for e...">miniargv_process_arg_params()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
+<dd>
+<a class="el" href="structminiargv__definition__struct.html" title="structure for argument definition">miniargv_definition_struct</a> </dd></dl>
+
+</div>
+</div>
+<a id="a812fbe87ca33fd3c436bfff1ddd41024" name="a812fbe87ca33fd3c436bfff1ddd41024"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a812fbe87ca33fd3c436bfff1ddd41024">&#9670;&#160;</a></span>miniargv_complete_fn</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef int(* miniargv_complete_fn) (char *argv[], const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *argdef, const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *currentarg, const char *arg, int argparampos, void *callbackdata)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>callback function called by <a class="el" href="miniargv_8h.html#abd59d44e33ef45c3cef4d788633ef626" title="perform bash shell completion (using tab key on the command line, configured via: complete -C&quot;&lt;path&gt; ...">miniargv_completion()</a> to list possible parameters during bash completion </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">argv</td><td>NULL-terminated array of arguments (first one is undefined) </td></tr>
+    <tr><td class="paramname">argdef</td><td>definitions of possible command line arguments </td></tr>
+    <tr><td class="paramname">currentarg</td><td>definition of command line argument that is being completed </td></tr>
+    <tr><td class="paramname">arg</td><td>argument being completed (actual parameter value starts at position <em>argparampos</em>) </td></tr>
+    <tr><td class="paramname">argparampos</td><td>position within <em>arg</em> where the parameter starts (e.g. position of "123" in "--val=123") </td></tr>
+    <tr><td class="paramname">callbackdata</td><td>user data as passed to <em><a class="el" href="miniargv_8h.html#abd59d44e33ef45c3cef4d788633ef626" title="perform bash shell completion (using tab key on the command line, configured via: complete -C&quot;&lt;path&gt; ...">miniargv_completion()</a></em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 to continue processing or non-zero to abort </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#abd59d44e33ef45c3cef4d788633ef626" title="perform bash shell completion (using tab key on the command line, configured via: complete -C&quot;&lt;path&gt; ...">miniargv_completion()</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
 <dd>
@@ -1279,6 +1325,61 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="abd59d44e33ef45c3cef4d788633ef626" name="abd59d44e33ef45c3cef4d788633ef626"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd59d44e33ef45c3cef4d788633ef626">&#9670;&#160;</a></span>miniargv_completion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DLL_EXPORT_MINIARGV int miniargv_completion </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>argv</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a>&#160;</td>
+          <td class="paramname"><em>argdef</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>completionparam</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>callbackdata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>perform bash shell completion (using tab key on the command line, configured via: complete -C"&lt;path&gt; &lt;completionparam&gt;" &lt;programname&gt;) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">argv</td><td>NULL-terminated array of arguments (first one is the application itself) </td></tr>
+    <tr><td class="paramname">argdef</td><td>definitions of possible command line arguments </td></tr>
+    <tr><td class="paramname">completionparam</td><td>command line parameter used for bash shell completion mode as configured in bash using: complete -C"&lt;path&gt; &lt;completionparam&gt;" &lt;programname&gt; </td></tr>
+    <tr><td class="paramname">callbackdata</td><td>user data as passed to <em>completefn</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>non-zero if running in bash completion mode (program should exit after this), otherwise zero </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
+<dd>
+<a class="el" href="structminiargv__definition__struct.html" title="structure for argument definition">miniargv_definition_struct</a> </dd></dl>
+
+</div>
+</div>
 <a id="a709573f990e57542fde26855d83139f7" name="a709573f990e57542fde26855d83139f7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a709573f990e57542fde26855d83139f7">&#9670;&#160;</a></span>miniargv_find_shortarg()</h2>
 
@@ -1318,7 +1419,7 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="structminiargv__definition__struct.html" title="structure for argument definition">miniargv_definition_struct</a> </dd>
 <dd>
-<a class="el" href="miniargv_8h.html#a0d0a9fc287eed4d707d1ad602088bcaa" title="find long argument definition">miniargv_find_longarg</a> </dd>
+<a class="el" href="miniargv_8h.html#a0d0a9fc287eed4d707d1ad602088bcaa" title="find long argument definition or environment variable definition">miniargv_find_longarg</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a156cc1903f5a19537e5f77b867e023c8" title="find standalone argument definition">miniargv_find_standalonearg</a> </dd></dl>
 
@@ -1356,12 +1457,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>find long argument definition </p>
+<p>find long argument definition or environment variable definition </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">longarg</td><td>long argument name (without leading hyphens) </td></tr>
-    <tr><td class="paramname">longarglen</td><td>length of long argument name (without leading hyphens) </td></tr>
-    <tr><td class="paramname">argdef</td><td>array of command line argument definitions </td></tr>
+    <tr><td class="paramname">longarg</td><td>long argument name (without leading hyphens) or environment variable name </td></tr>
+    <tr><td class="paramname">longarglen</td><td>length of <em>longarg</em>, 0 to autodetect </td></tr>
+    <tr><td class="paramname">argdef</td><td>array of command line argument definitions or environment variable definitions </td></tr>
   </table>
   </dd>
 </dl>
@@ -1406,7 +1507,46 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="miniargv_8h.html#a709573f990e57542fde26855d83139f7" title="find short argument definition">miniargv_find_shortarg</a> </dd>
 <dd>
-<a class="el" href="miniargv_8h.html#a0d0a9fc287eed4d707d1ad602088bcaa" title="find long argument definition">miniargv_find_longarg</a> </dd></dl>
+<a class="el" href="miniargv_8h.html#a0d0a9fc287eed4d707d1ad602088bcaa" title="find long argument definition or environment variable definition">miniargv_find_longarg</a> </dd></dl>
+
+</div>
+</div>
+<a id="a781a409b45c7ab3cc61df5f190f6e518" name="a781a409b45c7ab3cc61df5f190f6e518"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a781a409b45c7ab3cc61df5f190f6e518">&#9670;&#160;</a></span>miniargv_find_arg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DLL_EXPORT_MINIARGV const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> * miniargv_find_arg </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>arg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a>&#160;</td>
+          <td class="paramname"><em>argdef</em>[]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>find argument definition for short ("-" followed by 1 character) long (starting with "--") argument </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">arg</td><td>argument to search for </td></tr>
+    <tr><td class="paramname">argdef</td><td>definitions of possible command line arguments </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>argument definition or NULL of not found </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd></dl>
 
 </div>
 </div>
