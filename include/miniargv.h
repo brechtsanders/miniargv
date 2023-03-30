@@ -38,9 +38,9 @@ extern "C" {
 typedef struct miniargv_definition_struct miniargv_definition;
 
 /*! \brief callback function called by miniargv_process_arg() for each argument encountered
- * \param  argdef                definition of command line argument, or NULL for standalone value argument
- * \param  value                 value if specified, otherwise NULL (always specified for standalone value arguments or if \a argdef->argparam is not NULL)
- * \param  callbackdata          user data as passed to \a miniargv_process_arg()
+ * \param  argdef        definition of command line argument, or NULL for standalone value argument
+ * \param  value         value if specified, otherwise NULL (always specified for standalone value arguments or if \a argdef->argparam is not NULL)
+ * \param  callbackdata  user data as passed to \a miniargv_process_arg()
  * \return 0 to continue processing or non-zero to abort
  * \sa     miniargv_process_arg()
  * \sa     miniargv_process_arg_flags()

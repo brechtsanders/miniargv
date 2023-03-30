@@ -3,6 +3,7 @@
 2023-03-30  Brecht Sanders  https://github.com/brechtsanders/
 
   * fixed issue in miniargv_getprogramname() when there is no path separator in argv0
+  * also support long arguments with space instead of equals sign
 
 0.2.18
 

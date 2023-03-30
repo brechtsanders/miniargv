@@ -127,8 +127,7 @@ ifdef DOXYGEN
 	$(CPDIR) doc/man $(PREFIX)/
 endif
 
-.PHONY: version
-version:
+version: include/miniargv.h
 	sed -ne "s/^#define\s*MINIARGV_VERSION_[A-Z]*\s*\([0-9]*\)\s*$$/\1./p" include/miniargv.h | tr -d "\n" | sed -e "s/\.$$//" > version
 
 .PHONY: package
