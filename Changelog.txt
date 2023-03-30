@@ -8,6 +8,7 @@
     + added new function: miniargv_completion()
   * added new function: miniargv_find_arg()
   * added new definition: MINIARGV_DEFINITION_END
+  * added new example: miniargv-example-complete.c
 
 0.2.19
 
