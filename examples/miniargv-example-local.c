@@ -27,17 +27,17 @@ int main (int argc, char *argv[], char *envp[])
   int number = 0;
   //definition of command line arguments
   const miniargv_definition argdef[] = {
-    {'h', "help", NULL, miniargv_cb_increment_int, &showhelp, "show command line help"},
-    {'v', "verbose", NULL, miniargv_cb_increment_int, &verbose, "increase verbose mode\n(may be specified multiple times)"},
-    {'n', "number", "N", miniargv_cb_set_int, &number, "set number to N"},
-    {0, NULL, "PARAM", process_arg_param, NULL, "parameter"},
-    {0, NULL, NULL, NULL, NULL, NULL}
+    {'h', "help", NULL, miniargv_cb_increment_int, &showhelp, "show command line help", NULL},
+    {'v', "verbose", NULL, miniargv_cb_increment_int, &verbose, "increase verbose mode\n(may be specified multiple times)", NULL},
+    {'n', "number", "N", miniargv_cb_set_int, &number, "set number to N", NULL},
+    {0, NULL, "PARAM", process_arg_param, NULL, "parameter", NULL},
+    MINIARGV_DEFINITION_END
   };
   //definition of environment variables
   const miniargv_definition envdef[] = {
-    {0, "NUMBER", "N", miniargv_cb_set_int, &number, "set number to N"},
-    {0, "N", NULL, miniargv_cb_set_int, &number, "set number"},
-    {0, NULL, NULL, NULL, NULL, NULL}
+    {0, "NUMBER", "N", miniargv_cb_set_int, &number, "set number to N", NULL},
+    {0, "N", NULL, miniargv_cb_set_int, &number, "set number", NULL},
+    MINIARGV_DEFINITION_END
   };
   //parse program arguments
   //if (miniargv_process(environ, envp, argdef, envdef, NULL, NULL) != 0)

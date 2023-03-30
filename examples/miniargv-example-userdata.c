@@ -39,10 +39,10 @@ int main (int argc, char *argv[])
 {
   //definition of command line arguments
   const miniargv_definition argdef[] = {
-    {'h', "help", NULL, process_arg_increment, (int[]){INT_PARAM_SHOWHELP}, "show command line help"},
-    {'v', "verbose", NULL, process_arg_increment, (int[]){INT_PARAM_VERBOSE}, "increase verbose mode\n(may be specified multiple times)"},
-    {'n', "number", "N", process_arg_number, (int[]){INT_PARAM_NUMBER}, "set number to N"},
-    {0, NULL, NULL, NULL, NULL, NULL}
+    {'h', "help", NULL, process_arg_increment, (int[]){INT_PARAM_SHOWHELP}, "show command line help", NULL},
+    {'v', "verbose", NULL, process_arg_increment, (int[]){INT_PARAM_VERBOSE}, "increase verbose mode\n(may be specified multiple times)", NULL},
+    {'n', "number", "N", process_arg_number, (int[]){INT_PARAM_NUMBER}, "set number to N", NULL},
+    MINIARGV_DEFINITION_END
   };
   //local values to be set according to command line arguments
   int params[INT_PARAMS];

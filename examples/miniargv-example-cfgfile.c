@@ -24,12 +24,12 @@ static char* str = NULL;
 
 //definition of command line arguments
 const miniargv_definition cfgdef[] = {
-  {0, "verbose", NULL, miniargv_cb_increment_int, &verbose, "set verbose mode"},
-  {0, "number", "N", miniargv_cb_set_int, &number, "set number to N"},
-  {0, "boolean", "B", miniargv_cb_set_boolean, &bln, "set boolean to B"},
-  {0, "string", "S", miniargv_cb_strdup, &str, "set string to S"},
-  {0, "long_description_value", NULL, miniargv_cb_strdup, &str, "setting with a very long description used for testing wrapping of description in generated config file\nnew line is included in description"},
-  {0, NULL, NULL, NULL, NULL, NULL}
+  {0, "verbose", NULL, miniargv_cb_increment_int, &verbose, "set verbose mode", NULL},
+  {0, "number", "N", miniargv_cb_set_int, &number, "set number to N", NULL},
+  {0, "boolean", "B", miniargv_cb_set_boolean, &bln, "set boolean to B", NULL},
+  {0, "string", "S", miniargv_cb_strdup, &str, "set string to S", NULL},
+  {0, "long_description_value", NULL, miniargv_cb_strdup, &str, "setting with a very long description used for testing wrapping of description in generated config file\nnew line is included in description", NULL},
+  MINIARGV_DEFINITION_END
 };
 
 int main (int argc, char *argv[])

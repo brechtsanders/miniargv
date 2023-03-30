@@ -4,6 +4,10 @@
 #include <string.h>
 #include <ctype.h>
 #include <limits.h>
+#ifdef _WIN32
+#include <io.h>
+#include <fcntl.h>
+#endif
 #if defined(_MSC_VER) || (defined(__MINGW32__) && !defined(__MINGW64__))
 #define strcasecmp _stricmp
 #endif
@@ -13,65 +17,6 @@
 #define MINIARG_PROCESS_MASK_BOTH       (MINIARG_PROCESS_MASK_FLAGS | MINIARG_PROCESS_MASK_VALUES)
 #define MINIARG_PROCESS_MASK_FIND_ONLY  0x08
 #define MINIARG_PROCESS_MASK_FIND_VALUE (MINIARG_PROCESS_MASK_FIND_ONLY | MINIARG_PROCESS_MASK_VALUES)
-
-/* find short argument definition */
-DLL_EXPORT_MINIARGV const miniargv_definition* miniargv_find_shortarg (char shortarg, const miniargv_definition argdef[])
-{
-  const miniargv_definition* result;
-  const miniargv_definition* current_argdef = argdef;
-  if (!shortarg || !current_argdef)
-    return NULL;
-  while (current_argdef->callbackfn) {
-    if (current_argdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
-      if ((result = miniargv_find_shortarg(shortarg, (struct miniargv_definition_struct*)(current_argdef->callbackfn))) != NULL)
-        return result;
-    } else if (shortarg == current_argdef->shortarg) {
-      return current_argdef;
-    }
-    current_argdef++;
-  }
-  return NULL;
-}
-
-/* find long argument definition */
-DLL_EXPORT_MINIARGV const miniargv_definition* miniargv_find_longarg (const char* longarg, size_t longarglen, const miniargv_definition argdef[])
-{
-  const miniargv_definition* result;
-  const miniargv_definition* current_argdef = argdef;
-  if (!longarg || !current_argdef)
-    return NULL;
-  if (longarglen <= 0)
-    longarglen = strlen(longarg);
-  while (current_argdef->callbackfn) {
-    if (current_argdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
-      if ((result = miniargv_find_longarg(longarg, longarglen, (struct miniargv_definition_struct*)(current_argdef->callbackfn))) != NULL)
-        return result;
-    } else if (current_argdef->longarg) {
-      if (strncmp(longarg, current_argdef->longarg, longarglen) == 0) {
-        return current_argdef;
-      }
-    }
-    current_argdef++;
-  }
-  return NULL;
-}
-
-/* find standalone argument definition */
-DLL_EXPORT_MINIARGV const miniargv_definition* miniargv_find_standalonearg (const miniargv_definition argdef[])
-{
-  const miniargv_definition* result;
-  const miniargv_definition* current_argdef = argdef;
-  while (current_argdef->callbackfn) {
-    if (current_argdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
-      if ((result = miniargv_find_standalonearg((struct miniargv_definition_struct*)(current_argdef->callbackfn))) != NULL)
-        return result;
-    } else if (!current_argdef->shortarg && !current_argdef->longarg) {
-      return current_argdef;
-    }
-    current_argdef++;
-  }
-  return NULL;
-}
 
 /* process single command line argument, returns non-zero if argument was processed */
 int miniargv_process_partial_single_arg (int* index, int* success, unsigned int flags, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
@@ -613,7 +558,7 @@ DLL_EXPORT_MINIARGV void miniargv_arg_help (const miniargv_definition argdef[], 
       } else {
         if (current_argdef->shortarg) {
           pos += printf("-%c", current_argdef->shortarg);
-          if (current_argdef->argparam)
+          if (current_argdef->argparam && !current_argdef->longarg)
             pos += printf(" %s", current_argdef->argparam);
         }
         if (current_argdef->longarg) {
@@ -679,6 +624,276 @@ DLL_EXPORT_MINIARGV void miniargv_help (const miniargv_definition argdef[], cons
     printf("Environment variables:\n");
     miniargv_env_help(envdef, descindent, wrapwidth);
   }
+}
+
+/* define COMPLETE_ADD_SPACE if bash completion is configured via "complete -o nospace -C<path> <command>" */
+//#define COMPLETE_ADD_SPACE
+
+const miniargv_definition* miniargv_complete_arg (char *argv[], int index, const miniargv_definition argdef[], int* paramstart, void* callbackdata)
+{
+  char* partialargend;
+  size_t partialarglen;
+  const miniargv_definition* current_argdef;
+  const miniargv_definition* result;
+  const char* partialarg;
+  const char* previousarg;
+  if ((partialarg = argv[index]) == NULL || (previousarg = argv[index + 1]) == NULL)
+    return NULL;
+  //on Windows set console output to binary mode (to avoid showing ^M in bash completion output)
+#ifdef _WIN32
+  setmode(fileno(stdout), O_BINARY);
+#endif
+/*
+  //check if previous argument is reported as just the equals sign
+  const char* commandline;
+  if (previousarg[0] == '=' && !previousarg[1]) {
+    //search for argument preceding the the equals sign
+    const char* commandlinepos;
+    int commandlineposval;
+    commandlinepos = getenv("COMP_POINT");
+    commandlineposval = atoi(commandlinepos ? commandlinepos : NULL) - strlen(partialarg);
+    commandline = getenv("COMP_LINE");
+    while (commandlineposval > 0 && (commandline[commandlineposval - 1] == '=' || isspace(commandline[commandlineposval - 1]))) {
+      commandlineposval--;
+    }
+    while (commandlineposval > 0 && !isspace(commandline[commandlineposval - 1])) {
+      commandlineposval--;
+    }
+    previousarg = commandline + commandlineposval;
+  }
+*/
+  //check previous argument
+  if (previousarg && previousarg[0] == '-' && (
+       (previousarg[1] && previousarg[1] != '-' && !previousarg[2] && (current_argdef = miniargv_find_arg(previousarg, argdef)) != NULL) ||
+       (previousarg[1] == '-' && (current_argdef = miniargv_find_arg(previousarg, argdef)) != NULL)
+      )) {
+    if (current_argdef->argparam) {
+      if (paramstart)
+        *paramstart = 0;
+      (current_argdef->completefn)(argv + 1, argdef, current_argdef, partialarg, 0, callbackdata);
+      return current_argdef;
+    }
+  }
+  //find standalone value argument definition
+  if (!partialarg[0] || partialarg[0] != '-') {
+    if ((current_argdef = miniargv_find_standalonearg(argdef)) != NULL) {
+      if (current_argdef->completefn) {
+        if ((current_argdef->completefn)(argv + 1, argdef, current_argdef, partialarg, 0, callbackdata) != 0)
+          return current_argdef;
+      }
+    }
+  }
+  //loop through short argument definitions
+  if (!partialarg[0] || (partialarg[0] == '-' && partialarg[1] != '-')) {
+    current_argdef = argdef;
+    while (current_argdef->callbackfn) {
+      if (current_argdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
+        if ((result = miniargv_complete_arg(argv, index, (struct miniargv_definition_struct*)(current_argdef->callbackfn), paramstart, callbackdata)) != NULL)
+          return result;
+      } else if (current_argdef->shortarg && (!partialarg[0] || !partialarg[1] || partialarg[1] == current_argdef->shortarg)) {
+        if (current_argdef->argparam && partialarg[0] == '-' && partialarg[1] == current_argdef->shortarg) {
+          if (paramstart)
+            *paramstart = 2;
+          (current_argdef->completefn)(argv + 1, argdef, current_argdef, partialarg, 2, callbackdata);
+          return current_argdef;
+        }
+#ifdef COMPLETE_ADD_SPACE
+        printf("-%c%s\n", current_argdef->shortarg, (current_argdef->argparam ? "" : " "));
+#else
+        printf("-%c\n", current_argdef->shortarg);
+#endif
+      }
+      current_argdef++;
+    }
+  }
+  //loop through long argument definitions
+  if (!partialarg[0] || (partialarg[0] == '-' && (!partialarg[1] || partialarg[1] == '-'))) {
+    //determine length of long argument without value
+#if 0
+    partialargend = strchrnul(partialarg, '=');
+    partialarglen = (partialargend - partialarg);
+#else
+    if ((partialargend = strchr(partialarg, '=')) == NULL)
+      partialarglen = strlen(partialarg);
+    else
+      partialarglen = (partialargend - partialarg);
+#endif
+    //loop through long argument definitions
+    current_argdef = argdef;
+    while (current_argdef->callbackfn) {
+      if (current_argdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
+        if ((result = miniargv_complete_arg(argv, index, (struct miniargv_definition_struct*)(current_argdef->callbackfn), paramstart, callbackdata)) != NULL)
+          return result;
+      } else if (current_argdef->longarg && (partialarglen < 2 || (strncmp(partialarg + 2, current_argdef->longarg, partialarglen - 2) == 0 && (!partialarg[partialarglen] || partialarg[partialarglen] == '=')))) {
+        if (current_argdef->argparam && partialarg[partialarglen] == '=') {
+          if (paramstart)
+            *paramstart = partialarglen + 1;
+          (current_argdef->completefn)(argv + 1, argdef, current_argdef, partialarg, partialarglen + 1, callbackdata);
+          return current_argdef;
+        }
+#ifdef COMPLETE_ADD_SPACE
+        printf("--%s%s\n", current_argdef->longarg, (current_argdef->argparam ? "=" : " "));
+#else
+        printf("--%s\n", current_argdef->longarg);
+#endif
+      }
+      current_argdef++;
+    }
+  }
+  return NULL;
+}
+
+/* when bash completion occurs the program specified via "complete -o nospace -C" is called as follows
+     3 arguments are passed to this application:
+      - the command whose arguments are being completed
+      - the prefix of the word where the cursor is, up to the cursor
+      - the word before the cursor
+     environment variables passed to the application:
+      - COMP_LINE contains the complete line in which completion is performed.
+      - COMP_POINT contains the cursor position inside COMP_LINE (counting from 0).
+      - COMP_TYPE is 9 for normal completion, 33 when listing alternatives on ambiguous completions, 37 for menu completion, 63 when tabbing between ambiguous completions, 64 to list completions after a partial completion.
+      - COMP_KEY contains the key that triggered completion (e.g. a tab character if the user pressed Tab).
+*/
+
+DLL_EXPORT_MINIARGV int miniargv_completion (char *argv[], const miniargv_definition argdef[], const char* completionparam, void* callbackdata)
+{
+  int index = 0;
+  int start = 0;
+  //check if called from bash completion
+  if (completionparam) {
+    //abort if a special parameter was provided and the first argument does not match it or if not enough paremeters
+    if (!argv[0] || !argv[1] || !argv[2] || !argv[3] || !argv[4] || strcmp(argv[1], completionparam) != 0)
+      return 0;
+    index = 3;
+  } else {
+    //abort if no special parameter was provided and the first argument is not the application or if not enough paremeters
+    const char* prg;
+    int prglen;
+    const char* cmd;
+    int cmdlen;
+    if (!argv[0] || !argv[1] || !argv[2] || !argv[3])
+      return 0;
+    prg = miniargv_getprogramname(argv[0], &prglen);
+    cmd = miniargv_getprogramname(argv[1], &cmdlen);
+    if (!prg || !cmd || cmdlen != prglen ||
+#ifdef _WIN32
+        strnicmp(cmd, prg, cmdlen) != 0
+#else
+        strncmp(cmd, prg, cmdlen) != 0
+#endif
+        )
+      return 0;
+    index = 2;
+  }
+  miniargv_complete_arg(argv, index, argdef, &start, callbackdata);
+  return 1;
+}
+
+DLL_EXPORT_MINIARGV const miniargv_definition* miniargv_find_shortarg (char shortarg, const miniargv_definition argdef[])
+{
+  const miniargv_definition* result;
+  const miniargv_definition* current_argdef = argdef;
+  if (!shortarg || !current_argdef)
+    return NULL;
+  while (current_argdef->callbackfn) {
+    if (current_argdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
+      if ((result = miniargv_find_shortarg(shortarg, (struct miniargv_definition_struct*)(current_argdef->callbackfn))) != NULL)
+        return result;
+    } else if (shortarg == current_argdef->shortarg) {
+      return current_argdef;
+    }
+    current_argdef++;
+  }
+  return NULL;
+}
+
+DLL_EXPORT_MINIARGV const miniargv_definition* miniargv_find_longarg (const char* longarg, size_t longarglen, const miniargv_definition argdef[])
+{
+  const miniargv_definition* result;
+  const miniargv_definition* current_argdef = argdef;
+  if (!longarg || !current_argdef)
+    return NULL;
+  if (longarglen <= 0)
+    longarglen = strlen(longarg);
+  while (current_argdef->callbackfn) {
+    if (current_argdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
+      if ((result = miniargv_find_longarg(longarg, longarglen, (struct miniargv_definition_struct*)(current_argdef->callbackfn))) != NULL)
+        return result;
+    } else if (current_argdef->longarg) {
+      if (strncmp(longarg, current_argdef->longarg, longarglen) == 0) {
+        return current_argdef;
+      }
+    }
+    current_argdef++;
+  }
+  return NULL;
+}
+
+DLL_EXPORT_MINIARGV const miniargv_definition* miniargv_find_standalonearg (const miniargv_definition argdef[])
+{
+  const miniargv_definition* result;
+  const miniargv_definition* current_argdef = argdef;
+  while (current_argdef->callbackfn) {
+    if (current_argdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
+      if ((result = miniargv_find_standalonearg((struct miniargv_definition_struct*)(current_argdef->callbackfn))) != NULL)
+        return result;
+    } else if (!current_argdef->shortarg && !current_argdef->longarg) {
+      return current_argdef;
+    }
+    current_argdef++;
+  }
+  return NULL;
+}
+
+DLL_EXPORT_MINIARGV const miniargv_definition* miniargv_find_arg (const char* arg, const miniargv_definition argdef[])
+{
+  char* argend;
+  size_t arglen;
+  const miniargv_definition* current_argdef;
+  const miniargv_definition* result;
+  if (!arg || arg[0] != '-')
+    return NULL;
+  current_argdef = argdef;
+  if (arg[1] != '-') {
+    //not a valid short argument not hyphen followed by only one character
+    if (!arg[1] || arg[2])
+      return NULL;
+    //loop through short arguments
+    while (current_argdef->callbackfn) {
+      if (current_argdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
+        if ((result = miniargv_find_arg(arg, (struct miniargv_definition_struct*)(current_argdef->callbackfn))) != NULL)
+          return result;
+      } else if (current_argdef->shortarg && arg[1] == current_argdef->shortarg) {
+        return current_argdef;
+      }
+      current_argdef++;
+    }
+  } else {
+    //not a valid long argument if the 2 hyphens are not followed by any text
+    if (!arg[2])
+      return NULL;
+    //determine length of long argument without value
+#if 0
+    argend = strchrnul(arg + 2, '=');
+    arglen = (argend - arg);
+#else
+    if ((argend = strchr(arg + 2, '=')) == NULL)
+      arglen = strlen(arg);
+    else
+      arglen = (argend - arg);
+#endif
+    //loop through long arguments
+    while (current_argdef->callbackfn) {
+      if (current_argdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
+        if ((result = miniargv_find_arg(arg, (struct miniargv_definition_struct*)(current_argdef->callbackfn))) != NULL)
+          return result;
+      } else if (current_argdef->longarg && strncmp(arg + 2, current_argdef->longarg, arglen - 2) == 0 && arglen - 2 == strlen(current_argdef->longarg)) {
+        return current_argdef;
+      }
+      current_argdef++;
+    }
+  }
+  return NULL;
 }
 
 DLL_EXPORT_MINIARGV void miniargv_wrap_and_indent_text (FILE* dst, const char* text, int currentpos, int indentpos, int wrapwidth, const char* newline)

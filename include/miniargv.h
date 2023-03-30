@@ -50,6 +50,20 @@ typedef struct miniargv_definition_struct miniargv_definition;
  */
 typedef int (*miniargv_handler_fn)(const miniargv_definition* argdef, const char* value, void* callbackdata);
 
+/*! \brief callback function called by miniargv_completion() to list possible parameters during bash completion
+ * \param  argv          NULL-terminated array of arguments (first one is undefined)
+ * \param  argdef        definitions of possible command line arguments
+ * \param  currentarg    definition of command line argument that is being completed
+ * \param  arg           argument being completed (actual parameter value starts at position \a argparampos)
+ * \param  argparampos   position within \a arg where the parameter starts (e.g. position of "123" in "--val=123")
+ * \param  callbackdata  user data as passed to \a miniargv_completion()
+ * \return 0 to continue processing or non-zero to abort
+ * \sa     miniargv_completion()
+ * \sa     miniargv_definition
+ * \sa     miniargv_definition_struct
+ */
+typedef int (*miniargv_complete_fn)(char *argv[], const miniargv_definition* argdef, const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata);
+
 /*! \brief structure for argument definition
  *
  * This structure contains the specification for a specific command line argument.
@@ -77,6 +91,7 @@ struct miniargv_definition_struct {
   miniargv_handler_fn callbackfn;   /**< callback function to be called when argument is encountered in \a miniargv_process_arg() */
   const void* userdata;             /**< user data specific for this argument, can be used in callback functions */
   const char* help;                 /**< description of what this command line argument is for, used by \a miniargv_arg_help() */
+  miniargv_complete_fn completefn;  /**< bash shell completion callback function, used by \a miniargv_completion() */
 };
 
 /*! \cond PRIVATE */
@@ -84,7 +99,10 @@ struct miniargv_definition_struct {
 /*! \endcond */
 
 /*! \brief include another argument definition block */
-#define MINIARGV_DEFINITION_INCLUDE(def) {MINIARGV_DEFINITION_INCLUDE_SHORTARG, NULL, NULL, (miniargv_handler_fn)(def), NULL, NULL}
+#define MINIARGV_DEFINITION_INCLUDE(def) {MINIARGV_DEFINITION_INCLUDE_SHORTARG, NULL, NULL, (miniargv_handler_fn)(def), NULL, NULL, NULL}
+
+/*! \brief include another argument definition block */
+#define MINIARGV_DEFINITION_END {0, NULL, NULL, NULL, NULL, NULL, NULL}
 
 /*! \brief first process environment variables, then process command line argument flags and finally process command line arguments values, and call the appropriate callback function for each match
  * \param  argv          NULL-terminated array of arguments (first one is the application itself)
@@ -312,6 +330,17 @@ DLL_EXPORT_MINIARGV void miniargv_env_help (const miniargv_definition envdef[], 
  */
 DLL_EXPORT_MINIARGV void miniargv_help (const miniargv_definition argdef[], const miniargv_definition envdef[], int descindent, int wrapwidth);
 
+/*! \brief perform bash shell completion (using tab key on the command line, configured via: complete -C"<path> <completionparam>" <programname>)
+ * \param  argv                  NULL-terminated array of arguments (first one is the application itself)
+ * \param  argdef                definitions of possible command line arguments
+ * \param  completionparam       command line parameter used for bash shell completion mode as configured in bash using: complete -C"<path> <completionparam>" <programname>
+ * \param  callbackdata          user data as passed to \a completefn
+ * \return non-zero if running in bash completion mode (program should exit after this), otherwise zero
+ * \sa     miniargv_definition
+ * \sa     miniargv_definition_struct
+ */
+DLL_EXPORT_MINIARGV int miniargv_completion (char *argv[], const miniargv_definition argdef[], const char* completionparam, void* callbackdata);
+
 /*! \brief find short argument definition
  * \param  shortarg              short argument character
  * \param  argdef                array of command line argument definitions
@@ -323,10 +352,10 @@ DLL_EXPORT_MINIARGV void miniargv_help (const miniargv_definition argdef[], cons
  */
 DLL_EXPORT_MINIARGV const miniargv_definition* miniargv_find_shortarg (char shortarg, const miniargv_definition argdef[]);
 
-/*! \brief find long argument definition
- * \param  longarg               long argument name (without leading hyphens)
- * \param  longarglen            length of long argument name (without leading hyphens)
- * \param  argdef                array of command line argument definitions
+/*! \brief find long argument definition or environment variable definition
+ * \param  longarg               long argument name (without leading hyphens) or environment variable name
+ * \param  longarglen            length of \a longarg, 0 to autodetect
+ * \param  argdef                array of command line argument definitions or environment variable definitions
  * \return command line argument definition or NULL if not found
  * \sa     miniargv_definition
  * \sa     miniargv_definition_struct
@@ -344,6 +373,14 @@ DLL_EXPORT_MINIARGV const miniargv_definition* miniargv_find_longarg (const char
  * \sa     miniargv_find_longarg
  */
 DLL_EXPORT_MINIARGV const miniargv_definition* miniargv_find_standalonearg (const miniargv_definition argdef[]);
+
+/*! \brief find argument definition for short ("-" followed by 1 character) long (starting with "--") argument
+ * \param  arg                   argument to search for
+ * \param  argdef                definitions of possible command line arguments
+ * \return argument definition or NULL of not found
+ * \sa     miniargv_definition
+ */
+DLL_EXPORT_MINIARGV const miniargv_definition* miniargv_find_arg (const char* arg, const miniargv_definition argdef[]);
 
 /*! \brief display help text wile wrapping it at a maximum width and indenting new lines
  * \param  dst                   stream to write to (use stdout for console output)
@@ -709,11 +746,11 @@ DLL_EXPORT_MINIARGV const char* miniargv_get_version_string ();
  * @{
  */
 /*! \brief major version number \hideinitializer */
-#define MINIARGV_VERSION_MAJOR 0
+#define MINIARGV_VERSION_MAJOR 1
 /*! \brief minor version number \hideinitializer */
-#define MINIARGV_VERSION_MINOR 2
+#define MINIARGV_VERSION_MINOR 0
 /*! \brief micro version number \hideinitializer */
-#define MINIARGV_VERSION_MICRO 19
+#define MINIARGV_VERSION_MICRO 0
 /** @} */
 
 /*! \brief packed version number (bits 24-31: major version, bits 16-23: minor version, bits 8-15: micro version)

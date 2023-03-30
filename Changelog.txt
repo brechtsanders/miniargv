@@ -1,3 +1,14 @@
+1.0.0
+
+2023-03-30  Brecht Sanders  https://github.com/brechtsanders/
+
+  * support for bash completion:
+    + added new function type miniargv_handler_fn
+    + added new member of struct miniargv_definition_struct / miniargv_definition: completefn
+    + added new function: miniargv_completion()
+  * added new function: miniargv_find_arg()
+  * added new definition: MINIARGV_DEFINITION_END
+
 0.2.19
 
 2023-03-30  Brecht Sanders  https://github.com/brechtsanders/

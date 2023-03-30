@@ -48,24 +48,24 @@ int process_arg_error (const miniargv_definition* argdef, const char* value, voi
 }
 
 const miniargv_definition argsubdef[] = {
-  {'d', "digit", "D", process_arg_number, NULL, "set number to D"},
-  {0, NULL, NULL, NULL, NULL, NULL}
+  {'d', "digit", "D", process_arg_number, NULL, "set number to D", NULL},
+  MINIARGV_DEFINITION_END
 };
 
 const miniargv_definition argdef[] = {
-  {'v', "verbose", NULL, process_arg_verbose, NULL, "verbose mode"},
-  {'n', "number", "N", process_arg_number, NULL, "set number to N"},
+  {'v', "verbose", NULL, process_arg_verbose, NULL, "verbose mode", NULL},
+  {'n', "number", "N", process_arg_number, NULL, "set number to N", NULL},
   MINIARGV_DEFINITION_INCLUDE(argsubdef),
-  {'f', "file", "FILE", process_arg_number, NULL, "specify file"},
-  {'s', "string", "STR", process_arg_number, NULL, "specify string"},
-  {'a', NULL, NULL, process_arg_general_without_value, NULL, "general parameter without value (short)"},
-  {0,   "general-no-value", NULL, process_arg_general_without_value, NULL, "general parameter without value (long)"},
-  {'b', NULL, "VAL", process_arg_general_with_value, NULL, "general parameter with value (short)"},
-  {0,   "general-value", "VAL", process_arg_general_with_value, NULL, "general parameter with value (long)"},
-  {0,   "very-long-command-line-option", NULL, process_arg_general_without_value, NULL, "very long command line option"},
-  {'l', "long", NULL, process_arg_verbose, NULL, "This is a very long description line in the command line help, so it should be wrapped across multiple lines. If all goes well this should take up 3 lines in the command line help. ===================================================================================================="},
-  {0, NULL, "param", process_arg, NULL, "standalone value argument"},
-  {0, NULL, NULL, NULL, NULL, NULL}
+  {'f', "file", "FILE", process_arg_number, NULL, "specify file", NULL},
+  {'s', "string", "STR", process_arg_number, NULL, "specify string", NULL},
+  {'a', NULL, NULL, process_arg_general_without_value, NULL, "general parameter without value (short)", NULL},
+  {0,   "general-no-value", NULL, process_arg_general_without_value, NULL, "general parameter without value (long)", NULL},
+  {'b', NULL, "VAL", process_arg_general_with_value, NULL, "general parameter with value (short)", NULL},
+  {0,   "general-value", "VAL", process_arg_general_with_value, NULL, "general parameter with value (long)", NULL},
+  {0,   "very-long-command-line-option", NULL, process_arg_general_without_value, NULL, "very long command line option", NULL},
+  {'l', "long", NULL, process_arg_verbose, NULL, "This is a very long description line in the command line help, so it should be wrapped across multiple lines. If all goes well this should take up 3 lines in the command line help. ====================================================================================================", NULL},
+  {0, NULL, "param", process_arg, NULL, "standalone value argument", NULL},
+  MINIARGV_DEFINITION_END
 };
 
 ////////////////////////////////////////////////////////////////////////
