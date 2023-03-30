@@ -689,7 +689,7 @@ DLL_EXPORT_MINIARGV const char* miniargv_getprogramname (const char* argv0, int*
   //find beginning of filename in path
   len = strlen(argv0);
   pos = len;
-  while (pos > 1 && argv0[pos - 1] != '/'
+  while (pos > 0 && argv0[pos - 1] != '/'
 #ifdef _WIN32
     && argv0[pos - 1] != '\\' && argv0[pos - 1] != ':'
 #endif
@@ -902,21 +902,21 @@ DLL_EXPORT_MINIARGV void miniargv_wrap_and_indent_text (FILE* dst, const char* t
   }
 }
 
-DLL_EXPORT_MINIARGV int miniargv_cleanup (const miniargv_definition envdef[])
+DLL_EXPORT_MINIARGV int miniargv_cleanup (const miniargv_definition argdef[])
 {
-  const miniargv_definition* current_envdef = envdef;
+  const miniargv_definition* current_argdef = argdef;
   int result;
-  while (current_envdef->callbackfn) {
-    if (current_envdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
-      if ((result = miniargv_cleanup((struct miniargv_definition_struct*)(current_envdef->callbackfn))) != 0)
+  while (current_argdef->callbackfn) {
+    if (current_argdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
+      if ((result = miniargv_cleanup((struct miniargv_definition_struct*)(current_argdef->callbackfn))) != 0)
         return result;
-    } else if (current_envdef->callbackfn == miniargv_cb_strdup) {
-      if (*(char**)current_envdef->userdata) {
-        free(*(char**)current_envdef->userdata);
-        *(char**)current_envdef->userdata = NULL;
+    } else if (current_argdef->callbackfn == miniargv_cb_strdup) {
+      if (*(char**)current_argdef->userdata) {
+        free(*(char**)current_argdef->userdata);
+        *(char**)current_argdef->userdata = NULL;
       }
     }
-    current_envdef++;
+    current_argdef++;
   }
   return 0;
 }

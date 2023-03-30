@@ -262,7 +262,7 @@ DLL_EXPORT_MINIARGV const char* miniargv_getprogramname (const char* argv0, int*
 DLL_EXPORT_MINIARGV unsigned int miniargv_arg_list (const miniargv_definition argdef[], int shortonly);
 
 /*! \brief lists possible environment variables on one line
- * \param  argdef                definitions of possible command line arguments
+ * \param  argdef                definitions of possible environment variables
  * \param  noparam               set to non-zero to only show the variable names without value parameter
  * \return number of environment variables listed
  * \sa     miniargv_arg_list()
@@ -298,7 +298,7 @@ DLL_EXPORT_MINIARGV void miniargv_arg_help (const miniargv_definition argdef[], 
 DLL_EXPORT_MINIARGV void miniargv_env_help (const miniargv_definition envdef[], int descindent, int wrapwidth);
 
 /*! \brief display help text explaining command line arguments and environment variables
- * \param  argdef                array of command line argument definitions
+ * \param  argdef                definitions of possible command line arguments
  * \param  envdef                definitions of possible environment variables
  * \param  descindent            indent where description starts, defaults to 25 if set to 0
  * \param  wrapwidth             maximum line length, defaults to 79 if set to 0
@@ -363,7 +363,7 @@ DLL_EXPORT_MINIARGV const miniargv_definition* miniargv_find_standalonearg (cons
 DLL_EXPORT_MINIARGV void miniargv_wrap_and_indent_text (FILE* dst, const char* text, int currentpos, int indentpos, int wrapwidth, const char* newline);
 
 /*! \brief clean up dynamically allocated memory (currently only when using miniargv_cb_strdup)
- * \param  envdef        definitions of possible environment variables
+ * \param  argdef                definitions of possible command line arguments or environment variables
  * \return zero on success or index of argument that caused processing to abort
  * \sa     miniargv_definition
  * \sa     miniargv_cb_strdup()
@@ -374,7 +374,7 @@ DLL_EXPORT_MINIARGV void miniargv_wrap_and_indent_text (FILE* dst, const char* t
  * \sa     miniargv_process_env()
  * \sa     miniargv_process_cfgfile()
  */
-DLL_EXPORT_MINIARGV int miniargv_cleanup (const miniargv_definition envdef[]);
+DLL_EXPORT_MINIARGV int miniargv_cleanup (const miniargv_definition argdef[]);
 
 
 
@@ -713,7 +713,7 @@ DLL_EXPORT_MINIARGV const char* miniargv_get_version_string ();
 /*! \brief minor version number \hideinitializer */
 #define MINIARGV_VERSION_MINOR 2
 /*! \brief micro version number \hideinitializer */
-#define MINIARGV_VERSION_MICRO 18
+#define MINIARGV_VERSION_MICRO 19
 /** @} */
 
 /*! \brief packed version number (bits 24-31: major version, bits 16-23: minor version, bits 8-15: micro version)
