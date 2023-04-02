@@ -441,7 +441,8 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 to continue completion, non-zero to abort (e.g. for standalone value argument return non-zero to skip short and long arguments) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 to continue completion, non-zero to abort (e.g. for standalone value argument return non-zero to skip short and long arguments) This function should list all possible completions on standard output, one result per line. The part of the argument preceding the value to be completed must also be included. This can be done like this (where <em>possiblevalue</em> is a possible value for completion): <div class="fragment"><div class="line">printf(<span class="stringliteral">&quot;%.*s%s\n&quot;</span>, argparampos, arg, possiblevalue);</div>
+</div><!-- fragment --> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#af62c80cee896f1dfe8366d3c70b96961" title="perform bash shell completion (using tab key on the command line, configured via: complete -C&quot;&lt;path&gt; ...">miniargv_completion()</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
@@ -968,7 +969,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 on success or abort code returned by callback function A configuration file can have any extenstion (though .cfg or .ini is recommended). Whitespace at the beginning of a line is ignored. Any line starting with a semicolon (;) or hash sign (#) is considered as command and will be ignored. Lines starting with an at-sign (@) will cause the configuration file specified after the at-sign (@) to be processed. Configuration lines consist of a variable name, followed by an equals (=) sign or a colon (:), followed by a value. Whitespace before and after the equals (=) sign or a colon (:) is ignored. It is also possible to use an at-sign (@) instead of an equals (=) sign or a colon (:), but then the value specifies a file that will be loaded. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success or abort code returned by callback function A configuration file can have any extension (though .cfg or .ini is recommended). Whitespace at the beginning of a line is ignored. Any line starting with a semicolon (;) or hash sign (#) is considered as command and will be ignored. Lines starting with an at-sign (@) will cause the configuration file specified after the at-sign (@) to be processed. Configuration lines consist of a variable name, followed by an equals (=) sign or a colon (:), followed by a value. Whitespace before and after the equals (=) sign or a colon (:) is ignored. It is also possible to use an at-sign (@) instead of an equals (=) sign or a colon (:), but then the value specifies a file that will be loaded. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d" title="callback function called by miniargv_process_arg() for each argument encountered">miniargv_handler_fn</a> </dd>
