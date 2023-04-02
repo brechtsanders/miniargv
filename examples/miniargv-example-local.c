@@ -19,7 +19,6 @@ int process_arg_param (const miniargv_definition* argdef, const char* value, voi
   return 0;
 }
 
-//int main (int argc, char *argv[])
 int main (int argc, char *argv[], char *envp[])
 {
   int showhelp = 0;

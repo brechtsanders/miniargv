@@ -52,6 +52,7 @@ typedef int (*miniargv_handler_fn)(const miniargv_definition* argdef, const char
 
 /*! \brief callback function called by miniargv_completion() to list possible parameters during bash completion
  * \param  argv          NULL-terminated array of arguments (first one is undefined)
+ * \param  env           NULL-terminated array of environment variables
  * \param  argdef        definitions of possible command line arguments
  * \param  currentarg    definition of command line argument that is being completed
  * \param  arg           argument being completed (actual parameter value starts at position \a argparampos)
@@ -62,7 +63,7 @@ typedef int (*miniargv_handler_fn)(const miniargv_definition* argdef, const char
  * \sa     miniargv_definition
  * \sa     miniargv_definition_struct
  */
-typedef int (*miniargv_complete_fn)(char *argv[], const miniargv_definition* argdef, const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata);
+typedef int (*miniargv_complete_fn)(char *argv[], char* env[], const miniargv_definition* argdef, const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata);
 
 /*! \brief structure for argument definition
  *
@@ -332,6 +333,7 @@ DLL_EXPORT_MINIARGV void miniargv_help (const miniargv_definition argdef[], cons
 
 /*! \brief perform bash shell completion (using tab key on the command line, configured via: complete -C"<path> <completionparam>" <programname>)
  * \param  argv                  NULL-terminated array of arguments (first one is the application itself)
+ * \param  env                   NULL-terminated array of environment variables
  * \param  argdef                definitions of possible command line arguments
  * \param  completionparam       command line parameter used for bash shell completion mode as configured in bash using: complete -C"<path> <completionparam>" <programname>
  * \param  callbackdata          user data to be passed to \a completefn
@@ -340,7 +342,7 @@ DLL_EXPORT_MINIARGV void miniargv_help (const miniargv_definition argdef[], cons
  * \sa     miniargv_definition_struct
  * \sa     miniargv_complete_fn
  */
-DLL_EXPORT_MINIARGV int miniargv_completion (char *argv[], const miniargv_definition argdef[], const char* completionparam, void* callbackdata);
+DLL_EXPORT_MINIARGV int miniargv_completion (char *argv[], char* env[], const miniargv_definition argdef[], const char* completionparam, void* callbackdata);
 
 /*! \brief find short argument definition
  * \param  shortarg              short argument character
@@ -720,7 +722,7 @@ DLL_EXPORT_MINIARGV int miniargv_cb_error (const miniargv_definition* argdef, co
  * \sa     miniargv_definition
  * \sa     miniargv_completion()
  */
-DLL_EXPORT_MINIARGV int miniargv_complete_cb_noop (char *argv[], const miniargv_definition* argdef, const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata);
+DLL_EXPORT_MINIARGV int miniargv_complete_cb_noop (char *argv[], char* env[], const miniargv_definition* argdef, const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata);
 
 /*! \brief predefined bash shell completion callback function to expand environment variables after dollar sign
  * \param  argv                  NULL-terminated array of arguments (first 3 are added by bash shell completion)
@@ -733,7 +735,7 @@ DLL_EXPORT_MINIARGV int miniargv_complete_cb_noop (char *argv[], const miniargv_
  * \sa     miniargv_definition
  * \sa     miniargv_completion()
  */
-DLL_EXPORT_MINIARGV int miniargv_complete_cb_env (char *argv[], const miniargv_definition* argdef, const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata);
+DLL_EXPORT_MINIARGV int miniargv_complete_cb_env (char *argv[], char* env[], const miniargv_definition* argdef, const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata);
 
 /*! \brief predefined bash shell completion callback function to expand file and folder paths
  * \param  argv                  NULL-terminated array of arguments (first 3 are added by bash shell completion)
@@ -746,7 +748,7 @@ DLL_EXPORT_MINIARGV int miniargv_complete_cb_env (char *argv[], const miniargv_d
  * \sa     miniargv_definition
  * \sa     miniargv_completion()
  */
-DLL_EXPORT_MINIARGV int miniargv_complete_cb_file (char *argv[], const miniargv_definition* argdef, const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata);
+DLL_EXPORT_MINIARGV int miniargv_complete_cb_file (char *argv[], char* env[], const miniargv_definition* argdef, const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata);
 
 /*! \brief predefined bash shell completion callback function to expand folder paths
  * \param  argv                  NULL-terminated array of arguments (first 3 are added by bash shell completion)
@@ -759,7 +761,7 @@ DLL_EXPORT_MINIARGV int miniargv_complete_cb_file (char *argv[], const miniargv_
  * \sa     miniargv_definition
  * \sa     miniargv_completion()
  */
-DLL_EXPORT_MINIARGV int miniargv_complete_cb_folder (char *argv[], const miniargv_definition* argdef, const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata);
+DLL_EXPORT_MINIARGV int miniargv_complete_cb_folder (char *argv[], char* env[], const miniargv_definition* argdef, const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata);
 
 
 
