@@ -59,6 +59,12 @@ typedef int (*miniargv_handler_fn)(const miniargv_definition* argdef, const char
  * \param  argparampos   position within \a arg where the parameter starts (e.g. position of "123" in "--val=123")
  * \param  callbackdata  user data as passed to \a miniargv_completion()
  * \return 0 to continue completion, non-zero to abort (e.g. for standalone value argument return non-zero to skip short and long arguments)
+ *         This function should list all possible completions on standard output, one result per line.
+ *         The part of the argument preceding the value to be completed must also be included.
+ *         This can be done like this (where \a possiblevalue is a possible value for completion):
+ *         \code{.c}
+ *         printf("%.*s%s\n", argparampos, arg, possiblevalue);
+ *         \endcode
  * \sa     miniargv_completion()
  * \sa     miniargv_definition
  * \sa     miniargv_definition_struct
@@ -225,7 +231,7 @@ DLL_EXPORT_MINIARGV int miniargv_process_env (char* env[], const miniargv_defini
  * \param  cfgdef        definitions of possible configuration file variables (shortarg is ignored)
  * \param  callbackdata  user data passed to callback functions
  * \return 0 on success or abort code returned by callback function
- *         A configuration file can have any extenstion (though .cfg or .ini is recommended).
+ *         A configuration file can have any extension (though .cfg or .ini is recommended).
  *         Whitespace at the beginning of a line is ignored.
  *         Any line starting with a semicolon (;) or hash sign (#) is considered as command and will be ignored.
  *         Lines starting with an at-sign (@) will cause the configuration file specified after the at-sign (@) to be processed.
