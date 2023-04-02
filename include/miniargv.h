@@ -57,7 +57,7 @@ typedef int (*miniargv_handler_fn)(const miniargv_definition* argdef, const char
  * \param  arg           argument being completed (actual parameter value starts at position \a argparampos)
  * \param  argparampos   position within \a arg where the parameter starts (e.g. position of "123" in "--val=123")
  * \param  callbackdata  user data as passed to \a miniargv_completion()
- * \return 0 to continue processing or non-zero to abort
+ * \return 0 to continue completion, non-zero to abort (e.g. for standalone value argument return non-zero to skip short and long arguments)
  * \sa     miniargv_completion()
  * \sa     miniargv_definition
  * \sa     miniargv_definition_struct
@@ -111,7 +111,7 @@ struct miniargv_definition_struct {
  * \param  envdef        definitions of possible environment variables
  * \param  badfn         callback function for bad arguments
  * \param  callbackdata  user data passed to callback functions
- * \return zero on success or index of argument that caused processing to abort
+ * \return 0 on success or index of argument that caused processing to abort
  * \sa     miniargv_handler_fn
  * \sa     miniargv_process_ltr()
  * \sa     miniargv_process_arg()
@@ -129,7 +129,7 @@ DLL_EXPORT_MINIARGV int miniargv_process (char* argv[], char* env[], const minia
  * \param  envdef        definitions of possible environment variables
  * \param  badfn         callback function for bad arguments
  * \param  callbackdata  user data passed to callback functions
- * \return zero on success or index of argument that caused processing to abort
+ * \return 0 on success or index of argument that caused processing to abort
  * \sa     miniargv_handler_fn
  * \sa     miniargv_process()
  * \sa     miniargv_process_arg()
@@ -145,7 +145,7 @@ DLL_EXPORT_MINIARGV int miniargv_process_ltr (char* argv[], char* env[], const m
  * \param  argdef        definitions of possible command line arguments
  * \param  badfn         callback function for bad arguments
  * \param  callbackdata  user data passed to callback functions
- * \return zero on success or index of argument that caused processing to abort
+ * \return 0 on success or index of argument that caused processing to abort
  * \sa     miniargv_definition
  * \sa     miniargv_handler_fn
  * \sa     miniargv_process()
@@ -162,7 +162,7 @@ DLL_EXPORT_MINIARGV int miniargv_process_arg (char* argv[], const miniargv_defin
  * \param  argdef        definitions of possible command line arguments
  * \param  badfn         callback function for bad arguments
  * \param  callbackdata  user data passed to callback functions
- * \return zero on success or index of argument that caused processing to abort
+ * \return 0 on success or index of argument that caused processing to abort
  * \sa     miniargv_definition
  * \sa     miniargv_handler_fn
  * \sa     miniargv_process()
@@ -178,7 +178,7 @@ DLL_EXPORT_MINIARGV int miniargv_process_arg_flags (char* argv[], const miniargv
  * \param  argdef        definitions of possible command line arguments
  * \param  badfn         callback function for bad arguments
  * \param  callbackdata  user data passed to callback functions
- * \return zero on success or index of argument that caused processing to abort
+ * \return 0 on success or index of argument that caused processing to abort
  * \sa     miniargv_definition
  * \sa     miniargv_handler_fn
  * \sa     miniargv_process()
@@ -195,7 +195,7 @@ DLL_EXPORT_MINIARGV int miniargv_process_arg_params (char* argv[], const miniarg
  * \param  argv          NULL-terminated array of arguments (first one is the application itself)
  * \param  argdef        definitions of possible command line arguments
  * \param  badfn         callback function for bad arguments
- * \return index of next value command line argument, zero when done or negative on error
+ * \return index of next value command line argument, 0 when done or negative on error
  * \sa     miniargv_definition
  * \sa     miniargv_handler_fn
  * \sa     miniargv_process()
@@ -208,7 +208,7 @@ DLL_EXPORT_MINIARGV int miniargv_get_next_arg_param (int argindex, char* argv[],
  * \param  env           NULL-terminated array of environment variables
  * \param  envdef        definitions of possible environment variables
  * \param  callbackdata  user data passed to callback functions
- * \return zero on success or index of argument that caused processing to abort
+ * \return 0 on success or index of argument that caused processing to abort
  * \sa     miniargv_definition
  * \sa     miniargv_handler_fn
  * \sa     miniargv_process()
@@ -223,7 +223,7 @@ DLL_EXPORT_MINIARGV int miniargv_process_env (char* env[], const miniargv_defini
  * \param  cfgfile       path of configuration file to read
  * \param  cfgdef        definitions of possible configuration file variables (shortarg is ignored)
  * \param  callbackdata  user data passed to callback functions
- * \return zero on success or abort code returned by callback function
+ * \return 0 on success or abort code returned by callback function
  *         A configuration file can have any extenstion (though .cfg or .ini is recommended).
  *         Whitespace at the beginning of a line is ignored.
  *         Any line starting with a semicolon (;) or hash sign (#) is considered as command and will be ignored.
@@ -334,10 +334,11 @@ DLL_EXPORT_MINIARGV void miniargv_help (const miniargv_definition argdef[], cons
  * \param  argv                  NULL-terminated array of arguments (first one is the application itself)
  * \param  argdef                definitions of possible command line arguments
  * \param  completionparam       command line parameter used for bash shell completion mode as configured in bash using: complete -C"<path> <completionparam>" <programname>
- * \param  callbackdata          user data as passed to \a completefn
+ * \param  callbackdata          user data to be passed to \a completefn
  * \return non-zero if running in bash completion mode (program should exit after this), otherwise zero
  * \sa     miniargv_definition
  * \sa     miniargv_definition_struct
+ * \sa     miniargv_complete_fn
  */
 DLL_EXPORT_MINIARGV int miniargv_completion (char *argv[], const miniargv_definition argdef[], const char* completionparam, void* callbackdata);
 
@@ -401,7 +402,7 @@ DLL_EXPORT_MINIARGV void miniargv_wrap_and_indent_text (FILE* dst, const char* t
 
 /*! \brief clean up dynamically allocated memory (currently only when using miniargv_cb_strdup)
  * \param  argdef                definitions of possible command line arguments or environment variables
- * \return zero on success or index of argument that caused processing to abort
+ * \return 0 on success or index of argument that caused processing to abort
  * \sa     miniargv_definition
  * \sa     miniargv_cb_strdup()
  * \sa     miniargv_process_ltr()
@@ -705,6 +706,60 @@ DLL_EXPORT_MINIARGV int miniargv_cb_noop (const miniargv_definition* argdef, con
  * \sa     miniargv_process_env()
  */
 DLL_EXPORT_MINIARGV int miniargv_cb_error (const miniargv_definition* argdef, const char* value, void* callbackdata);
+
+
+
+/*! \brief predefined bash shell completion callback function that does nothing
+ * \param  argv                  NULL-terminated array of arguments (first 3 are added by bash shell completion)
+ * \param  argdef                definition of command line argument being completed
+ * \param  arg                   already available part of command line argument being completed
+ * \param  argparampos           position in \a arg where the parameter to be completed starts
+ * \param  callbackdata          user data as passed to \a miniargv_completion
+ * \return 0
+ * \sa     miniargv_complete_fn
+ * \sa     miniargv_definition
+ * \sa     miniargv_completion()
+ */
+DLL_EXPORT_MINIARGV int miniargv_complete_cb_noop (char *argv[], const miniargv_definition* argdef, const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata);
+
+/*! \brief predefined bash shell completion callback function to expand environment variables after dollar sign
+ * \param  argv                  NULL-terminated array of arguments (first 3 are added by bash shell completion)
+ * \param  argdef                definition of command line argument being completed
+ * \param  arg                   already available part of command line argument being completed
+ * \param  argparampos           position in \a arg where the parameter to be completed starts
+ * \param  callbackdata          user data as passed to \a miniargv_completion
+ * \return 0
+ * \sa     miniargv_complete_fn
+ * \sa     miniargv_definition
+ * \sa     miniargv_completion()
+ */
+DLL_EXPORT_MINIARGV int miniargv_complete_cb_env (char *argv[], const miniargv_definition* argdef, const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata);
+
+/*! \brief predefined bash shell completion callback function to expand file and folder paths
+ * \param  argv                  NULL-terminated array of arguments (first 3 are added by bash shell completion)
+ * \param  argdef                definition of command line argument being completed
+ * \param  arg                   already available part of command line argument being completed
+ * \param  argparampos           position in \a arg where the parameter to be completed starts
+ * \param  callbackdata          user data as passed to \a miniargv_completion
+ * \return 0 or non-zero on error (usually memory allocation error)
+ * \sa     miniargv_complete_fn
+ * \sa     miniargv_definition
+ * \sa     miniargv_completion()
+ */
+DLL_EXPORT_MINIARGV int miniargv_complete_cb_file (char *argv[], const miniargv_definition* argdef, const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata);
+
+/*! \brief predefined bash shell completion callback function to expand folder paths
+ * \param  argv                  NULL-terminated array of arguments (first 3 are added by bash shell completion)
+ * \param  argdef                definition of command line argument being completed
+ * \param  arg                   already available part of command line argument being completed
+ * \param  argparampos           position in \a arg where the parameter to be completed starts
+ * \param  callbackdata          user data as passed to \a miniargv_completion
+ * \return 0 or non-zero on error (usually memory allocation error)
+ * \sa     miniargv_complete_fn
+ * \sa     miniargv_definition
+ * \sa     miniargv_completion()
+ */
+DLL_EXPORT_MINIARGV int miniargv_complete_cb_folder (char *argv[], const miniargv_definition* argdef, const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata);
 
 
 

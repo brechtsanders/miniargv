@@ -4,6 +4,10 @@
 #include <string.h>
 #include <ctype.h>
 #include <limits.h>
+#include <dirent.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 #ifdef _WIN32
 #include <io.h>
 #include <fcntl.h>
@@ -629,7 +633,7 @@ DLL_EXPORT_MINIARGV void miniargv_help (const miniargv_definition argdef[], cons
 /* define COMPLETE_ADD_SPACE if bash completion is configured via "complete -o nospace -C<path> <command>" */
 //#define COMPLETE_ADD_SPACE
 
-const miniargv_definition* miniargv_complete_arg (char *argv[], int index, const miniargv_definition argdef[], int* paramstart, void* callbackdata)
+const miniargv_definition* miniargv_complete_arg (char *argv[], int index, const miniargv_definition argdef[], void* callbackdata)
 {
   char* partialargend;
   size_t partialarglen;
@@ -637,6 +641,8 @@ const miniargv_definition* miniargv_complete_arg (char *argv[], int index, const
   const miniargv_definition* result;
   const char* partialarg;
   const char* previousarg;
+  const miniargv_definition* last_argdef = NULL;
+  int multipleresults = 0;
   if ((partialarg = argv[index]) == NULL || (previousarg = argv[index + 1]) == NULL)
     return NULL;
   //on Windows set console output to binary mode (to avoid showing ^M in bash completion output)
@@ -668,9 +674,9 @@ const miniargv_definition* miniargv_complete_arg (char *argv[], int index, const
        (previousarg[1] == '-' && (current_argdef = miniargv_find_arg(previousarg, argdef)) != NULL)
       )) {
     if (current_argdef->argparam) {
-      if (paramstart)
-        *paramstart = 0;
-      (current_argdef->completefn)(argv + 1, argdef, current_argdef, partialarg, 0, callbackdata);
+      if (current_argdef->completefn) {
+        (current_argdef->completefn)(argv + 1, argdef, current_argdef, partialarg, 0, callbackdata);
+      }
       return current_argdef;
     }
   }
@@ -688,13 +694,13 @@ const miniargv_definition* miniargv_complete_arg (char *argv[], int index, const
     current_argdef = argdef;
     while (current_argdef->callbackfn) {
       if (current_argdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
-        if ((result = miniargv_complete_arg(argv, index, (struct miniargv_definition_struct*)(current_argdef->callbackfn), paramstart, callbackdata)) != NULL)
+        if ((result = miniargv_complete_arg(argv, index, (struct miniargv_definition_struct*)(current_argdef->callbackfn), callbackdata)) != NULL)
           return result;
       } else if (current_argdef->shortarg && (!partialarg[0] || !partialarg[1] || partialarg[1] == current_argdef->shortarg)) {
         if (current_argdef->argparam && partialarg[0] == '-' && partialarg[1] == current_argdef->shortarg) {
-          if (paramstart)
-            *paramstart = 2;
-          (current_argdef->completefn)(argv + 1, argdef, current_argdef, partialarg, 2, callbackdata);
+          if (current_argdef->completefn) {
+            (current_argdef->completefn)(argv + 1, argdef, current_argdef, partialarg, 2, callbackdata);
+          }
           return current_argdef;
         }
 #ifdef COMPLETE_ADD_SPACE
@@ -702,6 +708,7 @@ const miniargv_definition* miniargv_complete_arg (char *argv[], int index, const
 #else
         printf("-%c\n", current_argdef->shortarg);
 #endif
+        multipleresults++;
       }
       current_argdef++;
     }
@@ -722,22 +729,32 @@ const miniargv_definition* miniargv_complete_arg (char *argv[], int index, const
     current_argdef = argdef;
     while (current_argdef->callbackfn) {
       if (current_argdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
-        if ((result = miniargv_complete_arg(argv, index, (struct miniargv_definition_struct*)(current_argdef->callbackfn), paramstart, callbackdata)) != NULL)
+        if ((result = miniargv_complete_arg(argv, index, (struct miniargv_definition_struct*)(current_argdef->callbackfn), callbackdata)) != NULL)
           return result;
       } else if (current_argdef->longarg && (partialarglen < 2 || (strncmp(partialarg + 2, current_argdef->longarg, partialarglen - 2) == 0 && (!partialarg[partialarglen] || partialarg[partialarglen] == '=')))) {
         if (current_argdef->argparam && partialarg[partialarglen] == '=') {
-          if (paramstart)
-            *paramstart = partialarglen + 1;
-          (current_argdef->completefn)(argv + 1, argdef, current_argdef, partialarg, partialarglen + 1, callbackdata);
+          if (current_argdef->completefn) {
+            (current_argdef->completefn)(argv + 1, argdef, current_argdef, partialarg, partialarglen + 1, callbackdata);
+          }
           return current_argdef;
         }
 #ifdef COMPLETE_ADD_SPACE
         printf("--%s%s\n", current_argdef->longarg, (current_argdef->argparam ? "=" : " "));
 #else
-        printf("--%s\n", current_argdef->longarg);
+        if (!current_argdef->argparam) {
+          printf("--%s\n", current_argdef->longarg);
+        } else {
+          printf("--%s=\n", current_argdef->longarg);
+        }
+        last_argdef = current_argdef;
+        multipleresults++;
 #endif
       }
       current_argdef++;
+    }
+    //if only long argument found display a seperate entry for it so no space is appended on completion
+    if (multipleresults == 1 && last_argdef->argparam) {
+      printf("--%s=%s\n", last_argdef->longarg, last_argdef->argparam);
     }
   }
   return NULL;
@@ -758,7 +775,6 @@ const miniargv_definition* miniargv_complete_arg (char *argv[], int index, const
 DLL_EXPORT_MINIARGV int miniargv_completion (char *argv[], const miniargv_definition argdef[], const char* completionparam, void* callbackdata)
 {
   int index = 0;
-  int start = 0;
   //check if called from bash completion
   if (completionparam) {
     //abort if a special parameter was provided and the first argument does not match it or if not enough paremeters
@@ -785,7 +801,7 @@ DLL_EXPORT_MINIARGV int miniargv_completion (char *argv[], const miniargv_defini
       return 0;
     index = 2;
   }
-  miniargv_complete_arg(argv, index, argdef, &start, callbackdata);
+  miniargv_complete_arg(argv, index, argdef, callbackdata);
   return 1;
 }
 
@@ -1119,6 +1135,160 @@ DLL_EXPORT_MINIARGV int miniargv_cb_error (const miniargv_definition* argdef, co
   if (argdef->userdata)
     fprintf(stderr, "%s\n", (const char*)argdef->userdata);
   return -1;
+}
+
+
+
+DLL_EXPORT_MINIARGV int miniargv_complete_cb_noop (char *argv[], const miniargv_definition* argdef, const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata)
+{
+  return 0;
+}
+
+DLL_EXPORT_MINIARGV int miniargv_complete_cb_env (char *argv[], const miniargv_definition* argdef, const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata)
+{
+  size_t pos;
+  size_t len;
+  char** currentenv;
+  char* p;
+  //get environment variable name from argument (starting at the end)
+  pos = strlen(arg);
+  len = 0;
+  while (pos > argparampos && arg[pos - 1] != '$') {
+    pos--;
+    len++;
+  }
+  //abort if dollar sign not found
+  if (pos <= argparampos || arg[pos - 1] != '$')
+    return 0;
+  //loop through environment variables
+  currentenv = environ;
+  while (*currentenv) {
+    if (strncmp(*currentenv, arg + pos, len) == 0) {
+      if ((p = strchr(*currentenv, '=')) != NULL) {
+        printf("%.*s%.*s\n", (int)pos, arg, (int)(p - *currentenv), *currentenv);
+      }
+    }
+    currentenv++;
+  }
+  return 0;
+}
+
+int miniargv_complete_file_or_folder (char *argv[], const miniargv_definition* argdef, const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata, int hidefiles)
+{
+  DIR* dir;
+  struct dirent* direntry;
+  struct stat fileinfo;
+  char* path;
+  size_t pathlen;
+  char* filepath;
+  size_t filepathlen;
+  size_t len;
+  size_t pos;
+  size_t direntrylen;
+  char* lastdirpath = NULL;
+  int multipleresults = 0;
+  //get folder path from argument
+  pos = strlen(arg);
+  len = 0;
+  while (pos > argparampos && arg[pos - 1] != '/'
+#ifdef _WIN32
+         && arg[pos - 1] != '\\' && arg[pos - 1] != ':'
+#endif
+  ) {
+    pos--;
+    len++;
+  }
+  pathlen = pos - argparampos;
+  if ((path = (char*)malloc(pathlen + 2)) == NULL) {
+    fprintf(stderr, "memory allocation error\n");
+    return 1;
+  }
+  memcpy(path, arg + argparampos, pathlen);
+/*
+  if (pathlen > 0 && path[pathlen - 1] != '/'
+#ifdef _WIN32
+      && path[pathlen - 1] != '\\'
+#endif
+  ) {
+    path[pathlen++] = '/';
+  }
+*/
+  path[pathlen] = 0;
+  //create placeholder for full file path
+  filepathlen = pathlen;
+  if ((filepath = (char*)malloc(filepathlen + 1)) == NULL) {
+    fprintf(stderr, "memory allocation error\n");
+    return 1;
+  }
+  memcpy(filepath, path, pathlen);
+  //check directory entries
+  if ((dir = opendir(*path ? path : "./")) != NULL) {
+    while ((direntry = readdir(dir)) != NULL) {
+      //only show matches and skip "." (current folder) and ".." (parent folder)
+      if (
+#ifdef _WIN32
+          strnicmp(direntry->d_name, arg + pos, len) == 0
+#else
+          strncmp(direntry->d_name, arg + pos, len) == 0
+#endif
+          && (!*path || (strcmp(direntry->d_name, ".") != 0 && strcmp(direntry->d_name, "..") != 0))
+      ) {
+        //determine full path
+        direntrylen = strlen(direntry->d_name);
+        if (filepathlen < pathlen + direntrylen) {
+          filepathlen = pathlen + direntrylen;
+          if ((filepath = (char*)realloc(filepath, filepathlen + 1)) == NULL) {
+            fprintf(stderr, "memory allocation error\n");
+            return 1;
+          }
+        }
+        strcpy(filepath + pathlen, direntry->d_name);
+        //get file/folder attributes
+        stat(filepath, &fileinfo);
+        //show result as needed
+        if (!S_ISDIR(fileinfo.st_mode)) {
+          if (!hidefiles)
+            printf("%.*s%s\n", argparampos, arg, filepath);
+        } else {
+          printf("%.*s%s/\n", argparampos, arg, filepath);
+          if (!lastdirpath)
+            lastdirpath = strdup(filepath);
+        }
+        if (multipleresults < 2) {
+          multipleresults++;
+        } else if (lastdirpath) {
+          free(lastdirpath);
+          lastdirpath = NULL;
+        }
+      }
+    }
+    closedir(dir);
+  }
+  //if only one result and it is a directory entry repeat it with "/." appended to avoid adding a space on completion
+  if (lastdirpath) {
+    if (multipleresults == 1)
+      printf("%.*s%s/.\n", argparampos, arg, lastdirpath);
+    free(lastdirpath);
+  }
+  free(filepath);
+  free(path);
+  return 0;
+}
+
+DLL_EXPORT_MINIARGV int miniargv_complete_cb_file (char *argv[], const miniargv_definition* argdef, const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata)
+{
+  int result;
+  if ((result = miniargv_complete_cb_env(argv, argdef, currentarg, arg, argparampos, callbackdata)) != 0)
+    return result;
+  return miniargv_complete_file_or_folder(argv, argdef, currentarg, arg, argparampos, callbackdata, 0);
+}
+
+DLL_EXPORT_MINIARGV int miniargv_complete_cb_folder (char *argv[], const miniargv_definition* argdef, const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata)
+{
+  int result;
+  if ((result = miniargv_complete_cb_env(argv, argdef, currentarg, arg, argparampos, callbackdata)) != 0)
+    return result;
+  return miniargv_complete_file_or_folder(argv, argdef, currentarg, arg, argparampos, callbackdata, 1);
 }
 
 

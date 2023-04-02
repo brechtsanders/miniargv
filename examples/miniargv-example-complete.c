@@ -15,6 +15,7 @@
 int complete_number (char *argv[], const miniargv_definition* argdef, const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata)
 {
   int i;
+  printf("%s\n", arg);
   for (i = 0; i < 10; i++) {
     printf("%s%i\n", arg, i);
   }
@@ -51,12 +52,17 @@ int main (int argc, char *argv[])
   int verbose = 0;
   int number = 0;
   const char* name = NULL;
+  const char* filepath = NULL;
+  const char* envval = NULL;
   //definition of command line arguments
   const miniargv_definition argdef[] = {
     {'h', "help", NULL, miniargv_cb_increment_int, &showhelp, "show command line help", NULL},
     {'v', "verbose", NULL, miniargv_cb_increment_int, &verbose, "increase verbose mode\n(may be specified multiple times)", NULL},
     {'n', "number", "N", miniargv_cb_set_int, &number, "set number to N", complete_number},
     {'N', "name", "NAME", miniargv_cb_set_const_str, &name, "set name to NAME", complete_test},
+    {'f', "file", "PATH", miniargv_cb_set_const_str, &filepath, "set file", miniargv_complete_cb_file},
+    {'F', "folder", "PATH", miniargv_cb_set_const_str, &filepath, "set folder", miniargv_complete_cb_folder},
+    {'e', "environment", "PATH", miniargv_cb_set_const_str, &envval, "set value (supports environment variables)", miniargv_complete_cb_env},
     {'d', NULL, "VALUE", miniargv_cb_noop, NULL, "dummy, ignore VALUE", NULL},
     {0, "dummy", "VALUE", miniargv_cb_noop, NULL, "dummy, ignore VALUE", NULL},
     {0, NULL, "PARAM", miniargv_cb_noop, NULL, "parameter", complete_test},
@@ -88,6 +94,8 @@ int main (int argc, char *argv[])
   printf("verbose = %i\n", verbose);
   printf("number = %i\n", number);
   printf("name = %s\n", (name ? name : ""));
+  printf("file = %s\n", (filepath ? filepath : ""));
+  printf("envval = %s\n", (envval ? envval : ""));
   //step through all command line values
   int i = 0;
   while ((i = miniargv_get_next_arg_param(i, argv, argdef, NULL)) > 0) {

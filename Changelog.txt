@@ -1,11 +1,12 @@
 1.0.0
 
-2023-03-30  Brecht Sanders  https://github.com/brechtsanders/
+2023-04-02  Brecht Sanders  https://github.com/brechtsanders/
 
   * support for bash completion:
     + added new function type miniargv_handler_fn
     + added new member of struct miniargv_definition_struct / miniargv_definition: completefn
     + added new function: miniargv_completion()
+    + added new callback functions: miniargv_complete_cb_noop() / miniargv_complete_cb_env() / miniargv_complete_cb_file() / miniargv_complete_cb_folder()
   * added new function: miniargv_find_arg()
   * added new definition: MINIARGV_DEFINITION_END
   * added new example: miniargv-example-complete.c
