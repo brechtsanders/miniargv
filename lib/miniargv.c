@@ -634,7 +634,7 @@ DLL_EXPORT_MINIARGV void miniargv_help (const miniargv_definition argdef[], cons
 /* define COMPLETE_ADD_SPACE if bash completion is configured via "complete -o nospace -C<path> <command>" */
 //#define COMPLETE_ADD_SPACE
 
-const miniargv_definition* miniargv_complete_arg (char *argv[], char* env[], int index, const miniargv_definition argdef[], void* callbackdata)
+const miniargv_definition* miniargv_complete_arg (char *argv[], char* env[], int index, const miniargv_definition argdef[], const miniargv_definition envdef[], void* callbackdata)
 {
   char* partialargend;
   size_t partialarglen;
@@ -676,7 +676,7 @@ const miniargv_definition* miniargv_complete_arg (char *argv[], char* env[], int
       )) {
     if (current_argdef->argparam) {
       if (current_argdef->completefn) {
-        (current_argdef->completefn)(argv + 1, env, argdef, current_argdef, partialarg, 0, callbackdata);
+        (current_argdef->completefn)(argv + 1, env, argdef, envdef, current_argdef, partialarg, 0, callbackdata);
       }
       return current_argdef;
     }
@@ -685,7 +685,7 @@ const miniargv_definition* miniargv_complete_arg (char *argv[], char* env[], int
   if (!partialarg[0] || partialarg[0] != '-') {
     if ((current_argdef = miniargv_find_standalonearg(argdef)) != NULL) {
       if (current_argdef->completefn) {
-        if ((current_argdef->completefn)(argv + 1, env, argdef, current_argdef, partialarg, 0, callbackdata) != 0)
+        if ((current_argdef->completefn)(argv + 1, env, argdef, envdef, current_argdef, partialarg, 0, callbackdata) != 0)
           return current_argdef;
       }
     }
@@ -695,12 +695,12 @@ const miniargv_definition* miniargv_complete_arg (char *argv[], char* env[], int
     current_argdef = argdef;
     while (current_argdef->callbackfn) {
       if (current_argdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
-        if ((result = miniargv_complete_arg(argv, env, index, (struct miniargv_definition_struct*)(current_argdef->callbackfn), callbackdata)) != NULL)
+        if ((result = miniargv_complete_arg(argv, env, index, (struct miniargv_definition_struct*)(current_argdef->callbackfn), envdef, callbackdata)) != NULL)
           return result;
       } else if (current_argdef->shortarg && (!partialarg[0] || !partialarg[1] || partialarg[1] == current_argdef->shortarg)) {
         if (current_argdef->argparam && partialarg[0] == '-' && partialarg[1] == current_argdef->shortarg) {
           if (current_argdef->completefn) {
-            (current_argdef->completefn)(argv + 1, env, argdef, current_argdef, partialarg, 2, callbackdata);
+            (current_argdef->completefn)(argv + 1, env, argdef, envdef, current_argdef, partialarg, 2, callbackdata);
           }
           return current_argdef;
         }
@@ -730,12 +730,12 @@ const miniargv_definition* miniargv_complete_arg (char *argv[], char* env[], int
     current_argdef = argdef;
     while (current_argdef->callbackfn) {
       if (current_argdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
-        if ((result = miniargv_complete_arg(argv, env, index, (struct miniargv_definition_struct*)(current_argdef->callbackfn), callbackdata)) != NULL)
+        if ((result = miniargv_complete_arg(argv, env, index, (struct miniargv_definition_struct*)(current_argdef->callbackfn), envdef, callbackdata)) != NULL)
           return result;
       } else if (current_argdef->longarg && (partialarglen < 2 || (strncmp(partialarg + 2, current_argdef->longarg, partialarglen - 2) == 0 && (!partialarg[partialarglen] || partialarg[partialarglen] == '=')))) {
         if (current_argdef->argparam && partialarg[partialarglen] == '=') {
           if (current_argdef->completefn) {
-            (current_argdef->completefn)(argv + 1, env, argdef, current_argdef, partialarg, partialarglen + 1, callbackdata);
+            (current_argdef->completefn)(argv + 1, env, argdef, envdef, current_argdef, partialarg, partialarglen + 1, callbackdata);
           }
           return current_argdef;
         }
@@ -773,7 +773,7 @@ const miniargv_definition* miniargv_complete_arg (char *argv[], char* env[], int
       - COMP_KEY contains the key that triggered completion (e.g. a tab character if the user pressed Tab).
 */
 
-DLL_EXPORT_MINIARGV int miniargv_completion (char *argv[], char* env[], const miniargv_definition argdef[], const char* completionparam, void* callbackdata)
+DLL_EXPORT_MINIARGV int miniargv_completion (char *argv[], char* env[], const miniargv_definition argdef[], const miniargv_definition envdef[], const char* completionparam, void* callbackdata)
 {
   int index = 0;
   //check if called from bash completion
@@ -802,7 +802,7 @@ DLL_EXPORT_MINIARGV int miniargv_completion (char *argv[], char* env[], const mi
       return 0;
     index = 2;
   }
-  miniargv_complete_arg(argv, env, index, argdef, callbackdata);
+  miniargv_complete_arg(argv, env, index, argdef, envdef, callbackdata);
   return 1;
 }
 
@@ -1140,12 +1140,12 @@ DLL_EXPORT_MINIARGV int miniargv_cb_error (const miniargv_definition* argdef, co
 
 
 
-DLL_EXPORT_MINIARGV int miniargv_complete_cb_noop (char *argv[], char* env[], const miniargv_definition* argdef, const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata)
+DLL_EXPORT_MINIARGV int miniargv_complete_cb_noop (char *argv[], char* env[], const miniargv_definition* argdef, const miniargv_definition envdef[], const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata)
 {
   return 0;
 }
 
-DLL_EXPORT_MINIARGV int miniargv_complete_cb_env (char *argv[], char* env[], const miniargv_definition* argdef, const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata)
+DLL_EXPORT_MINIARGV int miniargv_complete_cb_env (char *argv[], char* env[], const miniargv_definition* argdef, const miniargv_definition envdef[], const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata)
 {
   size_t pos;
   size_t len;
@@ -1276,18 +1276,18 @@ int miniargv_complete_file_or_folder (char *argv[], const miniargv_definition* a
   return 0;
 }
 
-DLL_EXPORT_MINIARGV int miniargv_complete_cb_file (char *argv[], char* env[], const miniargv_definition* argdef, const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata)
+DLL_EXPORT_MINIARGV int miniargv_complete_cb_file (char *argv[], char* env[], const miniargv_definition* argdef, const miniargv_definition envdef[], const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata)
 {
   int result;
-  if ((result = miniargv_complete_cb_env(argv, env, argdef, currentarg, arg, argparampos, callbackdata)) != 0)
+  if ((result = miniargv_complete_cb_env(argv, env, argdef, envdef, currentarg, arg, argparampos, callbackdata)) != 0)
     return result;
   return miniargv_complete_file_or_folder(argv, argdef, currentarg, arg, argparampos, callbackdata, 0);
 }
 
-DLL_EXPORT_MINIARGV int miniargv_complete_cb_folder (char *argv[], char* env[], const miniargv_definition* argdef, const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata)
+DLL_EXPORT_MINIARGV int miniargv_complete_cb_folder (char *argv[], char* env[], const miniargv_definition* argdef, const miniargv_definition envdef[], const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata)
 {
   int result;
-  if ((result = miniargv_complete_cb_env(argv, env, argdef, currentarg, arg, argparampos, callbackdata)) != 0)
+  if ((result = miniargv_complete_cb_env(argv, env, argdef, envdef, currentarg, arg, argparampos, callbackdata)) != 0)
     return result;
   return miniargv_complete_file_or_folder(argv, argdef, currentarg, arg, argparampos, callbackdata, 1);
 }

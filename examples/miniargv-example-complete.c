@@ -12,7 +12,7 @@
 #include <miniargv.h>
 
 //returns what we already have with 0-9 appended
-int complete_number (char *argv[], char *env[], const miniargv_definition* argdef, const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata)
+int complete_number (char *argv[], char *env[], const miniargv_definition* argdef, const miniargv_definition envdef[], const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata)
 {
   int i;
   printf("%s\n", arg);
@@ -23,7 +23,7 @@ int complete_number (char *argv[], char *env[], const miniargv_definition* argde
 }
 
 //predefined set of values
-int complete_test (char *argv[], char *env[], const miniargv_definition* argdef, const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata)
+int complete_test (char *argv[], char *env[], const miniargv_definition* argdef, const miniargv_definition envdef[], const miniargv_definition* currentarg, const char* arg, int argparampos, void* callbackdata)
 {
   const char* data[] = {
     "123",
@@ -73,7 +73,7 @@ int main (int argc, char *argv[], char *envp[])
   if (miniargv_completion(argv, argdef, "--bash-complete", NULL)) {
 */
   //check if we are being called for bash completion (tab key on the command line, configured via: "complete -C<path> <command>")
-  if (miniargv_completion(argv, envp, argdef, NULL, NULL)) {
+  if (miniargv_completion(argv, envp, argdef, NULL, NULL, NULL)) {
     return 0;
   }
   //parse command line flags
