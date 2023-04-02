@@ -261,6 +261,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a04c575fe71742debf2f850f163e8fddd"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a04c575fe71742debf2f850f163e8fddd">miniargv_cb_error</a> (const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *argdef, const char *value, void *callbackdata)</td></tr>
 <tr class="memdesc:a04c575fe71742debf2f850f163e8fddd"><td class="mdescLeft">&#160;</td><td class="mdescRight">predefined callback function that returns an error and displays the error pointed to by <b>userdata</b> (if not NULL)  <br /></td></tr>
 <tr class="separator:a04c575fe71742debf2f850f163e8fddd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5b57523383603988aa920086be62b85"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#ac5b57523383603988aa920086be62b85">miniargv_complete_cb_noop</a> (char *argv[], const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *argdef, const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *currentarg, const char *arg, int argparampos, void *callbackdata)</td></tr>
+<tr class="memdesc:ac5b57523383603988aa920086be62b85"><td class="mdescLeft">&#160;</td><td class="mdescRight">predefined bash shell completion callback function that does nothing  <br /></td></tr>
+<tr class="separator:ac5b57523383603988aa920086be62b85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b366b0c593e37c28633c842a0c56db2"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a6b366b0c593e37c28633c842a0c56db2">miniargv_complete_cb_env</a> (char *argv[], const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *argdef, const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *currentarg, const char *arg, int argparampos, void *callbackdata)</td></tr>
+<tr class="memdesc:a6b366b0c593e37c28633c842a0c56db2"><td class="mdescLeft">&#160;</td><td class="mdescRight">predefined bash shell completion callback function to expand environment variables after dollar sign  <br /></td></tr>
+<tr class="separator:a6b366b0c593e37c28633c842a0c56db2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5e0ad48563f3acae2a77d63a77af2db"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#aa5e0ad48563f3acae2a77d63a77af2db">miniargv_complete_cb_file</a> (char *argv[], const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *argdef, const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *currentarg, const char *arg, int argparampos, void *callbackdata)</td></tr>
+<tr class="memdesc:aa5e0ad48563f3acae2a77d63a77af2db"><td class="mdescLeft">&#160;</td><td class="mdescRight">predefined bash shell completion callback function to expand file and folder paths  <br /></td></tr>
+<tr class="separator:aa5e0ad48563f3acae2a77d63a77af2db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac466f896921d143f8e0de65760e9a34d"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#ac466f896921d143f8e0de65760e9a34d">miniargv_complete_cb_folder</a> (char *argv[], const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *argdef, const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *currentarg, const char *arg, int argparampos, void *callbackdata)</td></tr>
+<tr class="memdesc:ac466f896921d143f8e0de65760e9a34d"><td class="mdescLeft">&#160;</td><td class="mdescRight">predefined bash shell completion callback function to expand folder paths  <br /></td></tr>
+<tr class="separator:ac466f896921d143f8e0de65760e9a34d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5101866e681a0bec69a8c2ceb636c7cd"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a5101866e681a0bec69a8c2ceb636c7cd">miniargv_get_version</a> (int *pmajor, int *pminor, int *pmicro)</td></tr>
 <tr class="memdesc:a5101866e681a0bec69a8c2ceb636c7cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">get miniargv library version string  <br /></td></tr>
 <tr class="separator:a5101866e681a0bec69a8c2ceb636c7cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -428,7 +440,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 to continue processing or non-zero to abort </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 to continue completion, non-zero to abort (e.g. for standalone value argument return non-zero to skip short and long arguments) </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#abd59d44e33ef45c3cef4d788633ef626" title="perform bash shell completion (using tab key on the command line, configured via: complete -C&quot;&lt;path&gt; ...">miniargv_completion()</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
@@ -500,7 +512,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>zero on success or index of argument that caused processing to abort </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success or index of argument that caused processing to abort </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d" title="callback function called by miniargv_process_arg() for each argument encountered">miniargv_handler_fn</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#aea855b23ce394e82dea54ebf6a4f474b" title="first process environment variables and then process command line arguments (flags and values,...">miniargv_process_ltr()</a> </dd>
@@ -579,7 +591,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>zero on success or index of argument that caused processing to abort </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success or index of argument that caused processing to abort </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d" title="callback function called by miniargv_process_arg() for each argument encountered">miniargv_handler_fn</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables, then process command line argument flags and finally process com...">miniargv_process()</a> </dd>
@@ -644,7 +656,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>zero on success or index of argument that caused processing to abort </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success or index of argument that caused processing to abort </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d" title="callback function called by miniargv_process_arg() for each argument encountered">miniargv_handler_fn</a> </dd>
@@ -711,7 +723,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>zero on success or index of argument that caused processing to abort </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success or index of argument that caused processing to abort </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d" title="callback function called by miniargv_process_arg() for each argument encountered">miniargv_handler_fn</a> </dd>
@@ -776,7 +788,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>zero on success or index of argument that caused processing to abort </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success or index of argument that caused processing to abort </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d" title="callback function called by miniargv_process_arg() for each argument encountered">miniargv_handler_fn</a> </dd>
@@ -843,7 +855,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>index of next value command line argument, zero when done or negative on error </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>index of next value command line argument, 0 when done or negative on error </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d" title="callback function called by miniargv_process_arg() for each argument encountered">miniargv_handler_fn</a> </dd>
@@ -897,7 +909,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>zero on success or index of argument that caused processing to abort </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success or index of argument that caused processing to abort </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d" title="callback function called by miniargv_process_arg() for each argument encountered">miniargv_handler_fn</a> </dd>
@@ -955,7 +967,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>zero on success or abort code returned by callback function A configuration file can have any extenstion (though .cfg or .ini is recommended). Whitespace at the beginning of a line is ignored. Any line starting with a semicolon (;) or hash sign (#) is considered as command and will be ignored. Lines starting with an at-sign (@) will cause the configuration file specified after the at-sign (@) to be processed. Configuration lines consist of a variable name, followed by an equals (=) sign or a colon (:), followed by a value. Whitespace before and after the equals (=) sign or a colon (:) is ignored. It is also possible to use an at-sign (@) instead of an equals (=) sign or a colon (:), but then the value specifies a file that will be loaded. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success or abort code returned by callback function A configuration file can have any extenstion (though .cfg or .ini is recommended). Whitespace at the beginning of a line is ignored. Any line starting with a semicolon (;) or hash sign (#) is considered as command and will be ignored. Lines starting with an at-sign (@) will cause the configuration file specified after the at-sign (@) to be processed. Configuration lines consist of a variable name, followed by an equals (=) sign or a colon (:), followed by a value. Whitespace before and after the equals (=) sign or a colon (:) is ignored. It is also possible to use an at-sign (@) instead of an equals (=) sign or a colon (:), but then the value specifies a file that will be loaded. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d" title="callback function called by miniargv_process_arg() for each argument encountered">miniargv_handler_fn</a> </dd>
@@ -1369,14 +1381,16 @@ Functions</h2></td></tr>
     <tr><td class="paramname">argv</td><td>NULL-terminated array of arguments (first one is the application itself) </td></tr>
     <tr><td class="paramname">argdef</td><td>definitions of possible command line arguments </td></tr>
     <tr><td class="paramname">completionparam</td><td>command line parameter used for bash shell completion mode as configured in bash using: complete -C"&lt;path&gt; &lt;completionparam&gt;" &lt;programname&gt; </td></tr>
-    <tr><td class="paramname">callbackdata</td><td>user data as passed to <em>completefn</em> </td></tr>
+    <tr><td class="paramname">callbackdata</td><td>user data to be passed to <em>completefn</em> </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>non-zero if running in bash completion mode (program should exit after this), otherwise zero </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
 <dd>
-<a class="el" href="structminiargv__definition__struct.html" title="structure for argument definition">miniargv_definition_struct</a> </dd></dl>
+<a class="el" href="structminiargv__definition__struct.html" title="structure for argument definition">miniargv_definition_struct</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a812fbe87ca33fd3c436bfff1ddd41024" title="callback function called by miniargv_completion() to list possible parameters during bash completion">miniargv_complete_fn</a> </dd></dl>
 
 </div>
 </div>
@@ -1651,7 +1665,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>zero on success or index of argument that caused processing to abort </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success or index of argument that caused processing to abort </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a223dcaf0e53c6de9876e2da226bce50f" title="predefined callback function to set string userdata to a copy of value (calls free() on previous user...">miniargv_cb_strdup()</a> </dd>
@@ -2725,6 +2739,286 @@ Functions</h2></td></tr>
 <a class="el" href="miniargv_8h.html#a98a3d4f90c5edc3fb2581928b3807312" title="process only standalone value command line arguments and call the appropriate callback function for e...">miniargv_process_arg_params()</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#a55bcaa2e259524598275426976285d7b" title="process environment variables and call the appropriate callback function for each match">miniargv_process_env()</a> </dd></dl>
+
+</div>
+</div>
+<a id="ac5b57523383603988aa920086be62b85" name="ac5b57523383603988aa920086be62b85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5b57523383603988aa920086be62b85">&#9670;&#160;</a></span>miniargv_complete_cb_noop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DLL_EXPORT_MINIARGV int miniargv_complete_cb_noop </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>argv</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *&#160;</td>
+          <td class="paramname"><em>argdef</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *&#160;</td>
+          <td class="paramname"><em>currentarg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>arg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>argparampos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>callbackdata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>predefined bash shell completion callback function that does nothing </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">argv</td><td>NULL-terminated array of arguments (first 3 are added by bash shell completion) </td></tr>
+    <tr><td class="paramname">argdef</td><td>definition of command line argument being completed </td></tr>
+    <tr><td class="paramname">arg</td><td>already available part of command line argument being completed </td></tr>
+    <tr><td class="paramname">argparampos</td><td>position in <em>arg</em> where the parameter to be completed starts </td></tr>
+    <tr><td class="paramname">callbackdata</td><td>user data as passed to <em>miniargv_completion</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a812fbe87ca33fd3c436bfff1ddd41024" title="callback function called by miniargv_completion() to list possible parameters during bash completion">miniargv_complete_fn</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#abd59d44e33ef45c3cef4d788633ef626" title="perform bash shell completion (using tab key on the command line, configured via: complete -C&quot;&lt;path&gt; ...">miniargv_completion()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a6b366b0c593e37c28633c842a0c56db2" name="a6b366b0c593e37c28633c842a0c56db2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b366b0c593e37c28633c842a0c56db2">&#9670;&#160;</a></span>miniargv_complete_cb_env()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DLL_EXPORT_MINIARGV int miniargv_complete_cb_env </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>argv</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *&#160;</td>
+          <td class="paramname"><em>argdef</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *&#160;</td>
+          <td class="paramname"><em>currentarg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>arg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>argparampos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>callbackdata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>predefined bash shell completion callback function to expand environment variables after dollar sign </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">argv</td><td>NULL-terminated array of arguments (first 3 are added by bash shell completion) </td></tr>
+    <tr><td class="paramname">argdef</td><td>definition of command line argument being completed </td></tr>
+    <tr><td class="paramname">arg</td><td>already available part of command line argument being completed </td></tr>
+    <tr><td class="paramname">argparampos</td><td>position in <em>arg</em> where the parameter to be completed starts </td></tr>
+    <tr><td class="paramname">callbackdata</td><td>user data as passed to <em>miniargv_completion</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a812fbe87ca33fd3c436bfff1ddd41024" title="callback function called by miniargv_completion() to list possible parameters during bash completion">miniargv_complete_fn</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#abd59d44e33ef45c3cef4d788633ef626" title="perform bash shell completion (using tab key on the command line, configured via: complete -C&quot;&lt;path&gt; ...">miniargv_completion()</a> </dd></dl>
+
+</div>
+</div>
+<a id="aa5e0ad48563f3acae2a77d63a77af2db" name="aa5e0ad48563f3acae2a77d63a77af2db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5e0ad48563f3acae2a77d63a77af2db">&#9670;&#160;</a></span>miniargv_complete_cb_file()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DLL_EXPORT_MINIARGV int miniargv_complete_cb_file </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>argv</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *&#160;</td>
+          <td class="paramname"><em>argdef</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *&#160;</td>
+          <td class="paramname"><em>currentarg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>arg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>argparampos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>callbackdata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>predefined bash shell completion callback function to expand file and folder paths </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">argv</td><td>NULL-terminated array of arguments (first 3 are added by bash shell completion) </td></tr>
+    <tr><td class="paramname">argdef</td><td>definition of command line argument being completed </td></tr>
+    <tr><td class="paramname">arg</td><td>already available part of command line argument being completed </td></tr>
+    <tr><td class="paramname">argparampos</td><td>position in <em>arg</em> where the parameter to be completed starts </td></tr>
+    <tr><td class="paramname">callbackdata</td><td>user data as passed to <em>miniargv_completion</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 or non-zero on error (usually memory allocation error) </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a812fbe87ca33fd3c436bfff1ddd41024" title="callback function called by miniargv_completion() to list possible parameters during bash completion">miniargv_complete_fn</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#abd59d44e33ef45c3cef4d788633ef626" title="perform bash shell completion (using tab key on the command line, configured via: complete -C&quot;&lt;path&gt; ...">miniargv_completion()</a> </dd></dl>
+
+</div>
+</div>
+<a id="ac466f896921d143f8e0de65760e9a34d" name="ac466f896921d143f8e0de65760e9a34d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac466f896921d143f8e0de65760e9a34d">&#9670;&#160;</a></span>miniargv_complete_cb_folder()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DLL_EXPORT_MINIARGV int miniargv_complete_cb_folder </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>argv</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *&#160;</td>
+          <td class="paramname"><em>argdef</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *&#160;</td>
+          <td class="paramname"><em>currentarg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>arg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>argparampos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>callbackdata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>predefined bash shell completion callback function to expand folder paths </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">argv</td><td>NULL-terminated array of arguments (first 3 are added by bash shell completion) </td></tr>
+    <tr><td class="paramname">argdef</td><td>definition of command line argument being completed </td></tr>
+    <tr><td class="paramname">arg</td><td>already available part of command line argument being completed </td></tr>
+    <tr><td class="paramname">argparampos</td><td>position in <em>arg</em> where the parameter to be completed starts </td></tr>
+    <tr><td class="paramname">callbackdata</td><td>user data as passed to <em>miniargv_completion</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 or non-zero on error (usually memory allocation error) </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a812fbe87ca33fd3c436bfff1ddd41024" title="callback function called by miniargv_completion() to list possible parameters during bash completion">miniargv_complete_fn</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#abd59d44e33ef45c3cef4d788633ef626" title="perform bash shell completion (using tab key on the command line, configured via: complete -C&quot;&lt;path&gt; ...">miniargv_completion()</a> </dd></dl>
 
 </div>
 </div>
