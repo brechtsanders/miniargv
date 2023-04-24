@@ -47,15 +47,15 @@ int main (int argc, char *argv[], char *envp[])
 
   //definition of command line arguments
   const miniargv_definition argdef[] = {
-    {'h', "help", NULL, miniargv_cb_increment_int, &showhelp, "show command line help"},
-    {'n', "number", "N", miniargv_cb_set_int, &number, "set number to N"},
-    {0, NULL, NULL, NULL, NULL, NULL}
+    {'h', "help", NULL, miniargv_cb_increment_int, &showhelp, "show command line help", NULL},
+    {'n', "number", "N", miniargv_cb_set_int, &number, "set number to N", NULL},
+    MINIARGV_DEFINITION_END
   };
 
   //definition of environment variables
   const miniargv_definition envdef[] = {
-    {0, "NUMBER", "N", miniargv_cb_set_int, &number, "set number to N"},
-    {0, NULL, NULL, NULL, NULL, NULL}
+    {0, "NUMBER", "N", miniargv_cb_set_int, &number, "set number to N", NULL},
+    MINIARGV_DEFINITION_END
   };
 
   //parse program arguments

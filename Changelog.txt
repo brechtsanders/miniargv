@@ -1,3 +1,9 @@
+1.0.1
+
+2023-04-24  Brecht Sanders  https://github.com/brechtsanders/
+
+  * updated example code in README.md
+
 1.0.0
 
 2023-04-02  Brecht Sanders  https://github.com/brechtsanders/
@@ -7,9 +13,9 @@
     + added new member of struct miniargv_definition_struct / miniargv_definition: completefn
     + added new function: miniargv_completion()
     + added new callback functions: miniargv_complete_cb_noop() / miniargv_complete_cb_env() / miniargv_complete_cb_file() / miniargv_complete_cb_folder()
+    + added new example application: miniargv-example-complete.c
   * added new function: miniargv_find_arg()
   * added new definition: MINIARGV_DEFINITION_END
-  * added new example: miniargv-example-complete.c
 
 0.2.19
 
