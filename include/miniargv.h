@@ -239,7 +239,7 @@ DLL_EXPORT_MINIARGV int miniargv_process_env (char* env[], const miniargv_defini
  *         Configuration lines consist of a variable name, followed by an equals (=) sign or a colon (:), followed by a value.
  *         Whitespace before and after the equals (=) sign or a colon (:) is ignored.
  *         It is also possible to use an at-sign (@) instead of an equals (=) sign or a colon (:), but then the value specifies a file that will be loaded (including all white space and line breaks).
- *         Section names start with the name of the section enclosed in square brackets ([]). If no section name is specified the default section name is "default".
+ *         Section names start with the name of the section enclosed in square brackets ([]). If no section name is specified the default section name is "default". Section names are not case sensitive.
  * \sa     miniargv_definition
  * \sa     miniargv_handler_fn
  * \sa     miniargv_process()
