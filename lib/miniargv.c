@@ -340,7 +340,26 @@ char* miniargv_readline (FILE* src)
   return result;
 }
 
-DLL_EXPORT_MINIARGV int miniargv_process_cfgfile (const char* cfgfile, const miniargv_definition cfgdef[], void* callbackdata)
+void set_section_name (char** section, const char* name, size_t namelen)
+{
+  if (*section)
+    free(*section);
+  if (name == NULL || namelen == 0 || (namelen == 7 && strncmp(name, "default", 7) == 0)) {
+    *section = NULL;
+  } else {
+    if ((*section = (char*)malloc(namelen + 1)) != NULL) {
+      int i;
+      char* p = *section;
+      for (i = 0; i < namelen; i++) {
+        *p++ = tolower(name[i]);
+      }
+      //memcpy(*section, name, namelen);
+      (*section)[namelen] = 0;
+    }
+  }
+}
+
+int process_cfgfile (const char* cfgfile, const miniargv_definition cfgdef[], const char* loadsection, const char* currentsection, void* callbackdata)
 {
   FILE* src;
   char* line;
@@ -350,7 +369,11 @@ DLL_EXPORT_MINIARGV int miniargv_process_cfgfile (const char* cfgfile, const min
   char separator;
   char* value;
   const miniargv_definition* current_cfgdef;
+  char* load_section = NULL;
+  char* current_section = NULL;
   int status = 0;
+  set_section_name(&load_section, loadsection, (loadsection ? strlen(loadsection) : 0));
+  set_section_name(&current_section, currentsection, (currentsection ? strlen(currentsection) : 0));
   //open file for reading
   if ((src = fopen(cfgfile, "rb")) != NULL) {
     //read lines
@@ -359,74 +382,82 @@ DLL_EXPORT_MINIARGV int miniargv_process_cfgfile (const char* cfgfile, const min
       //skip spaces preceding varname
       while (*varname && isspace(*varname))
         varname++;
-      //include specified file if line starts with @
-      if (*varname == '@') {
-        //skip spaces preceding include file
-        varname++;
-        while (*varname && isspace(*varname))
-          varname++;
-        //skip spaces following include file
-        if ((p = strchr(varname, 0)) != NULL) {
-          while (p != varname && isspace(*(p - 1)))
-            p--;
-          *p = 0;
+      if (*varname == '[') {
+        if ((p = strchr(++varname, ']')) != NULL)  {
+          set_section_name(&current_section, varname, p - varname);
         }
-        if (*varname)
-          status = miniargv_process_cfgfile(varname, cfgdef, callbackdata);
-      } else if (*varname) {
-        //find starting position of value
-        p = varname;
-        while (*p && *p != '=' && *p != ':' && *p != '@' && *p != '#' && *p != ';')
-          p++;
-        separator = *p;
-        if (separator == '=' || separator == ':' || separator == '@') {
-          value = p + 1;
-          //skip spaces following varname
-          while (p != varname && isspace(*(p - 1)))
-            p--;
-          if (p != varname) {
-            varnamelen = p - varname;
-            //skip spaces preceding value
-            while (*value && isspace(*value))
-              value++;
-            //skip spaces following value
-            if ((p = strchr(value, 0)) != NULL) {
-              while (p != value && isspace(*(p - 1)))
-                p--;
-              *p = 0;
-            }
-            //process variable
-            if ((current_cfgdef = miniargv_find_longarg(varname, varnamelen, cfgdef)) != NULL) {
-              if (separator == '@') {
-                //process contents of another file
-                FILE* valuesrc;
-                int datalen;
-                char data[MINIARGV_READLINE_BLOCK_SIZE];
-                int loadedvaluelen = 0;
-                char* loadedvalue = NULL;
-                if ((valuesrc = fopen(value, "rb")) != NULL) {
-                  //read next data
-                  while ((datalen = fread(data, 1, sizeof(data), valuesrc)) > 0) {
-                    //allocate memory and store the result
-                    if ((loadedvalue = (char*)realloc(loadedvalue, loadedvaluelen + datalen + 1)) == NULL)
-                      break;
-                    memcpy(loadedvalue + loadedvaluelen, data, datalen + 1);
-                    loadedvaluelen += datalen;
+      }
+      //only process default section or selected selection
+      if (!current_section || (load_section && strcmp(current_section, load_section) == 0)) {
+        //include specified file if line starts with @
+        if (*varname == '@') {
+          //skip spaces preceding include file
+          varname++;
+          while (*varname && isspace(*varname))
+            varname++;
+          //skip spaces following include file
+          if ((p = strchr(varname, 0)) != NULL) {
+            while (p != varname && isspace(*(p - 1)))
+              p--;
+            *p = 0;
+          }
+          if (*varname)
+            status = process_cfgfile(varname, cfgdef, loadsection, current_section, callbackdata);
+        } else if (*varname) {
+          //find starting position of value
+          p = varname;
+          while (*p && *p != '=' && *p != ':' && *p != '@' && *p != '#' && *p != ';')
+            p++;
+          separator = *p;
+          if (separator == '=' || separator == ':' || separator == '@') {
+            value = p + 1;
+            //skip spaces following varname
+            while (p != varname && isspace(*(p - 1)))
+              p--;
+            if (p != varname) {
+              varnamelen = p - varname;
+              //skip spaces preceding value
+              while (*value && isspace(*value))
+                value++;
+              //skip spaces following value
+              if ((p = strchr(value, 0)) != NULL) {
+                while (p != value && isspace(*(p - 1)))
+                  p--;
+                *p = 0;
+              }
+              //process variable
+              if ((current_cfgdef = miniargv_find_longarg(varname, varnamelen, cfgdef)) != NULL) {
+                if (separator == '@') {
+                  //process contents of another file
+                  FILE* valuesrc;
+                  int datalen;
+                  char data[MINIARGV_READLINE_BLOCK_SIZE];
+                  int loadedvaluelen = 0;
+                  char* loadedvalue = NULL;
+                  if ((valuesrc = fopen(value, "rb")) != NULL) {
+                    //read next data
+                    while ((datalen = fread(data, 1, sizeof(data), valuesrc)) > 0) {
+                      //allocate memory and store the result
+                      if ((loadedvalue = (char*)realloc(loadedvalue, loadedvaluelen + datalen + 1)) == NULL)
+                        break;
+                      memcpy(loadedvalue + loadedvaluelen, data, datalen + 1);
+                      loadedvaluelen += datalen;
+                    }
+                    fclose(valuesrc);
+                    if (loadedvalue) {
+                      loadedvalue[loadedvaluelen] = 0;
+                      status = (current_cfgdef->callbackfn)(current_cfgdef, loadedvalue, callbackdata);
+                      free(loadedvalue);
+                    }
                   }
-                  fclose(valuesrc);
-                  if (loadedvalue) {
-                    loadedvalue[loadedvaluelen] = 0;
-                    status = (current_cfgdef->callbackfn)(current_cfgdef, loadedvalue, callbackdata);
-                    free(loadedvalue);
-                  }
+                } else {
+                  //process variable value
+                  status = (current_cfgdef->callbackfn)(current_cfgdef, value, callbackdata);
                 }
               } else {
-                //process variable value
-                status = (current_cfgdef->callbackfn)(current_cfgdef, value, callbackdata);
+                //variable name not found
+                //printf("Error: unknown variable: %.*s\n", (int)varnamelen, varname);/////
               }
-            } else {
-              //variable name not found
-              //printf("Error: unknown variable: %.*s\n", (int)varnamelen, varname);/////
             }
           }
         }
@@ -435,7 +466,16 @@ DLL_EXPORT_MINIARGV int miniargv_process_cfgfile (const char* cfgfile, const min
     }
     fclose(src);
   }
+  if (load_section)
+    free(load_section);
+  if (current_section)
+    free(current_section);
   return 0;
+}
+
+DLL_EXPORT_MINIARGV int miniargv_process_cfgfile (const char* cfgfile, const miniargv_definition cfgdef[], const char* section, void* callbackdata)
+{
+  return process_cfgfile(cfgfile, cfgdef, section, NULL, callbackdata);
 }
 
 DLL_EXPORT_MINIARGV void miniargv_cfgfile_generate (FILE* cfgfile, const miniargv_definition cfgdef[])

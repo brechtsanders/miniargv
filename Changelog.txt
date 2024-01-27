@@ -1,3 +1,9 @@
+1.1.0
+
+2024-01-27  Brecht Sanders  https://github.com/brechtsanders/
+
+  * support configuration file sections and added section parameter to miniargv_process_cfgfile()
+
 1.0.1
 
 2023-04-24  Brecht Sanders  https://github.com/brechtsanders/

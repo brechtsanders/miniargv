@@ -1,0 +1,19 @@
+# depslib dependency file v1.0
+1664912511 source:\\server\users\brecht\sources\cpp\miniargv\examples\miniargv-test3.c
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	<miniargv.h>
+
+1663532808 \\server\users\brecht\sources\cpp\miniargv\include\miniargv.h
+	<stdio.h>
+
+1664915871 source:z:\miniargv\examples\miniargv-test3.c
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	<miniargv.h>
+
+1664915418 z:\miniargv\include\miniargv.h
+	<stdio.h>
+

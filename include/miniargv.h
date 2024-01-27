@@ -229,6 +229,7 @@ DLL_EXPORT_MINIARGV int miniargv_process_env (char* env[], const miniargv_defini
 /*! \brief process configuration file variables and call the appropriate callback function for each match (note: the values read are not kept in memory, so use miniargv_cb_strdup instead of miniargv_cb_set_const_str for string data and make sure free the allocated data when no longer needed)
  * \param  cfgfile       path of configuration file to read
  * \param  cfgdef        definitions of possible configuration file variables (shortarg is ignored)
+ * \param  section       section to load in additional to "default", or NULL to only load section "default"
  * \param  callbackdata  user data passed to callback functions
  * \return 0 on success or abort code returned by callback function
  *         A configuration file can have any extension (though .cfg or .ini is recommended).
@@ -237,7 +238,8 @@ DLL_EXPORT_MINIARGV int miniargv_process_env (char* env[], const miniargv_defini
  *         Lines starting with an at-sign (@) will cause the configuration file specified after the at-sign (@) to be processed.
  *         Configuration lines consist of a variable name, followed by an equals (=) sign or a colon (:), followed by a value.
  *         Whitespace before and after the equals (=) sign or a colon (:) is ignored.
- *         It is also possible to use an at-sign (@) instead of an equals (=) sign or a colon (:), but then the value specifies a file that will be loaded.
+ *         It is also possible to use an at-sign (@) instead of an equals (=) sign or a colon (:), but then the value specifies a file that will be loaded (including all white space and line breaks).
+ *         Section names start with the name of the section enclosed in square brackets ([]). If no section name is specified the default section name is "default".
  * \sa     miniargv_definition
  * \sa     miniargv_handler_fn
  * \sa     miniargv_process()
@@ -248,7 +250,7 @@ DLL_EXPORT_MINIARGV int miniargv_process_env (char* env[], const miniargv_defini
  * \sa     miniargv_process_env()
  * \sa     miniargv_cfgfile_generate()
  */
-DLL_EXPORT_MINIARGV int miniargv_process_cfgfile (const char* cfgfile, const miniargv_definition cfgdef[], void* callbackdata);
+DLL_EXPORT_MINIARGV int miniargv_process_cfgfile (const char* cfgfile, const miniargv_definition cfgdef[], const char* section, void* callbackdata);
 
 /*! \brief generate configuration file template (\a argparam will be used as default value)
  * \param  cfgfile       handle where configuration file template will be written to
@@ -812,9 +814,9 @@ DLL_EXPORT_MINIARGV const char* miniargv_get_version_string ();
 /*! \brief major version number \hideinitializer */
 #define MINIARGV_VERSION_MAJOR 1
 /*! \brief minor version number \hideinitializer */
-#define MINIARGV_VERSION_MINOR 0
+#define MINIARGV_VERSION_MINOR 1
 /*! \brief micro version number \hideinitializer */
-#define MINIARGV_VERSION_MICRO 1
+#define MINIARGV_VERSION_MICRO 0
 /** @} */
 
 /*! \brief packed version number (bits 24-31: major version, bits 16-23: minor version, bits 8-15: micro version)
