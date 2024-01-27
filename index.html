@@ -89,8 +89,9 @@ Features</h1>
 </li>
 <li>values passed to callback functions live as long as <code>main()</code>, so no memory allocation and copying (like <code>strdup()</code>) needed</li>
 <li>no cleanup functions needed before exiting the program (except when reading from configuration files)</li>
-<li>automatic generation of command line help and example configuration files with automatic formatting and line wrapping</li>
 <li>possibility to read settings from configuration file (does require memory allocation and copying and cleanup afterwards)</li>
+<li>partial loading of configuration file based on section</li>
+<li>automatic generation of command line help and example configuration files with automatic formatting and line wrapping</li>
 <li>definitions for processing and displaying help are done in a common data structure</li>
 <li>basic error checking to report unknown arguments</li>
 <li>does not include constraints checking (e.g. mandatory arguments or arguments that may not occur multiple times)</li>
