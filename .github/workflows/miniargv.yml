@@ -36,7 +36,7 @@ jobs:
             cc: "clang", cxx: "clang++"
           }
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Compile, install, package
       run: |
         make install PREFIX=build_result DOXYGEN= CC=${{ matrix.config.cc }}
@@ -45,7 +45,7 @@ jobs:
       run: |
         tar cfj ./${{ matrix.config.artifact }} --strip-components=1 build_result
     - name: Upload
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         path: ./${{ matrix.config.artifact }}
         name: ${{ matrix.config.artifact }}
