@@ -12,12 +12,12 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Doxygen Action
-      uses: mattnotmitt/doxygen-action@v1.1.0
+      uses: mattnotmitt/doxygen-action@v1.9.5
       with:
         doxyfile-path: doc/Doxyfile
         working-directory: "." 
     - name: Deploy
-      uses: peaceiris/actions-gh-pages@v4
+      uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: doc/html
