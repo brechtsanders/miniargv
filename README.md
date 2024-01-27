@@ -12,8 +12,9 @@ Lightweight cross-platform C/C++ library for processing command line arguments a
    * `envp` as passed to `int main (int argc, char *argv[], char *envp[])`
  * values passed to callback functions live as long as `main()`, so no memory allocation and copying (like `strdup()`) needed
  * no cleanup functions needed before exiting the program (except when reading from configuration files)
- * automatic generation of command line help and example configuration files with automatic formatting and line wrapping
  * possibility to read settings from configuration file (does require memory allocation and copying and cleanup afterwards)
+ * partial loading of configuration file based on section
+ * automatic generation of command line help and example configuration files with automatic formatting and line wrapping
  * definitions for processing and displaying help are done in a common data structure
  * basic error checking to report unknown arguments
  * does not include constraints checking (e.g. mandatory arguments or arguments that may not occur multiple times)
