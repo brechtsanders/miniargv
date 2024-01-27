@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['longarg_0',['longarg',['../structminiargv__definition__struct.html#a4b5c49d9e052fae7f0d0074d44041c2c',1,'miniargv_definition_struct']]]
+  ['example_0',['Example',['../index.html#autotoc_md4',1,'']]],
+  ['example_20c_20tt_1',['**&lt;tt&gt;example.c&lt;/tt&gt;**',['../index.html#autotoc_md5',1,'']]]
 ];
