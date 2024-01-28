@@ -8,6 +8,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <stddef.h>
 #ifdef _WIN32
 #include <io.h>
 #include <fcntl.h>
@@ -22,6 +23,9 @@
 #define MINIARG_PROCESS_MASK_BOTH       (MINIARG_PROCESS_MASK_FLAGS | MINIARG_PROCESS_MASK_VALUES)
 #define MINIARG_PROCESS_MASK_FIND_ONLY  0x08
 #define MINIARG_PROCESS_MASK_FIND_VALUE (MINIARG_PROCESS_MASK_FIND_ONLY | MINIARG_PROCESS_MASK_VALUES)
+
+/* maximum levels of include in configuration files, to protect against infinite recursion */
+#define MINIARGV_CFG_MAX_INCLUDE_DEPTH  32
 
 /* process single command line argument, returns non-zero if argument was processed */
 int miniargv_process_partial_single_arg (int* index, int* success, unsigned int flags, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
@@ -359,7 +363,7 @@ void set_section_name (char** section, const char* name, size_t namelen)
   }
 }
 
-int process_cfgfile (const char* cfgfile, const miniargv_definition cfgdef[], const char* loadsection, const char* currentsection, void* callbackdata)
+int process_cfgfile (const char* cfgfile, const miniargv_definition cfgdef[], const char* loadsection, const char* currentsection, size_t maxincludedepth, void* callbackdata)
 {
   FILE* src;
   char* line;
@@ -401,8 +405,12 @@ int process_cfgfile (const char* cfgfile, const miniargv_definition cfgdef[], co
               p--;
             *p = 0;
           }
-          if (*varname)
-            status = process_cfgfile(varname, cfgdef, loadsection, current_section, callbackdata);
+          if (*varname) {
+            if (maxincludedepth > 0)
+              status = process_cfgfile(varname, cfgdef, loadsection, current_section, maxincludedepth - 1, callbackdata);
+            else
+              status = -1;
+          }
         } else if (*varname) {
           //find starting position of value
           p = varname;
@@ -470,12 +478,12 @@ int process_cfgfile (const char* cfgfile, const miniargv_definition cfgdef[], co
     free(load_section);
   if (current_section)
     free(current_section);
-  return 0;
+  return status;
 }
 
 DLL_EXPORT_MINIARGV int miniargv_process_cfgfile (const char* cfgfile, const miniargv_definition cfgdef[], const char* section, void* callbackdata)
 {
-  return process_cfgfile(cfgfile, cfgdef, section, NULL, callbackdata);
+  return process_cfgfile(cfgfile, cfgdef, section, NULL, MINIARGV_CFG_MAX_INCLUDE_DEPTH, callbackdata);
 }
 
 DLL_EXPORT_MINIARGV void miniargv_cfgfile_generate (FILE* cfgfile, const miniargv_definition cfgdef[])
