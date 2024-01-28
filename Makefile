@@ -124,7 +124,12 @@ else
 	$(CP) *$(SOEXT) $(PREFIX)/lib/
 endif
 ifdef DOXYGEN
+ifeq ($(OS),Windows_NT)
+	$(MKDIR) $(PREFIX)/doc
+	$(CPDIR) doc/html $(PREFIX)/doc/
+else
 	$(CPDIR) doc/man $(PREFIX)/
+endif
 endif
 
 version: include/miniargv.h
@@ -140,7 +145,7 @@ ifneq ($(OS),Windows_NT)
 	$(MAKE) PREFIX=binarypackage_temp_$(OSALIAS) install
 	tar cfJ miniargv-$(shell cat version)-$(OSALIAS).tar.xz --transform="s?^binarypackage_temp_$(OSALIAS)/??" $(COMMON_PACKAGE_FILES) binarypackage_temp_$(OSALIAS)/*
 else
-	$(MAKE) PREFIX=binarypackage_temp_$(OSALIAS) install DOXYGEN=
+	$(MAKE) PREFIX=binarypackage_temp_$(OSALIAS) install
 	cp -f $(COMMON_PACKAGE_FILES) binarypackage_temp_$(OSALIAS)
 	rm -f miniargv-$(shell cat version)-$(OSALIAS).zip
 	cd binarypackage_temp_$(OSALIAS) && zip -r9 ../miniargv-$(shell cat version)-$(OSALIAS).zip $(COMMON_PACKAGE_FILES) * && cd ..
