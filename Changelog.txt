@@ -1,8 +1,11 @@
+1.1.2
+
 1.1.1
 
 2024-01-28  Brecht Sanders  https://github.com/brechtsanders/
 
   * added protection against infinite recursion when using include in configuration files (maximum include depth limited to 32)
+  * added HTML documentation to Windows binary packages
 
 2024-01-27  Brecht Sanders  https://github.com/brechtsanders/
 
