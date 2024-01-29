@@ -264,13 +264,13 @@ DLL_EXPORT_MINIARGV int miniargv_process_cfgfile (const char* cfgfile, const min
  */
 DLL_EXPORT_MINIARGV void miniargv_cfgfile_generate (FILE* cfgfile, const miniargv_definition cfgdef[]);
 
-/*! \brief get application name and length
+/*! \brief get application name
  *
- * Gets the name of the current application from the first argv entry (argv[0]) as passed to main().
+ * Gets the name (and its length) of the current application from the first argv entry (argv[0]) as passed to main().
  *
  * Though the result is a null-terminated string, only the number of characters pointed to by \a length should be used (e.g. to avoid the ".exe" extension on Windows).
  *
- * NULL is returned on error or if \a argv0 is NULL or points to an empty string.
+ * NULL is returned on error or if \a argv0 is NULL an empty string.
  *
  * \param  argv0                 argv[0] as passed to main()
  * \param  length                pointer that will receive the length of the application name (can be NULL)

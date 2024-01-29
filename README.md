@@ -103,7 +103,7 @@ number = 64
 [![Doxygen Action for miniargv](https://github.com/brechtsanders/miniargv/actions/workflows/miniargv-doxygen.yml/badge.svg)](https://github.com/brechtsanders/miniargv/actions/workflows/miniargv-doxygen.yml)
 
 ## Links
-The official repository can be found at: https://github.com/brechtsanders/miniargv
+The official repository can be found at: https://github.com/brechtsanders/miniargv/
 
 The documentation can be found at: https://brechtsanders.github.io/miniargv/
 
