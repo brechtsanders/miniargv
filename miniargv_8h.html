@@ -172,7 +172,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:ae179d717986a0bdf7ed8069db55242aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">generate configuration file template (<em>argparam</em> will be used as default value)  <a href="miniargv_8h.html#ae179d717986a0bdf7ed8069db55242aa">More...</a><br /></td></tr>
 <tr class="separator:ae179d717986a0bdf7ed8069db55242aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1cf21a3e42ac63ab4dfe44d458658b1"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#aa1cf21a3e42ac63ab4dfe44d458658b1">miniargv_getprogramname</a> (const char *argv0, int *length)</td></tr>
-<tr class="memdesc:aa1cf21a3e42ac63ab4dfe44d458658b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">get application name and length  <a href="miniargv_8h.html#aa1cf21a3e42ac63ab4dfe44d458658b1">More...</a><br /></td></tr>
+<tr class="memdesc:aa1cf21a3e42ac63ab4dfe44d458658b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">get application name  <a href="miniargv_8h.html#aa1cf21a3e42ac63ab4dfe44d458658b1">More...</a><br /></td></tr>
 <tr class="separator:aa1cf21a3e42ac63ab4dfe44d458658b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19b46c67c4ec46d28bfcdca246e76f29"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a19b46c67c4ec46d28bfcdca246e76f29">miniargv_arg_list</a> (const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> argdef[], int shortonly)</td></tr>
 <tr class="memdesc:a19b46c67c4ec46d28bfcdca246e76f29"><td class="mdescLeft">&#160;</td><td class="mdescRight">lists possible command line arguments on one line  <a href="miniargv_8h.html#a19b46c67c4ec46d28bfcdca246e76f29">More...</a><br /></td></tr>
@@ -1071,10 +1071,10 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>get application name and length </p>
-<p >Gets the name of the current application from the first argv entry (argv[0]) as passed to main().</p>
+<p>get application name </p>
+<p >Gets the name (and its length) of the current application from the first argv entry (argv[0]) as passed to main().</p>
 <p >Though the result is a null-terminated string, only the number of characters pointed to by <em>length</em> should be used (e.g. to avoid the ".exe" extension on Windows).</p>
-<p >NULL is returned on error or if <em>argv0</em> is NULL or points to an empty string.</p>
+<p >NULL is returned on error or if <em>argv0</em> is NULL an empty string.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">argv0</td><td>argv[0] as passed to main() </td></tr>
