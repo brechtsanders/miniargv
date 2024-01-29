@@ -53,6 +53,5 @@ int main (int argc, char *argv[])
   printf("password = \"%s\"\n", (pw ? pw : "NULL"));
   //clean up
   miniargv_cleanup(cfgdef);
-  //free(str);
   return 0;
 }

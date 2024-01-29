@@ -27,6 +27,11 @@
 /* maximum levels of include in configuration files, to protect against infinite recursion */
 #define MINIARGV_CFG_MAX_INCLUDE_DEPTH  32
 
+DLL_EXPORT_MINIARGV int miniargv_handler_ignore (const miniargv_definition* argdef, const char* value, void* callbackdata)
+{
+  return 0;
+}
+
 /* process single command line argument, returns non-zero if argument was processed */
 int miniargv_process_partial_single_arg (int* index, int* success, unsigned int flags, char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata)
 {
@@ -295,23 +300,25 @@ DLL_EXPORT_MINIARGV int miniargv_process_env (char* env[], const miniargv_defini
   char** current_env;
   const miniargv_definition* current_envdef = envdef;
   int result;
-  while (current_envdef->callbackfn) {
-    if (current_envdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
-      if ((result = miniargv_process_env(env, (struct miniargv_definition_struct*)(current_envdef->callbackfn), callbackdata)) != 0)
-        return result;
-    } else if (current_envdef->longarg) {
-      current_env = env;
-      while (*current_env) {
-        if ((s = strchr(*current_env, '=')) != NULL) {
-          if (strncmp(*current_env, current_envdef->longarg, s - *current_env) == 0) {
-            if ((result = (current_envdef->callbackfn)(current_envdef, s + 1, callbackdata)) != 0)
-              return result;
+  if (current_envdef) {
+    while (current_envdef->callbackfn) {
+      if (current_envdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
+        if ((result = miniargv_process_env(env, (struct miniargv_definition_struct*)(current_envdef->callbackfn), callbackdata)) != 0)
+          return result;
+      } else if (current_envdef->longarg) {
+        current_env = env;
+        while (*current_env) {
+          if ((s = strchr(*current_env, '=')) != NULL) {
+            if (strncmp(*current_env, current_envdef->longarg, s - *current_env) == 0) {
+              if ((result = (current_envdef->callbackfn)(current_envdef, s + 1, callbackdata)) != 0)
+                return result;
+            }
           }
+          current_env++;
         }
-        current_env++;
       }
+      current_envdef++;
     }
-    current_envdef++;
   }
   return 0;
 }
@@ -483,6 +490,8 @@ int process_cfgfile (const char* cfgfile, const miniargv_definition cfgdef[], co
 
 DLL_EXPORT_MINIARGV int miniargv_process_cfgfile (const char* cfgfile, const miniargv_definition cfgdef[], const char* section, void* callbackdata)
 {
+  if (!cfgfile || !*cfgfile)
+    return -1;
   return process_cfgfile(cfgfile, cfgdef, section, NULL, MINIARGV_CFG_MAX_INCLUDE_DEPTH, callbackdata);
 }
 

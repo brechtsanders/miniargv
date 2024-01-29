@@ -1,5 +1,11 @@
 1.1.2
 
+2024-01-29  Brecht Sanders  https://github.com/brechtsanders/
+
+  * added MINIARGV_IGNORE_ERRORS to use as handler to ignore errors
+  * added miniargv-example-specifiedcfgfile.c to show how use a configuration file specified at run time
+  * fixed crash in miniargv_process_env() when env is NULL pointer
+
 1.1.1
 
 2024-01-28  Brecht Sanders  https://github.com/brechtsanders/

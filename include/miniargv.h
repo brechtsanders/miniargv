@@ -42,9 +42,12 @@ typedef struct miniargv_definition_struct miniargv_definition;
  * \param  value         value if specified, otherwise NULL (always specified for standalone value arguments or if \a argdef->argparam is not NULL)
  * \param  callbackdata  user data as passed to \a miniargv_process_arg()
  * \return 0 to continue processing or non-zero to abort
+ * \sa     miniargv_process()
+ * \sa     miniargv_process_ltr()
  * \sa     miniargv_process_arg()
  * \sa     miniargv_process_arg_flags()
  * \sa     miniargv_process_arg_params()
+ * \sa     MINIARGV_IGNORE_ERRORS
  * \sa     miniargv_definition
  * \sa     miniargv_definition_struct
  */
@@ -111,6 +114,13 @@ struct miniargv_definition_struct {
 /*! \brief include another argument definition block */
 #define MINIARGV_DEFINITION_END {0, NULL, NULL, NULL, NULL, NULL, NULL}
 
+/*! \cond PRIVATE */
+DLL_EXPORT_MINIARGV int miniargv_handler_ignore (const miniargv_definition* argdef, const char* value, void* callbackdata);
+/*! \endcond */
+
+/*! \brief function of type \a miniargv_handler_fn for ignoring any processing errors */
+#define MINIARGV_IGNORE_ERRORS miniargv_handler_ignore
+
 /*! \brief first process environment variables, then process command line argument flags and finally process command line arguments values, and call the appropriate callback function for each match
  * \param  argv          NULL-terminated array of arguments (first one is the application itself)
  * \param  env           NULL-terminated array of environment variables
@@ -164,7 +174,7 @@ DLL_EXPORT_MINIARGV int miniargv_process_ltr (char* argv[], char* env[], const m
  */
 DLL_EXPORT_MINIARGV int miniargv_process_arg (char* argv[], const miniargv_definition argdef[], miniargv_handler_fn badfn, void* callbackdata);
 
-/*! \brief process only flag command line arguments and call the appropriate callback function for each one (except the first one which is the application name)
+/*! \brief process only flag command line arguments and call the appropriate callback function for each one
  * \param  argv          NULL-terminated array of arguments (first one is the application itself)
  * \param  argdef        definitions of possible command line arguments
  * \param  badfn         callback function for bad arguments
