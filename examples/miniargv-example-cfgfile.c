@@ -37,7 +37,7 @@ const miniargv_definition cfgdef[] = {
 int main (int argc, char *argv[])
 {
   //parse configuration file
-  if (miniargv_process_cfgfile(cfgfile, cfgdef, "App", NULL) != 0) {
+  if (miniargv_process_cfgfile(cfgfile, cfgdef, "App", NULL, NULL) != 0) {
     fprintf(stderr, "Error parsing configuration file");
     return 1;
   }

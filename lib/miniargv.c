@@ -254,7 +254,7 @@ DLL_EXPORT_MINIARGV int miniargv_process (char* argv[], char* env[], const minia
 {
   int result = 0;
   if (env)
-    result = miniargv_process_env(env, envdef, callbackdata);
+    result = miniargv_process_env(env, envdef, badfn, callbackdata);
   if (argv) {
     if (result == 0)
       result = miniargv_process_partial(MINIARG_PROCESS_MASK_FLAGS, argv, argdef, badfn, callbackdata);
@@ -268,7 +268,7 @@ DLL_EXPORT_MINIARGV int miniargv_process_ltr (char* argv[], char* env[], const m
 {
   int result = 0;
   if (env)
-    result = miniargv_process_env(env, envdef, callbackdata);
+    result = miniargv_process_env(env, envdef, badfn, callbackdata);
   if (result == 0 && argv)
     result = miniargv_process_arg(argv, argdef, badfn, callbackdata);
   return result;
@@ -294,7 +294,7 @@ DLL_EXPORT_MINIARGV int miniargv_get_next_arg_param (int argindex, char* argv[],
   return miniargv_process_partial(MINIARG_PROCESS_MASK_FIND_VALUE, argv, argdef, badfn, &argindex);
 }
 
-DLL_EXPORT_MINIARGV int miniargv_process_env (char* env[], const miniargv_definition envdef[], void* callbackdata)
+DLL_EXPORT_MINIARGV int miniargv_process_env (char* env[], const miniargv_definition envdef[], miniargv_handler_fn badfn, void* callbackdata)
 {
   char* s;
   char** current_env;
@@ -303,15 +303,17 @@ DLL_EXPORT_MINIARGV int miniargv_process_env (char* env[], const miniargv_defini
   if (current_envdef) {
     while (current_envdef->callbackfn) {
       if (current_envdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
-        if ((result = miniargv_process_env(env, (struct miniargv_definition_struct*)(current_envdef->callbackfn), callbackdata)) != 0)
+        if ((result = miniargv_process_env(env, (struct miniargv_definition_struct*)(current_envdef->callbackfn), badfn, callbackdata)) != 0)
           return result;
       } else if (current_envdef->longarg) {
         current_env = env;
         while (*current_env) {
           if ((s = strchr(*current_env, '=')) != NULL) {
             if (strncmp(*current_env, current_envdef->longarg, s - *current_env) == 0) {
-              if ((result = (current_envdef->callbackfn)(current_envdef, s + 1, callbackdata)) != 0)
-                return result;
+              if ((result = (current_envdef->callbackfn)(current_envdef, s + 1, callbackdata)) != 0) {
+                if (!(badfn && (badfn)(current_envdef, s + 1, callbackdata) == 0))
+                  return result;
+              }
             }
           }
           current_env++;
@@ -370,7 +372,7 @@ void set_section_name (char** section, const char* name, size_t namelen)
   }
 }
 
-int process_cfgfile (const char* cfgfile, const miniargv_definition cfgdef[], const char* loadsection, const char* currentsection, size_t maxincludedepth, void* callbackdata)
+int process_cfgfile (const char* cfgfile, const miniargv_definition cfgdef[], const char* loadsection, const char* currentsection, size_t maxincludedepth, miniargv_handler_fn badfn, void* callbackdata)
 {
   FILE* src;
   char* line;
@@ -397,7 +399,7 @@ int process_cfgfile (const char* cfgfile, const miniargv_definition cfgdef[], co
         if ((p = strchr(++varname, ']')) != NULL)  {
           set_section_name(&current_section, varname, p - varname);
         }
-      }
+      } else
       //only process default section or selected selection
       if (!current_section || (load_section && strcmp(current_section, load_section) == 0)) {
         //include specified file if line starts with @
@@ -414,7 +416,7 @@ int process_cfgfile (const char* cfgfile, const miniargv_definition cfgdef[], co
           }
           if (*varname) {
             if (maxincludedepth > 0)
-              status = process_cfgfile(varname, cfgdef, loadsection, current_section, maxincludedepth - 1, callbackdata);
+              status = process_cfgfile(varname, cfgdef, loadsection, current_section, maxincludedepth - 1, badfn, callbackdata);
             else
               status = -1;
           }
@@ -423,56 +425,90 @@ int process_cfgfile (const char* cfgfile, const miniargv_definition cfgdef[], co
           p = varname;
           while (*p && *p != '=' && *p != ':' && *p != '@' && *p != '#' && *p != ';')
             p++;
+          //end of variable name reached
           separator = *p;
+          value = p + 1;
+          //skip spaces following varname
+          while (p != varname && isspace(*(p - 1)))
+            p--;
+          varnamelen = p - varname;
+          //check if an assignment operator was reached
           if (separator == '=' || separator == ':' || separator == '@') {
-            value = p + 1;
-            //skip spaces following varname
-            while (p != varname && isspace(*(p - 1)))
-              p--;
-            if (p != varname) {
-              varnamelen = p - varname;
-              //skip spaces preceding value
-              while (*value && isspace(*value))
-                value++;
-              //skip spaces following value
-              if ((p = strchr(value, 0)) != NULL) {
-                while (p != value && isspace(*(p - 1)))
-                  p--;
-                *p = 0;
-              }
-              //process variable
-              if ((current_cfgdef = miniargv_find_longarg(varname, varnamelen, cfgdef)) != NULL) {
-                if (separator == '@') {
-                  //process contents of another file
-                  FILE* valuesrc;
-                  int datalen;
-                  char data[MINIARGV_READLINE_BLOCK_SIZE];
-                  int loadedvaluelen = 0;
-                  char* loadedvalue = NULL;
-                  if ((valuesrc = fopen(value, "rb")) != NULL) {
-                    //read next data
-                    while ((datalen = fread(data, 1, sizeof(data), valuesrc)) > 0) {
-                      //allocate memory and store the result
-                      if ((loadedvalue = (char*)realloc(loadedvalue, loadedvaluelen + datalen + 1)) == NULL)
-                        break;
-                      memcpy(loadedvalue + loadedvaluelen, data, datalen + 1);
-                      loadedvaluelen += datalen;
-                    }
-                    fclose(valuesrc);
-                    if (loadedvalue) {
-                      loadedvalue[loadedvaluelen] = 0;
-                      status = (current_cfgdef->callbackfn)(current_cfgdef, loadedvalue, callbackdata);
-                      free(loadedvalue);
-                    }
-                  }
-                } else {
-                  //process variable value
-                  status = (current_cfgdef->callbackfn)(current_cfgdef, value, callbackdata);
-                }
+            //skip spaces preceding value
+            while (*value && isspace(*value))
+              value++;
+            //skip spaces following value
+            if ((p = strchr(value, 0)) != NULL) {
+              while (p != value && isspace(*(p - 1)))
+                p--;
+              *p = 0;
+            }
+          } else {
+            value = NULL;
+          }
+          //process variable
+          if ((current_cfgdef = miniargv_find_longarg(varname, varnamelen, cfgdef)) != NULL) {
+            if (separator == '@') {
+              //process contents of another file
+              FILE* valuesrc;
+              int datalen;
+              char data[MINIARGV_READLINE_BLOCK_SIZE];
+              int loadedvaluelen = 0;
+              char* loadedvalue = NULL;
+              if (!value || (valuesrc = fopen(value, "rb")) == NULL) {
+                status = -1;
               } else {
-                //variable name not found
-                //printf("Error: unknown variable: %.*s\n", (int)varnamelen, varname);/////
+                //read next data
+                while ((datalen = fread(data, 1, sizeof(data), valuesrc)) > 0) {
+                  //allocate memory and store the result
+                  if ((loadedvalue = (char*)realloc(loadedvalue, loadedvaluelen + datalen + 1)) == NULL)
+                    break;
+                  memcpy(loadedvalue + loadedvaluelen, data, datalen + 1);
+                  loadedvaluelen += datalen;
+                }
+                fclose(valuesrc);
+                if (loadedvalue) {
+                  loadedvalue[loadedvaluelen] = 0;
+                  //process loaded variable value
+                  status = (current_cfgdef->callbackfn)(current_cfgdef, loadedvalue, callbackdata);
+                  //in case of error call error handler (if specified)
+                  if (status != 0 && badfn && (badfn)(current_cfgdef, loadedvalue, callbackdata) == 0)
+                    status = 0;
+                  free(loadedvalue);
+                }
               }
+            } else {
+              //process variable value
+              status = (current_cfgdef->callbackfn)(current_cfgdef, value, callbackdata);
+              //in case of error call error handler (if specified)
+              if (status != 0 && badfn && (badfn)(current_cfgdef, value, callbackdata) == 0)
+                status = 0;
+            }
+          } else if (separator != '#' && separator != ';') {
+            //variable name not found
+            status = -1;
+            if (badfn) {
+              char* varnamedup;
+              struct miniargv_definition_struct baddef = {
+                .shortarg = 0,
+                .longarg = NULL,
+                .argparam = "VALUE",
+                .callbackfn = NULL,
+                .userdata = NULL,
+                .help = "Invalid configuration parameter",
+                .completefn = NULL
+              };
+              if (varname) {
+                if ((varnamedup = (char*)malloc(varnamelen + 1)) != NULL) {
+                  memcpy(varnamedup, varname, varnamelen);
+                  varnamedup[varnamelen] = 0;
+                  baddef.longarg = varnamedup;
+                }
+              }
+              if ((badfn)(&baddef, value, callbackdata) == 0)
+                status = 0;
+              if (varnamedup)
+                free(varnamedup);
             }
           }
         }
@@ -488,11 +524,11 @@ int process_cfgfile (const char* cfgfile, const miniargv_definition cfgdef[], co
   return status;
 }
 
-DLL_EXPORT_MINIARGV int miniargv_process_cfgfile (const char* cfgfile, const miniargv_definition cfgdef[], const char* section, void* callbackdata)
+DLL_EXPORT_MINIARGV int miniargv_process_cfgfile (const char* cfgfile, const miniargv_definition cfgdef[], const char* section, miniargv_handler_fn badfn, void* callbackdata)
 {
   if (!cfgfile || !*cfgfile)
     return -1;
-  return process_cfgfile(cfgfile, cfgdef, section, NULL, MINIARGV_CFG_MAX_INCLUDE_DEPTH, callbackdata);
+  return process_cfgfile(cfgfile, cfgdef, section, NULL, MINIARGV_CFG_MAX_INCLUDE_DEPTH, badfn, callbackdata);
 }
 
 DLL_EXPORT_MINIARGV void miniargv_cfgfile_generate (FILE* cfgfile, const miniargv_definition cfgdef[])

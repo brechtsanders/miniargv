@@ -1,3 +1,9 @@
+1.2.0
+
+2024-02-03  Brecht Sanders  https://github.com/brechtsanders/
+
+  * add error handler argument of type miniargv_handler_fn to miniargv_process_env() and miniargv_process_cfgfile()
+
 1.1.2
 
 2024-01-29  Brecht Sanders  https://github.com/brechtsanders/

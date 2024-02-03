@@ -43,6 +43,7 @@ typedef struct miniargv_definition_struct miniargv_definition;
  * \param  callbackdata  user data as passed to \a miniargv_process_arg()
  * \return 0 to continue processing or non-zero to abort
  * \sa     miniargv_process()
+ * \sa     miniargv_process_env()
  * \sa     miniargv_process_ltr()
  * \sa     miniargv_process_arg()
  * \sa     miniargv_process_arg_flags()
@@ -224,6 +225,7 @@ DLL_EXPORT_MINIARGV int miniargv_get_next_arg_param (int argindex, char* argv[],
 /*! \brief process environment variables and call the appropriate callback function for each match
  * \param  env           NULL-terminated array of environment variables
  * \param  envdef        definitions of possible environment variables
+ * \param  badfn         callback function for bad arguments
  * \param  callbackdata  user data passed to callback functions
  * \return 0 on success or index of argument that caused processing to abort
  * \sa     miniargv_definition
@@ -234,7 +236,7 @@ DLL_EXPORT_MINIARGV int miniargv_get_next_arg_param (int argindex, char* argv[],
  * \sa     miniargv_process_arg_flags()
  * \sa     miniargv_process_arg_params()
  */
-DLL_EXPORT_MINIARGV int miniargv_process_env (char* env[], const miniargv_definition envdef[], void* callbackdata);
+DLL_EXPORT_MINIARGV int miniargv_process_env (char* env[], const miniargv_definition envdef[], miniargv_handler_fn badfn, void* callbackdata);
 
 /*! \brief process configuration file variables and call the appropriate callback function for each match (note: the values read are not kept in memory, so use miniargv_cb_strdup instead of miniargv_cb_set_const_str for string data and make sure free the allocated data when no longer needed)
  * \param  cfgfile       path of configuration file to read
@@ -260,7 +262,7 @@ DLL_EXPORT_MINIARGV int miniargv_process_env (char* env[], const miniargv_defini
  * \sa     miniargv_process_env()
  * \sa     miniargv_cfgfile_generate()
  */
-DLL_EXPORT_MINIARGV int miniargv_process_cfgfile (const char* cfgfile, const miniargv_definition cfgdef[], const char* section, void* callbackdata);
+DLL_EXPORT_MINIARGV int miniargv_process_cfgfile (const char* cfgfile, const miniargv_definition cfgdef[], const char* section, miniargv_handler_fn badfn, void* callbackdata);
 
 /*! \brief generate configuration file template (\a argparam will be used as default value)
  * \param  cfgfile       handle where configuration file template will be written to
@@ -824,9 +826,9 @@ DLL_EXPORT_MINIARGV const char* miniargv_get_version_string ();
 /*! \brief major version number \hideinitializer */
 #define MINIARGV_VERSION_MAJOR 1
 /*! \brief minor version number \hideinitializer */
-#define MINIARGV_VERSION_MINOR 1
+#define MINIARGV_VERSION_MINOR 2
 /*! \brief micro version number \hideinitializer */
-#define MINIARGV_VERSION_MICRO 2
+#define MINIARGV_VERSION_MICRO 0
 /** @} */
 
 /*! \brief packed version number (bits 24-31: major version, bits 16-23: minor version, bits 8-15: micro version)

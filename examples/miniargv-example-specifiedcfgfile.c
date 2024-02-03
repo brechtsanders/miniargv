@@ -18,13 +18,33 @@
 #define PROGRAM_NAME "miniargv-example-specifiedcfgfile"
 #define PROGRAM_DESC "example miniargv program using a configuration file specified at runtime"
 
+int handle_miniargv_error (const miniargv_definition* argdef, const char* value, void* callbackdata)
+{
+  //show information about processing errors
+  fprintf(stderr, "Error processing %s\n", (const char*)callbackdata);
+  if (argdef) {
+    if (argdef->shortarg)
+      fprintf(stderr, " - Short argument: -%c\n", (const char)argdef->shortarg);
+    if (argdef->longarg)
+      fprintf(stderr, " - Long argument: --%s\n", (const char*)argdef->longarg);
+    if (argdef->help)
+      fprintf(stderr, " - Description: %s\n", (const char*)argdef->help);
+  }
+  if (value)
+    fprintf(stderr, " - Value: %s\n", value);
+  //ignore error and continue
+  return 0;
+}
+
 int main (int argc, char** argv, char *envp[])
 {
   //values to be set according to command line arguments
   const char* cfgfile = NULL;
   int showversion = 0;
   int showhelp = 0;
-  int number = 0;
+  int num = 0;
+  int bln = 0;
+  char* str = NULL;
 
   //definition of command line argument for specifying configuration file
   const miniargv_definition cfgenvdef[] = {
@@ -37,7 +57,9 @@ int main (int argc, char** argv, char *envp[])
   };
   //definition of command line arguments
   const miniargv_definition argdef[] = {
-    {'n', "number", "N", miniargv_cb_set_int, &number, "set number to N", NULL},
+    {'n', "number", "N", miniargv_cb_set_int, &num, "set number to N", NULL},
+    {'s', "string", "S", miniargv_cb_strdup, &str, "set string to S", NULL},
+    {'b', "boolean", NULL, miniargv_cb_set_int_to_one, &bln, "set boolean to true", NULL},
     MINIARGV_DEFINITION_INCLUDE(cfgargdef),
     {'v', "version", NULL, miniargv_cb_increment_int, &showversion, "show version", NULL},
     {'h', "help", NULL, miniargv_cb_increment_int, &showhelp, "show help", NULL},
@@ -70,18 +92,22 @@ int main (int argc, char** argv, char *envp[])
   }
 
   //process environment
-  miniargv_process_env(envp, argdef, NULL);
+  miniargv_process_env(envp, argdef, handle_miniargv_error, (void*)"environment");
   //process configuration file if specified
-  if (cfgfile)
-    miniargv_process_cfgfile(cfgfile, argdef, NULL, NULL);
+  if (cfgfile) {
+    if (miniargv_process_cfgfile(cfgfile, argdef, "app", handle_miniargv_error, (void*)"configuration file") != 0)
+      fprintf(stderr, "Error procecessing configuration file: %s\n", cfgfile);
+  }
   //process command line arguments
-  miniargv_process_arg(argv, argdef, NULL, NULL);
+  miniargv_process_arg(argv, argdef, handle_miniargv_error, (void*)"command line arguments");
 
   //show information
   printf("Configuration file: %s\n", (cfgfile ? cfgfile : "(none)"));
-  printf("Number: %i\n", number);
+  printf("Number: %i\n", num);
+  printf("String: %s\n", str);
+  printf("Boolean: %s\n", (bln ? "true" : "false"));
 
-  //clean up (not really needed if nothing was allocated)
+  //clean up
   miniargv_cleanup(argdef);
   return 0;
 }
