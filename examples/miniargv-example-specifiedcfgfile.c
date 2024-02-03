@@ -46,7 +46,7 @@ int main (int argc, char** argv, char *envp[])
   int bln = 0;
   char* str = NULL;
 
-  //definition of command line argument for specifying configuration file
+  //definition of command line argument and environment variable for specifying configuration file
   const miniargv_definition cfgenvdef[] = {
     {0, "CONFIGFILE", "FILE", miniargv_cb_set_const_str, &cfgfile, "use FILE as configuration file", NULL},
     MINIARGV_DEFINITION_END
@@ -55,12 +55,17 @@ int main (int argc, char** argv, char *envp[])
     {'c', "config", "FILE", miniargv_cb_set_const_str, &cfgfile, "use FILE as configuration file", NULL},
     MINIARGV_DEFINITION_END
   };
-  //definition of command line arguments
+  //definition of configuration parameters
   const miniargv_definition argdef[] = {
     {'n', "number", "N", miniargv_cb_set_int, &num, "set number to N", NULL},
     {'s', "string", "S", miniargv_cb_strdup, &str, "set string to S", NULL},
     {'b', "boolean", NULL, miniargv_cb_set_int_to_one, &bln, "set boolean to true", NULL},
     MINIARGV_DEFINITION_INCLUDE(cfgargdef),
+    MINIARGV_DEFINITION_END
+  };
+  //definition of command line arguments (note: showing version information or help should not be triggered from environment variables or configuration file)
+  const miniargv_definition cmdargdef[] = {
+    MINIARGV_DEFINITION_INCLUDE(argdef),
     {'v', "version", NULL, miniargv_cb_increment_int, &showversion, "show version", NULL},
     {'h', "help", NULL, miniargv_cb_increment_int, &showhelp, "show help", NULL},
     MINIARGV_DEFINITION_END
@@ -99,7 +104,7 @@ int main (int argc, char** argv, char *envp[])
       fprintf(stderr, "Error procecessing configuration file: %s\n", cfgfile);
   }
   //process command line arguments
-  miniargv_process_arg(argv, argdef, handle_miniargv_error, (void*)"command line arguments");
+  miniargv_process_arg(argv, cmdargdef, handle_miniargv_error, (void*)"command line arguments");
 
   //show information
   printf("Configuration file: %s\n", (cfgfile ? cfgfile : "(none)"));
@@ -111,3 +116,10 @@ int main (int argc, char** argv, char *envp[])
   miniargv_cleanup(argdef);
   return 0;
 }
+
+/*
+  TO DO:
+  - support quoted strings
+  - support comments after configuration file line
+  - detect invalid characters after configuration file section
+*/
