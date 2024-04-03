@@ -1,3 +1,14 @@
+1.2.1
+
+2024-04-03  Brecht Sanders  https://github.com/brechtsanders/
+
+  * add functionality to read configuration data from memory or a custom source:
+    + added miniargv_cfg_readline_fn function type
+    + added miniargv_process_cfgdata()
+    + added miniargv_process_cfgmemory()
+    + added miniargv_readline()
+    + added miniargv_process_cfgcustom()
+
 1.2.0
 
 2024-02-03  Brecht Sanders  https://github.com/brechtsanders/

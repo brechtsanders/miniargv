@@ -238,6 +238,8 @@ DLL_EXPORT_MINIARGV int miniargv_get_next_arg_param (int argindex, char* argv[],
  */
 DLL_EXPORT_MINIARGV int miniargv_process_env (char* env[], const miniargv_definition envdef[], miniargv_handler_fn badfn, void* callbackdata);
 
+
+
 /*! \brief process configuration file variables and call the appropriate callback function for each match (note: the values read are not kept in memory, so use miniargv_cb_strdup instead of miniargv_cb_set_const_str for string data and make sure free the allocated data when no longer needed)
  * \param  cfgfile       path of configuration file to read
  * \param  cfgdef        definitions of possible configuration file variables (shortarg is ignored)
@@ -260,9 +262,119 @@ DLL_EXPORT_MINIARGV int miniargv_process_env (char* env[], const miniargv_defini
  * \sa     miniargv_process_arg_flags()
  * \sa     miniargv_process_arg_params()
  * \sa     miniargv_process_env()
+ * \sa     miniargv_process_cfgdata()
+ * \sa     miniargv_process_cfgmemory()
+ * \sa     miniargv_process_cfgcustom()
  * \sa     miniargv_cfgfile_generate()
  */
 DLL_EXPORT_MINIARGV int miniargv_process_cfgfile (const char* cfgfile, const miniargv_definition cfgdef[], const char* section, miniargv_handler_fn badfn, void* callbackdata);
+
+/*! \brief process configuration data variables and call the appropriate callback function for each match (note: the values read are not kept in memory, so use miniargv_cb_strdup instead of miniargv_cb_set_const_str for string data and make sure free the allocated data when no longer needed)
+ * \param  cfgdata       string containing configuration data
+ * \param  cfgdef        definitions of possible configuration file variables (shortarg is ignored)
+ * \param  section       section to load in additional to "default", or NULL to only load section "default"
+ * \param  callbackdata  user data passed to callback functions
+ * \return 0 on success or abort code returned by callback function
+ *         A configuration file can have any extension (though .cfg or .ini is recommended).
+ *         Whitespace at the beginning of a line is ignored.
+ *         Any line starting with a semicolon (;) or hash sign (#) is considered as command and will be ignored.
+ *         Lines starting with an at-sign (@) will cause the configuration file specified after the at-sign (@) to be processed.
+ *         Configuration lines consist of a variable name, followed by an equals (=) sign or a colon (:), followed by a value.
+ *         Whitespace before and after the equals (=) sign or a colon (:) is ignored.
+ *         It is also possible to use an at-sign (@) instead of an equals (=) sign or a colon (:), but then the value specifies a file that will be loaded (including all white space and line breaks).
+ *         Section names start with the name of the section enclosed in square brackets ([]). If no section name is specified the default section name is "default". Section names are not case sensitive.
+ * \sa     miniargv_definition
+ * \sa     miniargv_handler_fn
+ * \sa     miniargv_process()
+ * \sa     miniargv_process_ltr()
+ * \sa     miniargv_process_arg()
+ * \sa     miniargv_process_arg_flags()
+ * \sa     miniargv_process_arg_params()
+ * \sa     miniargv_process_env()
+ * \sa     miniargv_process_cfgfile()
+ * \sa     miniargv_process_cfgmemory()
+ * \sa     miniargv_process_cfgcustom()
+ * \sa     miniargv_cfgfile_generate()
+ */
+DLL_EXPORT_MINIARGV int miniargv_process_cfgdata (const char* cfgdata, const miniargv_definition cfgdef[], const char* section, miniargv_handler_fn badfn, void* callbackdata);
+
+/*! \brief process configuration data variables and call the appropriate callback function for each match (note: the values read are not kept in memory, so use miniargv_cb_strdup instead of miniargv_cb_set_const_str for string data and make sure free the allocated data when no longer needed)
+ * \param  cfgdata       buffer containing configuration data
+ * \param  cfgdatalen    length of buffer containing configuration data
+ * \param  cfgdef        definitions of possible configuration file variables (shortarg is ignored)
+ * \param  section       section to load in additional to "default", or NULL to only load section "default"
+ * \param  callbackdata  user data passed to callback functions
+ * \return 0 on success or abort code returned by callback function
+ *         A configuration file can have any extension (though .cfg or .ini is recommended).
+ *         Whitespace at the beginning of a line is ignored.
+ *         Any line starting with a semicolon (;) or hash sign (#) is considered as command and will be ignored.
+ *         Lines starting with an at-sign (@) will cause the configuration file specified after the at-sign (@) to be processed.
+ *         Configuration lines consist of a variable name, followed by an equals (=) sign or a colon (:), followed by a value.
+ *         Whitespace before and after the equals (=) sign or a colon (:) is ignored.
+ *         It is also possible to use an at-sign (@) instead of an equals (=) sign or a colon (:), but then the value specifies a file that will be loaded (including all white space and line breaks).
+ *         Section names start with the name of the section enclosed in square brackets ([]). If no section name is specified the default section name is "default". Section names are not case sensitive.
+ * \sa     miniargv_definition
+ * \sa     miniargv_handler_fn
+ * \sa     miniargv_process()
+ * \sa     miniargv_process_ltr()
+ * \sa     miniargv_process_arg()
+ * \sa     miniargv_process_arg_flags()
+ * \sa     miniargv_process_arg_params()
+ * \sa     miniargv_process_env()
+ * \sa     miniargv_process_cfgfile()
+ * \sa     miniargv_process_cfgdata()
+ * \sa     miniargv_process_cfgcustom()
+ * \sa     miniargv_cfgfile_generate()
+ */
+DLL_EXPORT_MINIARGV int miniargv_process_cfgmemory (const char* cfgdata, size_t cfgdatalen, const miniargv_definition cfgdef[], const char* section, miniargv_handler_fn badfn, void* callbackdata);
+
+/*! \brief function for reading the next line of config file data
+ * \param  handle        handle (pointer to data used by the function to read data)
+ * \return an allocated string with one line of data without line break characters (caller must call free()), NULL if no more lines available
+ * \sa     miniargv_process_cfgcustom()
+ * \sa     miniargv_readline()
+ */
+typedef char* (*miniargv_cfg_readline_fn)(void* handle);
+
+/*! \brief reading next line from open file (can be used as a \a miniargv_cfg_readline_fn function when handle is an open FILE handle)
+ * \param  handle        FILE handle previously opened with fopen()
+ * \return next line of data (caller must call free()), NULL if no more lines available
+ * \sa     miniargv_cfg_readline_fn()
+ * \sa     miniargv_process_cfgcustom()
+ */
+DLL_EXPORT_MINIARGV char* miniargv_readline (void* handle);
+
+/*! \brief process configuration data variables and call the appropriate callback function for each match (note: the values read are not kept in memory, so use miniargv_cb_strdup instead of miniargv_cb_set_const_str for string data and make sure free the allocated data when no longer needed)
+ * \param  handle        handle (pointer to data used by \a readfn to read data)
+ * \param  readfn        function to read a line of data (\a handle will be passed to this function)
+ * \param  cfgdatalen    length of buffer containing configuration data
+ * \param  cfgdef        definitions of possible configuration file variables (shortarg is ignored)
+ * \param  section       section to load in additional to "default", or NULL to only load section "default"
+ * \param  callbackdata  user data passed to callback functions
+ * \return 0 on success or abort code returned by callback function
+ *         A configuration file can have any extension (though .cfg or .ini is recommended).
+ *         Whitespace at the beginning of a line is ignored.
+ *         Any line starting with a semicolon (;) or hash sign (#) is considered as command and will be ignored.
+ *         Lines starting with an at-sign (@) will cause the configuration file specified after the at-sign (@) to be processed.
+ *         Configuration lines consist of a variable name, followed by an equals (=) sign or a colon (:), followed by a value.
+ *         Whitespace before and after the equals (=) sign or a colon (:) is ignored.
+ *         It is also possible to use an at-sign (@) instead of an equals (=) sign or a colon (:), but then the value specifies a file that will be loaded (including all white space and line breaks).
+ *         Section names start with the name of the section enclosed in square brackets ([]). If no section name is specified the default section name is "default". Section names are not case sensitive.
+ * \sa     miniargv_definition
+ * \sa     miniargv_handler_fn
+ * \sa     miniargv_process()
+ * \sa     miniargv_process_ltr()
+ * \sa     miniargv_process_arg()
+ * \sa     miniargv_process_arg_flags()
+ * \sa     miniargv_process_arg_params()
+ * \sa     miniargv_process_env()
+ * \sa     miniargv_cfg_readline_fn
+ * \sa     miniargv_process_cfgfile()
+ * \sa     miniargv_process_cfgdata()
+ * \sa     miniargv_process_cfgmemory()
+ * \sa     miniargv_cfgfile_generate()
+ */
+DLL_EXPORT_MINIARGV int miniargv_process_cfgcustom (void* handle, miniargv_cfg_readline_fn readfn, size_t cfgdatalen, const miniargv_definition cfgdef[], const char* section, miniargv_handler_fn badfn, void* callbackdata);
 
 /*! \brief generate configuration file template (\a argparam will be used as default value)
  * \param  cfgfile       handle where configuration file template will be written to
@@ -275,6 +387,8 @@ DLL_EXPORT_MINIARGV int miniargv_process_cfgfile (const char* cfgfile, const min
  * \sa     miniargv_definition_struct
  */
 DLL_EXPORT_MINIARGV void miniargv_cfgfile_generate (FILE* cfgfile, const miniargv_definition cfgdef[]);
+
+
 
 /*! \brief get application name
  *
@@ -828,7 +942,7 @@ DLL_EXPORT_MINIARGV const char* miniargv_get_version_string ();
 /*! \brief minor version number \hideinitializer */
 #define MINIARGV_VERSION_MINOR 2
 /*! \brief micro version number \hideinitializer */
-#define MINIARGV_VERSION_MICRO 0
+#define MINIARGV_VERSION_MICRO 1
 /** @} */
 
 /*! \brief packed version number (bits 24-31: major version, bits 16-23: minor version, bits 8-15: micro version)

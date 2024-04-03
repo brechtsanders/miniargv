@@ -101,8 +101,12 @@ int main (int argc, char** argv, char *envp[])
   //process configuration file if specified
   if (cfgfile) {
     if (miniargv_process_cfgfile(cfgfile, argdef, "app", handle_miniargv_error, (void*)"configuration file") != 0)
-      fprintf(stderr, "Error procecessing configuration file: %s\n", cfgfile);
+      fprintf(stderr, "Error processing configuration file: %s\n", cfgfile);
   }
+  //process configuration data from variable
+  const char* cfgdata = "string=number of the beast\nnumber=666\n\n";
+  if (miniargv_process_cfgdata(cfgdata, argdef, "app", handle_miniargv_error, (void*)"configuration file") != 0)
+    fprintf(stderr, "Error processing configuration data from memory: %s\n", cfgdata);
   //process command line arguments
   miniargv_process_arg(argv, cmdargdef, handle_miniargv_error, (void*)"command line arguments");
 
