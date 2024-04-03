@@ -145,6 +145,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a9ed6f172f8976118b0a427632a247a8b"><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a9ed6f172f8976118b0a427632a247a8b">miniargv_complete_fn</a>) (char *argv[], char *env[], const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *argdef, const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *envdef, const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> *currentarg, const char *arg, int argparampos, void *callbackdata)</td></tr>
 <tr class="memdesc:a9ed6f172f8976118b0a427632a247a8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">callback function called by <a class="el" href="miniargv_8h.html#af62c80cee896f1dfe8366d3c70b96961" title="perform bash shell completion (using tab key on the command line, configured via: complete -C&quot;&lt;path&gt; ...">miniargv_completion()</a> to list possible parameters during bash completion  <a href="miniargv_8h.html#a9ed6f172f8976118b0a427632a247a8b">More...</a><br /></td></tr>
 <tr class="separator:a9ed6f172f8976118b0a427632a247a8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9e9fc1f51510446ee1a9d1ad5f56718"><td class="memItemLeft" align="right" valign="top">typedef char *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#ae9e9fc1f51510446ee1a9d1ad5f56718">miniargv_cfg_readline_fn</a>) (void *handle)</td></tr>
+<tr class="memdesc:ae9e9fc1f51510446ee1a9d1ad5f56718"><td class="mdescLeft">&#160;</td><td class="mdescRight">function for reading the next line of config file data  <a href="miniargv_8h.html#ae9e9fc1f51510446ee1a9d1ad5f56718">More...</a><br /></td></tr>
+<tr class="separator:ae9e9fc1f51510446ee1a9d1ad5f56718"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -172,6 +175,18 @@ Functions</h2></td></tr>
 <tr class="memitem:aa8f2dceb03040a516a3af1f8e016ee43"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#aa8f2dceb03040a516a3af1f8e016ee43">miniargv_process_cfgfile</a> (const char *cfgfile, const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> cfgdef[], const char *section, <a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d">miniargv_handler_fn</a> badfn, void *callbackdata)</td></tr>
 <tr class="memdesc:aa8f2dceb03040a516a3af1f8e016ee43"><td class="mdescLeft">&#160;</td><td class="mdescRight">process configuration file variables and call the appropriate callback function for each match (note: the values read are not kept in memory, so use miniargv_cb_strdup instead of miniargv_cb_set_const_str for string data and make sure free the allocated data when no longer needed)  <a href="miniargv_8h.html#aa8f2dceb03040a516a3af1f8e016ee43">More...</a><br /></td></tr>
 <tr class="separator:aa8f2dceb03040a516a3af1f8e016ee43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaefebd578c2c7e161e680aa1ee7d7427"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#aaefebd578c2c7e161e680aa1ee7d7427">miniargv_process_cfgdata</a> (const char *cfgdata, const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> cfgdef[], const char *section, <a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d">miniargv_handler_fn</a> badfn, void *callbackdata)</td></tr>
+<tr class="memdesc:aaefebd578c2c7e161e680aa1ee7d7427"><td class="mdescLeft">&#160;</td><td class="mdescRight">process configuration data variables and call the appropriate callback function for each match (note: the values read are not kept in memory, so use miniargv_cb_strdup instead of miniargv_cb_set_const_str for string data and make sure free the allocated data when no longer needed)  <a href="miniargv_8h.html#aaefebd578c2c7e161e680aa1ee7d7427">More...</a><br /></td></tr>
+<tr class="separator:aaefebd578c2c7e161e680aa1ee7d7427"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42e6bb0247e16e863bf7f3b817f9f59b"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a42e6bb0247e16e863bf7f3b817f9f59b">miniargv_process_cfgmemory</a> (const char *cfgdata, size_t cfgdatalen, const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> cfgdef[], const char *section, <a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d">miniargv_handler_fn</a> badfn, void *callbackdata)</td></tr>
+<tr class="memdesc:a42e6bb0247e16e863bf7f3b817f9f59b"><td class="mdescLeft">&#160;</td><td class="mdescRight">process configuration data variables and call the appropriate callback function for each match (note: the values read are not kept in memory, so use miniargv_cb_strdup instead of miniargv_cb_set_const_str for string data and make sure free the allocated data when no longer needed)  <a href="miniargv_8h.html#a42e6bb0247e16e863bf7f3b817f9f59b">More...</a><br /></td></tr>
+<tr class="separator:a42e6bb0247e16e863bf7f3b817f9f59b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a011e12a8b736056b677e83d2bd575711"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a011e12a8b736056b677e83d2bd575711">miniargv_readline</a> (void *handle)</td></tr>
+<tr class="memdesc:a011e12a8b736056b677e83d2bd575711"><td class="mdescLeft">&#160;</td><td class="mdescRight">reading next line from open file (can be used as a <em>miniargv_cfg_readline_fn</em> function when handle is an open FILE handle)  <a href="miniargv_8h.html#a011e12a8b736056b677e83d2bd575711">More...</a><br /></td></tr>
+<tr class="separator:a011e12a8b736056b677e83d2bd575711"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a790b4b60ea11ae87455cb40f0e17ed04"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#a790b4b60ea11ae87455cb40f0e17ed04">miniargv_process_cfgcustom</a> (void *handle, <a class="el" href="miniargv_8h.html#ae9e9fc1f51510446ee1a9d1ad5f56718">miniargv_cfg_readline_fn</a> readfn, size_t cfgdatalen, const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> cfgdef[], const char *section, <a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d">miniargv_handler_fn</a> badfn, void *callbackdata)</td></tr>
+<tr class="memdesc:a790b4b60ea11ae87455cb40f0e17ed04"><td class="mdescLeft">&#160;</td><td class="mdescRight">process configuration data variables and call the appropriate callback function for each match (note: the values read are not kept in memory, so use miniargv_cb_strdup instead of miniargv_cb_set_const_str for string data and make sure free the allocated data when no longer needed)  <a href="miniargv_8h.html#a790b4b60ea11ae87455cb40f0e17ed04">More...</a><br /></td></tr>
+<tr class="separator:a790b4b60ea11ae87455cb40f0e17ed04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae179d717986a0bdf7ed8069db55242aa"><td class="memItemLeft" align="right" valign="top">DLL_EXPORT_MINIARGV void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="miniargv_8h.html#ae179d717986a0bdf7ed8069db55242aa">miniargv_cfgfile_generate</a> (FILE *cfgfile, const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a> cfgdef[])</td></tr>
 <tr class="memdesc:ae179d717986a0bdf7ed8069db55242aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">generate configuration file template (<em>argparam</em> will be used as default value)  <a href="miniargv_8h.html#ae179d717986a0bdf7ed8069db55242aa">More...</a><br /></td></tr>
 <tr class="separator:ae179d717986a0bdf7ed8069db55242aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -460,6 +475,32 @@ Functions</h2></td></tr>
 <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
 <dd>
 <a class="el" href="structminiargv__definition__struct.html" title="structure for argument definition">miniargv_definition_struct</a> </dd></dl>
+
+</div>
+</div>
+<a id="ae9e9fc1f51510446ee1a9d1ad5f56718" name="ae9e9fc1f51510446ee1a9d1ad5f56718"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9e9fc1f51510446ee1a9d1ad5f56718">&#9670;&#160;</a></span>miniargv_cfg_readline_fn</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef char *(* miniargv_cfg_readline_fn) (void *handle)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>function for reading the next line of config file data </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">handle</td><td>handle (pointer to data used by the function to read data) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>an allocated string with one line of data without line break characters (caller must call free()), NULL if no more lines available </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a790b4b60ea11ae87455cb40f0e17ed04" title="process configuration data variables and call the appropriate callback function for each match (note:...">miniargv_process_cfgcustom()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a011e12a8b736056b677e83d2bd575711" title="reading next line from open file (can be used as a miniargv_cfg_readline_fn function when handle is a...">miniargv_readline()</a> </dd></dl>
 
 </div>
 </div>
@@ -1017,6 +1058,308 @@ Functions</h2></td></tr>
 <a class="el" href="miniargv_8h.html#a98a3d4f90c5edc3fb2581928b3807312" title="process only standalone value command line arguments and call the appropriate callback function for e...">miniargv_process_arg_params()</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#afce140a679182de160166b072758e5e7" title="process environment variables and call the appropriate callback function for each match">miniargv_process_env()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aaefebd578c2c7e161e680aa1ee7d7427" title="process configuration data variables and call the appropriate callback function for each match (note:...">miniargv_process_cfgdata()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a42e6bb0247e16e863bf7f3b817f9f59b" title="process configuration data variables and call the appropriate callback function for each match (note:...">miniargv_process_cfgmemory()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a790b4b60ea11ae87455cb40f0e17ed04" title="process configuration data variables and call the appropriate callback function for each match (note:...">miniargv_process_cfgcustom()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#ae179d717986a0bdf7ed8069db55242aa" title="generate configuration file template (argparam will be used as default value)">miniargv_cfgfile_generate()</a> </dd></dl>
+
+</div>
+</div>
+<a id="aaefebd578c2c7e161e680aa1ee7d7427" name="aaefebd578c2c7e161e680aa1ee7d7427"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaefebd578c2c7e161e680aa1ee7d7427">&#9670;&#160;</a></span>miniargv_process_cfgdata()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DLL_EXPORT_MINIARGV int miniargv_process_cfgdata </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>cfgdata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a>&#160;</td>
+          <td class="paramname"><em>cfgdef</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>section</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d">miniargv_handler_fn</a>&#160;</td>
+          <td class="paramname"><em>badfn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>callbackdata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>process configuration data variables and call the appropriate callback function for each match (note: the values read are not kept in memory, so use miniargv_cb_strdup instead of miniargv_cb_set_const_str for string data and make sure free the allocated data when no longer needed) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cfgdata</td><td>string containing configuration data </td></tr>
+    <tr><td class="paramname">cfgdef</td><td>definitions of possible configuration file variables (shortarg is ignored) </td></tr>
+    <tr><td class="paramname">section</td><td>section to load in additional to "default", or NULL to only load section "default" </td></tr>
+    <tr><td class="paramname">callbackdata</td><td>user data passed to callback functions </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success or abort code returned by callback function A configuration file can have any extension (though .cfg or .ini is recommended). Whitespace at the beginning of a line is ignored. Any line starting with a semicolon (;) or hash sign (#) is considered as command and will be ignored. Lines starting with an at-sign (@) will cause the configuration file specified after the at-sign (@) to be processed. Configuration lines consist of a variable name, followed by an equals (=) sign or a colon (:), followed by a value. Whitespace before and after the equals (=) sign or a colon (:) is ignored. It is also possible to use an at-sign (@) instead of an equals (=) sign or a colon (:), but then the value specifies a file that will be loaded (including all white space and line breaks). Section names start with the name of the section enclosed in square brackets ([]). If no section name is specified the default section name is "default". Section names are not case sensitive. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d" title="callback function called by miniargv_process_arg() for each argument encountered">miniargv_handler_fn</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables, then process command line argument flags and finally process com...">miniargv_process()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aea855b23ce394e82dea54ebf6a4f474b" title="first process environment variables and then process command line arguments (flags and values,...">miniargv_process_ltr()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process_arg()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a8f6d14b929f3bf980d99d1d99d2a7a0d" title="process only flag command line arguments and call the appropriate callback function for each one">miniargv_process_arg_flags()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a98a3d4f90c5edc3fb2581928b3807312" title="process only standalone value command line arguments and call the appropriate callback function for e...">miniargv_process_arg_params()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#afce140a679182de160166b072758e5e7" title="process environment variables and call the appropriate callback function for each match">miniargv_process_env()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aa8f2dceb03040a516a3af1f8e016ee43" title="process configuration file variables and call the appropriate callback function for each match (note:...">miniargv_process_cfgfile()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a42e6bb0247e16e863bf7f3b817f9f59b" title="process configuration data variables and call the appropriate callback function for each match (note:...">miniargv_process_cfgmemory()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a790b4b60ea11ae87455cb40f0e17ed04" title="process configuration data variables and call the appropriate callback function for each match (note:...">miniargv_process_cfgcustom()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#ae179d717986a0bdf7ed8069db55242aa" title="generate configuration file template (argparam will be used as default value)">miniargv_cfgfile_generate()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a42e6bb0247e16e863bf7f3b817f9f59b" name="a42e6bb0247e16e863bf7f3b817f9f59b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42e6bb0247e16e863bf7f3b817f9f59b">&#9670;&#160;</a></span>miniargv_process_cfgmemory()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DLL_EXPORT_MINIARGV int miniargv_process_cfgmemory </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>cfgdata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>cfgdatalen</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a>&#160;</td>
+          <td class="paramname"><em>cfgdef</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>section</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d">miniargv_handler_fn</a>&#160;</td>
+          <td class="paramname"><em>badfn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>callbackdata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>process configuration data variables and call the appropriate callback function for each match (note: the values read are not kept in memory, so use miniargv_cb_strdup instead of miniargv_cb_set_const_str for string data and make sure free the allocated data when no longer needed) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cfgdata</td><td>buffer containing configuration data </td></tr>
+    <tr><td class="paramname">cfgdatalen</td><td>length of buffer containing configuration data </td></tr>
+    <tr><td class="paramname">cfgdef</td><td>definitions of possible configuration file variables (shortarg is ignored) </td></tr>
+    <tr><td class="paramname">section</td><td>section to load in additional to "default", or NULL to only load section "default" </td></tr>
+    <tr><td class="paramname">callbackdata</td><td>user data passed to callback functions </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success or abort code returned by callback function A configuration file can have any extension (though .cfg or .ini is recommended). Whitespace at the beginning of a line is ignored. Any line starting with a semicolon (;) or hash sign (#) is considered as command and will be ignored. Lines starting with an at-sign (@) will cause the configuration file specified after the at-sign (@) to be processed. Configuration lines consist of a variable name, followed by an equals (=) sign or a colon (:), followed by a value. Whitespace before and after the equals (=) sign or a colon (:) is ignored. It is also possible to use an at-sign (@) instead of an equals (=) sign or a colon (:), but then the value specifies a file that will be loaded (including all white space and line breaks). Section names start with the name of the section enclosed in square brackets ([]). If no section name is specified the default section name is "default". Section names are not case sensitive. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d" title="callback function called by miniargv_process_arg() for each argument encountered">miniargv_handler_fn</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables, then process command line argument flags and finally process com...">miniargv_process()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aea855b23ce394e82dea54ebf6a4f474b" title="first process environment variables and then process command line arguments (flags and values,...">miniargv_process_ltr()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process_arg()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a8f6d14b929f3bf980d99d1d99d2a7a0d" title="process only flag command line arguments and call the appropriate callback function for each one">miniargv_process_arg_flags()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a98a3d4f90c5edc3fb2581928b3807312" title="process only standalone value command line arguments and call the appropriate callback function for e...">miniargv_process_arg_params()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#afce140a679182de160166b072758e5e7" title="process environment variables and call the appropriate callback function for each match">miniargv_process_env()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aa8f2dceb03040a516a3af1f8e016ee43" title="process configuration file variables and call the appropriate callback function for each match (note:...">miniargv_process_cfgfile()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aaefebd578c2c7e161e680aa1ee7d7427" title="process configuration data variables and call the appropriate callback function for each match (note:...">miniargv_process_cfgdata()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a790b4b60ea11ae87455cb40f0e17ed04" title="process configuration data variables and call the appropriate callback function for each match (note:...">miniargv_process_cfgcustom()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#ae179d717986a0bdf7ed8069db55242aa" title="generate configuration file template (argparam will be used as default value)">miniargv_cfgfile_generate()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a011e12a8b736056b677e83d2bd575711" name="a011e12a8b736056b677e83d2bd575711"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a011e12a8b736056b677e83d2bd575711">&#9670;&#160;</a></span>miniargv_readline()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DLL_EXPORT_MINIARGV char * miniargv_readline </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>handle</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>reading next line from open file (can be used as a <em>miniargv_cfg_readline_fn</em> function when handle is an open FILE handle) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">handle</td><td>FILE handle previously opened with fopen() </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>next line of data (caller must call free()), NULL if no more lines available </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#ae9e9fc1f51510446ee1a9d1ad5f56718" title="function for reading the next line of config file data">miniargv_cfg_readline_fn()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a790b4b60ea11ae87455cb40f0e17ed04" title="process configuration data variables and call the appropriate callback function for each match (note:...">miniargv_process_cfgcustom()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a790b4b60ea11ae87455cb40f0e17ed04" name="a790b4b60ea11ae87455cb40f0e17ed04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a790b4b60ea11ae87455cb40f0e17ed04">&#9670;&#160;</a></span>miniargv_process_cfgcustom()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DLL_EXPORT_MINIARGV int miniargv_process_cfgcustom </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>handle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="miniargv_8h.html#ae9e9fc1f51510446ee1a9d1ad5f56718">miniargv_cfg_readline_fn</a>&#160;</td>
+          <td class="paramname"><em>readfn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>cfgdatalen</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff">miniargv_definition</a>&#160;</td>
+          <td class="paramname"><em>cfgdef</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>section</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d">miniargv_handler_fn</a>&#160;</td>
+          <td class="paramname"><em>badfn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>callbackdata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>process configuration data variables and call the appropriate callback function for each match (note: the values read are not kept in memory, so use miniargv_cb_strdup instead of miniargv_cb_set_const_str for string data and make sure free the allocated data when no longer needed) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">handle</td><td>handle (pointer to data used by <em>readfn</em> to read data) </td></tr>
+    <tr><td class="paramname">readfn</td><td>function to read a line of data (<em>handle</em> will be passed to this function) </td></tr>
+    <tr><td class="paramname">cfgdatalen</td><td>length of buffer containing configuration data </td></tr>
+    <tr><td class="paramname">cfgdef</td><td>definitions of possible configuration file variables (shortarg is ignored) </td></tr>
+    <tr><td class="paramname">section</td><td>section to load in additional to "default", or NULL to only load section "default" </td></tr>
+    <tr><td class="paramname">callbackdata</td><td>user data passed to callback functions </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success or abort code returned by callback function A configuration file can have any extension (though .cfg or .ini is recommended). Whitespace at the beginning of a line is ignored. Any line starting with a semicolon (;) or hash sign (#) is considered as command and will be ignored. Lines starting with an at-sign (@) will cause the configuration file specified after the at-sign (@) to be processed. Configuration lines consist of a variable name, followed by an equals (=) sign or a colon (:), followed by a value. Whitespace before and after the equals (=) sign or a colon (:) is ignored. It is also possible to use an at-sign (@) instead of an equals (=) sign or a colon (:), but then the value specifies a file that will be loaded (including all white space and line breaks). Section names start with the name of the section enclosed in square brackets ([]). If no section name is specified the default section name is "default". Section names are not case sensitive. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="miniargv_8h.html#a7638c7e1f2040ce99ebc4ffca27e7fff" title="data type for command line argument definition">miniargv_definition</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a07fb665b9d40f22c4d349e3f1b77d35d" title="callback function called by miniargv_process_arg() for each argument encountered">miniargv_handler_fn</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aff212d68e5ceff2ed20eb660204a71c3" title="first process environment variables, then process command line argument flags and finally process com...">miniargv_process()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aea855b23ce394e82dea54ebf6a4f474b" title="first process environment variables and then process command line arguments (flags and values,...">miniargv_process_ltr()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a07b7a401f18615ba4ac31b8271fa6bd3" title="process command line arguments and call the appropriate callback function for each one (except the fi...">miniargv_process_arg()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a8f6d14b929f3bf980d99d1d99d2a7a0d" title="process only flag command line arguments and call the appropriate callback function for each one">miniargv_process_arg_flags()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a98a3d4f90c5edc3fb2581928b3807312" title="process only standalone value command line arguments and call the appropriate callback function for e...">miniargv_process_arg_params()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#afce140a679182de160166b072758e5e7" title="process environment variables and call the appropriate callback function for each match">miniargv_process_env()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#ae9e9fc1f51510446ee1a9d1ad5f56718" title="function for reading the next line of config file data">miniargv_cfg_readline_fn</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aa8f2dceb03040a516a3af1f8e016ee43" title="process configuration file variables and call the appropriate callback function for each match (note:...">miniargv_process_cfgfile()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#aaefebd578c2c7e161e680aa1ee7d7427" title="process configuration data variables and call the appropriate callback function for each match (note:...">miniargv_process_cfgdata()</a> </dd>
+<dd>
+<a class="el" href="miniargv_8h.html#a42e6bb0247e16e863bf7f3b817f9f59b" title="process configuration data variables and call the appropriate callback function for each match (note:...">miniargv_process_cfgmemory()</a> </dd>
 <dd>
 <a class="el" href="miniargv_8h.html#ae179d717986a0bdf7ed8069db55242aa" title="generate configuration file template (argparam will be used as default value)">miniargv_cfgfile_generate()</a> </dd></dl>
 
