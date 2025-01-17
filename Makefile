@@ -124,7 +124,7 @@ else
 	$(CP) *$(SOEXT) $(PREFIX)/lib/
 endif
 ifdef DOXYGEN
-	$(CPDIR) doc/man $(PREFIX)/
+	$(CPDIR) doc/man/* $(PREFIX)/man/
 endif
 
 version: include/miniargv.h
