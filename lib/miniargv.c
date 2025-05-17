@@ -1128,7 +1128,7 @@ DLL_EXPORT_MINIARGV int miniargv_cleanup (const miniargv_definition argdef[])
     if (current_argdef->shortarg == MINIARGV_DEFINITION_INCLUDE_SHORTARG) {
       if ((result = miniargv_cleanup((struct miniargv_definition_struct*)(current_argdef->callbackfn))) != 0)
         return result;
-    } else if (current_argdef->callbackfn == miniargv_cb_strdup) {
+    } else if (current_argdef->callbackfn == miniargv_cb_strdup || current_argdef->callbackfn == miniargv_cb_strdup_stripquotes) {
       if (*(char**)current_argdef->userdata) {
         free(*(char**)current_argdef->userdata);
         *(char**)current_argdef->userdata = NULL;
@@ -1155,6 +1155,51 @@ DLL_EXPORT_MINIARGV int miniargv_cb_strdup (const miniargv_definition* argdef, c
   return 0;
 }
 
+DLL_EXPORT_MINIARGV int miniargv_cb_strdup_stripquotes (const miniargv_definition* argdef, const char* value, void* callbackdata)
+{
+  const char* p;
+  char* q;
+  int quoted;
+  if (*(char**)argdef->userdata)
+    free(*(char**)argdef->userdata);
+  if (!value) {
+    *(char**)argdef->userdata = NULL;
+    return 0;
+  }
+  if (value[0] != '"') {
+    *(char**)argdef->userdata = strdup(value);
+    return 0;
+  }
+  if ((q = malloc(strlen(value) + 1)) == NULL) {
+    //memory allocaton error
+    *(char**)argdef->userdata = NULL;
+    return 1;
+  }
+  //copy while stripping quotes (2x quotes is replaced with quotes in the string)
+  *(char**)argdef->userdata = q;
+  p = value;
+  quoted = 0;
+  while (*p) {
+    if (*p == '"') {
+      if (quoted && p[1] == '"') {
+        *q++ = *p++;
+      } else {
+        quoted = !quoted;
+      }
+    } else {
+      *q++ = *p;
+    }
+    p++;
+  }
+  *q = 0;
+/*
+  //release excess memory taken by stripped quotes
+  if ((q = realloc(*(char**)argdef->userdata, q - p + 1)))
+    *(char**)argdef->userdata = q;
+*/
+  return 0;
+}
+
 #define BOOLEAN_VALUES_LISTS_ENTRIES 6
 static const char* boolean_values_lists[2][BOOLEAN_VALUES_LISTS_ENTRIES] = {
   {"0", "no",  "off", "false", "disable", "disabled"},
@@ -1165,10 +1210,13 @@ DLL_EXPORT_MINIARGV int miniargv_cb_set_boolean (const miniargv_definition* argd
 {
   int i;
   int j;
-  if (!value)
-    return 1;
-  if (!*value)
+  if (!value) {
+    //no value value specified considered as true
+    *(int*)argdef->userdata = 1;
     return 0;
+  }
+  if (!*value)
+    return 1;
   for (i = 0; i < 2; i++) {
     for (j = 0; j < BOOLEAN_VALUES_LISTS_ENTRIES; j++) {
       if (strcasecmp(value, boolean_values_lists[i][j]) == 0) {

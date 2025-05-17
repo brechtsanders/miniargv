@@ -1,3 +1,10 @@
+1.2.2
+
+2025-05-17  Brecht Sanders  https://github.com/brechtsanders/
+
+  * fixed miniargv_cb_set_boolean() to consider no value specified as boolean value true
+  * added miniargv_cb_strdup_stripquotes()
+
 1.2.1
 
 2024-04-03  Brecht Sanders  https://github.com/brechtsanders/
